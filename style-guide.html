@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Style Guide — We Eat</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/app.css">
+  <style>
+
+    /* ════════════════════════════════════════════════════════
+       STYLE GUIDE SHELL
+    ════════════════════════════════════════════════════════ */
+
+    .sg-layout {
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ────────────────────────────────────────── */
+
+    .sg-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100vh;
+      overflow-y: auto;
+      border-right: 1px solid var(--color-border);
+      background: var(--color-white);
+      padding: var(--space-8) var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .sg-sidebar__logo {
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: var(--color-text-primary);
+      text-decoration: none;
+      margin-bottom: var(--space-1);
+      display: block;
+    }
+
+    .sg-sidebar__sub {
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-8);
+    }
+
+    .sg-nav-group {
+      margin-bottom: var(--space-6);
+    }
+
+    .sg-nav-group__label {
+      font-size: 9px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-border-strong);
+      margin-bottom: var(--space-2);
+      padding-bottom: var(--space-2);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .sg-nav-link {
+      display: block;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-muted);
+      text-decoration: none;
+      padding: 5px 0;
+      transition: color var(--transition-fast);
+      border-left: 2px solid transparent;
+      padding-left: var(--space-3);
+      margin-left: -var(--space-3);
+    }
+    .sg-nav-link:hover { color: var(--color-text-primary); }
+    .sg-nav-link.is-active {
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-semibold);
+      border-left-color: var(--color-black);
+    }
+
+    /* ── Main content ───────────────────────────────────── */
+
+    .sg-main {
+      margin-left: 220px;
+      padding: var(--space-16) var(--space-16) var(--space-24);
+      max-width: 900px;
+    }
+
+    /* ── Section ────────────────────────────────────────── */
+
+    .sg-section {
+      padding-top: var(--space-16);
+      margin-bottom: var(--space-16);
+      border-top: 1px solid var(--color-border);
+    }
+    .sg-section:first-of-type { border-top: none; padding-top: 0; }
+
+    .sg-section__title {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: var(--space-3);
+    }
+
+    .sg-section__desc {
+      font-size: var(--font-size-base);
+      color: var(--color-text-secondary);
+      line-height: var(--line-height-relaxed);
+      margin-bottom: var(--space-10);
+      max-width: 560px;
+    }
+
+    /* ── Sub-section ────────────────────────────────────── */
+
+    .sg-sub {
+      margin-bottom: var(--space-10);
+    }
+
+    .sg-sub__title {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-5);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    /* ── Demo box ───────────────────────────────────────── */
+
+    .sg-demo {
+      border: 1px solid var(--color-border);
+      padding: var(--space-8);
+      margin-bottom: var(--space-4);
+    }
+
+    .sg-demo--dark {
+      background-color: var(--color-black);
+    }
+
+    .sg-demo--subtle {
+      background-color: var(--color-bg-subtle);
+    }
+
+    /* ── Code snippet ───────────────────────────────────── */
+
+    .sg-code {
+      background-color: var(--color-bg-subtle);
+      border-left: 3px solid var(--color-border-strong);
+      padding: var(--space-4) var(--space-5);
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+      overflow-x: auto;
+      white-space: pre;
+      margin-bottom: var(--space-6);
+    }
+
+    /* ── Usage note ─────────────────────────────────────── */
+
+    .sg-note {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+      line-height: var(--line-height-relaxed);
+      margin-bottom: var(--space-6);
+    }
+    .sg-note strong { color: var(--color-text-primary); font-weight: var(--font-weight-semibold); }
+
+    /* ════════════════════════════════════════════════════════
+       TOKEN DISPLAYS
+    ════════════════════════════════════════════════════════ */
+
+    /* Color swatches */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .color-swatch {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .color-swatch__block {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid var(--color-border);
+    }
+
+    .color-swatch__name {
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+    }
+
+    .color-swatch__hex {
+      font-size: 10px;
+      color: var(--color-text-muted);
+      font-family: 'Courier New', monospace;
+    }
+
+    /* Type scale */
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-8);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .type-row:last-child { border-bottom: none; }
+
+    .type-row__meta {
+      width: 160px;
+      flex-shrink: 0;
+    }
+
+    .type-row__token {
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      font-family: 'Courier New', monospace;
+      color: var(--color-text-muted);
+    }
+
+    .type-row__size {
+      font-size: 10px;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    /* Spacing scale */
+    .space-rows {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .space-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .space-row__label {
+      width: 80px;
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      font-family: 'Courier New', monospace;
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+    }
+
+    .space-row__bar {
+      height: 8px;
+      background-color: var(--color-black);
+      flex-shrink: 0;
+    }
+
+    .space-row__value {
+      font-size: 10px;
+      color: var(--color-text-muted);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RECIPE COMPONENT DEMOS
+    ════════════════════════════════════════════════════════ */
+
+    /* Inline demo for direction step */
+    .demo-direction-step {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: var(--space-5);
+      padding: var(--space-6) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .demo-step-number {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-border-strong);
+      line-height: 1;
+      letter-spacing: var(--letter-spacing-tight);
+    }
+    .demo-step-text {
+      font-size: var(--font-size-base);
+      color: var(--color-text-primary);
+      line-height: var(--line-height-relaxed);
+      padding-top: 4px;
+    }
+    .demo-step-tip {
+      display: block;
+      margin-top: var(--space-3);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
+
+    /* Ingredient item demo */
+    .demo-ingredient-item {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-4);
+      padding: var(--space-2) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .demo-ingredient-amount {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-muted);
+      min-width: 52px;
+      flex-shrink: 0;
+      letter-spacing: var(--letter-spacing-wide);
+    }
+    .demo-ingredient-name {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-primary);
+    }
+    .demo-ingredient-note {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      font-style: italic;
+      margin-left: auto;
+    }
+
+    /* Profile badge demo */
+    .demo-badge {
+      border-left: var(--badge-rule-width) solid var(--color-accent);
+      padding-left: var(--space-3);
+    }
+    .demo-badge__title {
+      display: block;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: var(--color-text-primary);
+    }
+    .demo-badge__sub {
+      display: block;
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    /* Profile stats demo */
+    .demo-stats {
+      display: flex;
+      gap: var(--space-6);
+      padding-block: var(--space-5);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .demo-stat__value {
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1;
+    }
+    .demo-stat__label {
+      font-size: 10px;
+      color: var(--color-text-muted);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    /* Meta strip demo */
+    .demo-meta {
+      display: flex;
+      border-top: 1px solid var(--color-border);
+    }
+    .demo-meta__item {
+      flex: 1;
+      padding: var(--space-4) var(--space-4) 0;
+      border-right: 1px solid var(--color-border);
+    }
+    .demo-meta__item:first-child { padding-left: 0; }
+    .demo-meta__item:last-child { border-right: none; }
+    .demo-meta__value {
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+    .demo-meta__label {
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* Section label demo */
+    .demo-section-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      padding-bottom: var(--space-4);
+      border-bottom: 2px solid var(--color-black);
+    }
+
+    /* Tab bar demo */
+    .demo-tab-bar {
+      display: flex;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .demo-tab-item {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-4) var(--space-3);
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+    }
+    .demo-tab-item--active {
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-bold);
+      border-bottom-color: var(--color-black);
+      border-bottom-width: 3px;
+    }
+
+    /* Nav create button demo */
+    .demo-create-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background-color: var(--color-black);
+      color: var(--color-white);
+      border-radius: 50%;
+    }
+    .demo-create-btn svg { width: 14px; height: 14px; }
+
+    /* Form input demo */
+    .demo-form-input {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      padding: var(--space-2) 0;
+      font-family: var(--font-primary);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-primary);
+      background: transparent;
+      outline: none;
+    }
+    .demo-form-label {
+      display: block;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    /* flex row helper */
+    .sg-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="sg-layout">
+
+    <!-- ═══════════════════════════════════════════════════
+         SIDEBAR
+    ═══════════════════════════════════════════════════ -->
+    <aside class="sg-sidebar">
+
+      <a href="app/profile.html" class="sg-sidebar__logo">We Eat</a>
+      <span class="sg-sidebar__sub">Style Guide</span>
+
+      <nav>
+
+        <div class="sg-nav-group">
+          <div class="sg-nav-group__label">Foundations</div>
+          <a href="#overview"    class="sg-nav-link">Overview</a>
+          <a href="#colors"      class="sg-nav-link">Colors</a>
+          <a href="#typography"  class="sg-nav-link">Typography</a>
+          <a href="#spacing"     class="sg-nav-link">Spacing</a>
+        </div>
+
+        <div class="sg-nav-group">
+          <div class="sg-nav-group__label">Components</div>
+          <a href="#buttons"     class="sg-nav-link">Buttons</a>
+          <a href="#chips"       class="sg-nav-link">Chips</a>
+          <a href="#avatar"      class="sg-nav-link">Avatar</a>
+          <a href="#forms"       class="sg-nav-link">Forms</a>
+          <a href="#tabs"        class="sg-nav-link">Tabs</a>
+          <a href="#navigation"  class="sg-nav-link">Navigation</a>
+        </div>
+
+        <div class="sg-nav-group">
+          <div class="sg-nav-group__label">Patterns</div>
+          <a href="#profile"     class="sg-nav-link">Profile</a>
+          <a href="#recipe"      class="sg-nav-link">Recipe</a>
+        </div>
+
+      </nav>
+    </aside>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         MAIN
+    ═══════════════════════════════════════════════════ -->
+    <main class="sg-main">
+
+
+      <!-- ══════════════════════════════════════════════
+           OVERVIEW
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="overview">
+        <div class="sg-section__title">We Eat Design System</div>
+        <p class="sg-section__desc">
+          A minimal, editorial design language built for a social recipe platform.
+          Inspired by Nike.com — white backgrounds, sharp corners, bold typography, generous whitespace.
+          Accent yellow is used sparingly as a single point of warmth.
+        </p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Core Principles</div>
+          <div class="sg-demo">
+            <div style="display:grid; grid-template-columns: repeat(3,1fr); gap: var(--space-8);">
+              <div>
+                <div style="font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); margin-bottom:var(--space-2);">Sharp, not rounded</div>
+                <div style="font-size:var(--font-size-sm); color:var(--color-text-secondary); line-height:var(--line-height-relaxed);">All interactive elements use <code>--btn-radius: 0px</code> and <code>--card-radius: 0px</code>. Only chips use <code>--radius-pill</code>.</div>
+              </div>
+              <div>
+                <div style="font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); margin-bottom:var(--space-2);">Uppercase with tracking</div>
+                <div style="font-size:var(--font-size-sm); color:var(--color-text-secondary); line-height:var(--line-height-relaxed);">Labels, nav links, and section headers use 10px bold uppercase with <code>letter-spacing-widest</code> (0.12em).</div>
+              </div>
+              <div>
+                <div style="font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); margin-bottom:var(--space-2);">One accent, used sparingly</div>
+                <div style="font-size:var(--font-size-sm); color:var(--color-text-secondary); line-height:var(--line-height-relaxed);"><code>--color-accent</code> (#f2c438) appears in exactly one place per page — the gamification badge left-rule or a single interactive state. Never decoratively.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Pages</div>
+          <div class="sg-demo">
+            <div style="display:flex; flex-direction:column; gap:var(--space-3);">
+              <div style="display:flex; align-items:center; gap:var(--space-4);">
+                <a href="app/profile.html" style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); text-decoration:underline;">profile.html</a>
+                <span style="font-size:var(--font-size-sm); color:var(--color-text-muted);">User profile — avatar, stats, gamification badge, recipe grid, tabs</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:var(--space-4);">
+                <a href="app/recipe.html" style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); text-decoration:underline;">recipe.html</a>
+                <span style="font-size:var(--font-size-sm); color:var(--color-text-muted);">Recipe detail — hero, meta, ingredients, tools, directions</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:var(--space-4);">
+                <a href="app/recipe-new.html" style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); text-decoration:underline;">recipe-new.html</a>
+                <span style="font-size:var(--font-size-sm); color:var(--color-text-muted);">Create / edit recipe form — dynamic ingredient groups, tools, direction sets</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           COLORS
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="colors">
+        <div class="sg-section__title">Colors</div>
+        <p class="sg-section__desc">All colors are CSS custom properties defined in <code>tokens.css</code>. Never use raw hex values in component files.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Base</div>
+          <div class="color-grid">
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#FFFFFF; border:1px solid #EBEBEB;"></div>
+              <div class="color-swatch__name">--color-white</div>
+              <div class="color-swatch__hex">#FFFFFF</div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#F4F4F4;"></div>
+              <div class="color-swatch__name">--color-bg-subtle</div>
+              <div class="color-swatch__hex">#F4F4F4</div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#111111;"></div>
+              <div class="color-swatch__name">--color-black</div>
+              <div class="color-swatch__hex">#111111</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Text</div>
+          <div class="color-grid">
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#111111;"></div>
+              <div class="color-swatch__name">--color-text-primary</div>
+              <div class="color-swatch__hex">#111111</div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#555555;"></div>
+              <div class="color-swatch__name">--color-text-secondary</div>
+              <div class="color-swatch__hex">#555555</div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#9A9A9A;"></div>
+              <div class="color-swatch__name">--color-text-muted</div>
+              <div class="color-swatch__hex">#9A9A9A</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Accent — use sparingly, one instance per page</div>
+          <div class="color-grid">
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#f2c438;"></div>
+              <div class="color-swatch__name">--color-accent</div>
+              <div class="color-swatch__hex">#f2c438</div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#d4a820;"></div>
+              <div class="color-swatch__name">--color-accent-hover</div>
+              <div class="color-swatch__hex">#d4a820</div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:rgba(242,196,56,0.15);"></div>
+              <div class="color-swatch__name">--color-accent-light</div>
+              <div class="color-swatch__hex">rgba(242,196,56,0.15)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Borders &amp; Semantic</div>
+          <div class="color-grid">
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#EBEBEB;"></div>
+              <div class="color-swatch__name">--color-border</div>
+              <div class="color-swatch__hex">#EBEBEB</div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#D0D0D0;"></div>
+              <div class="color-swatch__name">--color-border-strong</div>
+              <div class="color-swatch__hex">#D0D0D0</div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#16A34A;"></div>
+              <div class="color-swatch__name">--color-success</div>
+              <div class="color-swatch__hex">#16A34A</div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch__block" style="background:#DC2626;"></div>
+              <div class="color-swatch__name">--color-error</div>
+              <div class="color-swatch__hex">#DC2626</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           TYPOGRAPHY
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="typography">
+        <div class="sg-section__title">Typography</div>
+        <p class="sg-section__desc">Poppins, loaded from Google Fonts. All sizes use CSS custom properties from <code>tokens.css</code>. Headings use tight negative letter-spacing; labels use wide positive tracking.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Type Scale</div>
+          <div class="sg-demo">
+            <div class="type-row">
+              <div class="type-row__meta">
+                <div class="type-row__token">--font-size-display</div>
+                <div class="type-row__size">80px · hero only</div>
+              </div>
+              <div style="font-size:var(--font-size-display); font-weight:700; letter-spacing:-0.04em; line-height:1; overflow:hidden; white-space:nowrap;">Aa</div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta">
+                <div class="type-row__token">--font-size-3xl</div>
+                <div class="type-row__size">56px · page titles</div>
+              </div>
+              <div style="font-size:var(--font-size-3xl); font-weight:700; letter-spacing:-0.04em; line-height:1;">We Eat</div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta">
+                <div class="type-row__token">--font-size-2xl</div>
+                <div class="type-row__size">40px · step numbers</div>
+              </div>
+              <div style="font-size:var(--font-size-2xl); font-weight:700; letter-spacing:-0.04em; line-height:1; color:var(--color-border-strong);">01</div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta">
+                <div class="type-row__token">--font-size-xl</div>
+                <div class="type-row__size">28px · profile name, stat values</div>
+              </div>
+              <div style="font-size:var(--font-size-xl); font-weight:700; letter-spacing:-0.03em; line-height:1;">Sofia K.</div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta">
+                <div class="type-row__token">--font-size-lg</div>
+                <div class="type-row__size">22px · section headings</div>
+              </div>
+              <div style="font-size:var(--font-size-lg); font-weight:600; letter-spacing:-0.015em;">Ingredients</div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta">
+                <div class="type-row__token">--font-size-md</div>
+                <div class="type-row__size">18px · recipe description</div>
+              </div>
+              <div style="font-size:var(--font-size-md); color:var(--color-text-secondary);">A flexible, repeatable framework for 4–5 days of lunches.</div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta">
+                <div class="type-row__token">--font-size-base</div>
+                <div class="type-row__size">16px · body text, step text</div>
+              </div>
+              <div style="font-size:var(--font-size-base); line-height:var(--line-height-relaxed);">Rinse the brown rice under cold water until the water runs clear.</div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta">
+                <div class="type-row__token">--font-size-sm</div>
+                <div class="type-row__size">14px · recipe rows, ingredients</div>
+              </div>
+              <div style="font-size:var(--font-size-sm);">Weekly Meal Prep Formula · 90 min · 4 servings</div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta">
+                <div class="type-row__token">--font-size-xs</div>
+                <div class="type-row__size">12px · meta labels, amounts</div>
+              </div>
+              <div style="font-size:var(--font-size-xs); font-weight:600; letter-spacing:0.04em;">2 cups · low sodium · optional</div>
+            </div>
+            <div class="type-row">
+              <div class="type-row__meta">
+                <div class="type-row__token">10px labels</div>
+                <div class="type-row__size">10px · nav, section labels</div>
+              </div>
+              <div style="font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-text-muted);">Ingredients</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Letter Spacing</div>
+          <div class="sg-demo">
+            <div style="display:flex; flex-direction:column; gap:var(--space-4);">
+              <div style="font-size:var(--font-size-sm);">
+                <span style="color:var(--color-text-muted); font-family:monospace; font-size:11px; margin-right:var(--space-4);">tight   -0.03em</span>
+                <span style="letter-spacing:-0.03em; font-weight:700; font-size:var(--font-size-xl);">Recipe Title</span>
+              </div>
+              <div style="font-size:var(--font-size-sm);">
+                <span style="color:var(--color-text-muted); font-family:monospace; font-size:11px; margin-right:var(--space-4);">normal   0em</span>
+                <span style="letter-spacing:0;">Body text reads normally at default tracking.</span>
+              </div>
+              <div style="font-size:var(--font-size-sm);">
+                <span style="color:var(--color-text-muted); font-family:monospace; font-size:11px; margin-right:var(--space-4);">wide    0.04em</span>
+                <span style="letter-spacing:0.04em; font-size:var(--font-size-xs); font-weight:600;">Button Labels</span>
+              </div>
+              <div style="font-size:var(--font-size-sm);">
+                <span style="color:var(--color-text-muted); font-family:monospace; font-size:11px; margin-right:var(--space-4);">wider   0.07em</span>
+                <span style="letter-spacing:0.07em; font-size:var(--font-size-xs); font-weight:700; text-transform:uppercase;">Publish</span>
+              </div>
+              <div>
+                <span style="color:var(--color-text-muted); font-family:monospace; font-size:11px; margin-right:var(--space-4);">widest  0.12em</span>
+                <span style="letter-spacing:0.12em; font-size:10px; font-weight:700; text-transform:uppercase; color:var(--color-text-muted);">Ingredients</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           SPACING
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="spacing">
+        <div class="sg-section__title">Spacing</div>
+        <p class="sg-section__desc">4px base unit. 12 steps from 4px to 96px. Always use tokens — never raw pixel values in component files.</p>
+
+        <div class="sg-demo">
+          <div class="space-rows">
+            <div class="space-row"><span class="space-row__label">--space-1</span><div class="space-row__bar" style="width:4px;"></div><span class="space-row__value">4px</span></div>
+            <div class="space-row"><span class="space-row__label">--space-2</span><div class="space-row__bar" style="width:8px;"></div><span class="space-row__value">8px</span></div>
+            <div class="space-row"><span class="space-row__label">--space-3</span><div class="space-row__bar" style="width:12px;"></div><span class="space-row__value">12px</span></div>
+            <div class="space-row"><span class="space-row__label">--space-4</span><div class="space-row__bar" style="width:16px;"></div><span class="space-row__value">16px</span></div>
+            <div class="space-row"><span class="space-row__label">--space-5</span><div class="space-row__bar" style="width:20px;"></div><span class="space-row__value">20px</span></div>
+            <div class="space-row"><span class="space-row__label">--space-6</span><div class="space-row__bar" style="width:24px;"></div><span class="space-row__value">24px</span></div>
+            <div class="space-row"><span class="space-row__label">--space-8</span><div class="space-row__bar" style="width:32px;"></div><span class="space-row__value">32px</span></div>
+            <div class="space-row"><span class="space-row__label">--space-10</span><div class="space-row__bar" style="width:40px;"></div><span class="space-row__value">40px</span></div>
+            <div class="space-row"><span class="space-row__label">--space-12</span><div class="space-row__bar" style="width:48px;"></div><span class="space-row__value">48px</span></div>
+            <div class="space-row"><span class="space-row__label">--space-16</span><div class="space-row__bar" style="width:64px;"></div><span class="space-row__value">64px — column gap</span></div>
+            <div class="space-row"><span class="space-row__label">--space-20</span><div class="space-row__bar" style="width:80px;"></div><span class="space-row__value">80px — section padding</span></div>
+            <div class="space-row"><span class="space-row__label">--space-24</span><div class="space-row__bar" style="width:96px;"></div><span class="space-row__value">96px</span></div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           BUTTONS
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="buttons">
+        <div class="sg-section__title">Buttons</div>
+        <p class="sg-section__desc">All buttons use <code>.btn</code> as a base. Sharp rectangular — <code>border-radius: 0</code>. Works on both <code>&lt;button&gt;</code> and <code>&lt;a&gt;</code> elements.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Variants</div>
+          <div class="sg-demo">
+            <div class="sg-row">
+              <button class="btn btn-primary">Publish</button>
+              <button class="btn btn-secondary">Cancel</button>
+              <button class="btn btn-ghost">View all →</button>
+              <button class="btn btn-ghost-muted">Skip</button>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;button class="btn btn-primary"&gt;Publish&lt;/button&gt;
+&lt;button class="btn btn-secondary"&gt;Cancel&lt;/button&gt;
+&lt;button class="btn btn-ghost"&gt;View all →&lt;/button&gt;
+&lt;button class="btn btn-ghost-muted"&gt;Skip&lt;/button&gt;</pre>
+          <p class="sg-note">
+            <strong>btn-primary</strong> — Black fill, white text, uppercase widest tracking. Use for the primary action on a page.<br>
+            <strong>btn-secondary</strong> — Black outline, inverts on hover. Use for secondary actions alongside a primary.<br>
+            <strong>btn-ghost</strong> — No border, underlines on hover. Use for low-priority text links.<br>
+            <strong>btn-ghost-muted</strong> — Same as ghost but starts muted. Use for truly tertiary actions.
+          </p>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Sizes</div>
+          <div class="sg-demo">
+            <div class="sg-row" style="align-items:center;">
+              <button class="btn btn-primary btn-sm">Small</button>
+              <button class="btn btn-primary">Default</button>
+              <button class="btn btn-primary btn-lg">Large</button>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;button class="btn btn-primary btn-sm"&gt;Small&lt;/button&gt;
+&lt;button class="btn btn-primary"&gt;Default&lt;/button&gt;
+&lt;button class="btn btn-primary btn-lg"&gt;Large&lt;/button&gt;</pre>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Icon Button</div>
+          <div class="sg-demo">
+            <div class="sg-row">
+              <button class="btn-icon" aria-label="Notifications">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+              </button>
+              <button class="btn-icon" aria-label="Profile">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+              </button>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;button class="btn-icon" aria-label="Notifications"&gt;
+  &lt;svg ...&gt;...&lt;/svg&gt;
+&lt;/button&gt;</pre>
+          <p class="sg-note"><strong>btn-icon</strong> — 40×40px tap target. Always include <code>aria-label</code>. Color starts at <code>--color-text-muted</code>, transitions to <code>--color-text-primary</code> on hover.</p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           CHIPS
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="chips">
+        <div class="sg-section__title">Chips</div>
+        <p class="sg-section__desc">Pill-shaped tags used for filters and categories. The only component that uses <code>--radius-pill</code>.</p>
+
+        <div class="sg-demo">
+          <div class="sg-row">
+            <span class="chip">All</span>
+            <span class="chip chip--active">Salads</span>
+            <span class="chip">Meal Prep</span>
+            <span class="chip">Quick</span>
+            <span class="chip">Vegetarian</span>
+          </div>
+        </div>
+        <pre class="sg-code">&lt;span class="chip"&gt;All&lt;/span&gt;
+&lt;span class="chip chip--active"&gt;Salads&lt;/span&gt;</pre>
+        <p class="sg-note"><strong>chip--active</strong> — Black border, primary text color. Use to show the currently selected filter.</p>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           AVATAR
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="avatar">
+        <div class="sg-section__title">Avatar</div>
+        <p class="sg-section__desc">Circular user photos. No border — the clean circular crop on white is the treatment. Two sizes defined in tokens.</p>
+
+        <div class="sg-demo">
+          <div class="sg-row" style="align-items:center;">
+            <img class="avatar avatar--lg" src="https://i.pravatar.cc/200?img=47" alt="Sofia K.">
+            <img class="avatar avatar--sm" src="https://i.pravatar.cc/200?img=47" alt="Sofia K.">
+          </div>
+        </div>
+        <pre class="sg-code">&lt;!-- Large: 120px — profile page --&gt;
+&lt;img class="avatar avatar--lg" src="..." alt="Name"&gt;
+
+&lt;!-- Small: 40px — author rows, comments --&gt;
+&lt;img class="avatar avatar--sm" src="..." alt="Name"&gt;</pre>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           FORMS
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="forms">
+        <div class="sg-section__title">Forms</div>
+        <p class="sg-section__desc">Bottom-border-only inputs — no box, no background fill. The field feels like part of the page surface rather than a widget on top of it. Used in <code>recipe-new.html</code>.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Text Input</div>
+          <div class="sg-demo">
+            <div style="max-width:400px; display:flex; flex-direction:column; gap:var(--space-6);">
+              <div>
+                <label class="demo-form-label">Recipe Title</label>
+                <input class="demo-form-input" type="text" placeholder="Recipe name">
+              </div>
+              <div>
+                <label class="demo-form-label">Prep Time</label>
+                <input class="demo-form-input" type="text" placeholder="e.g. 20 min">
+              </div>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;label class="form-label" for="field"&gt;Label&lt;/label&gt;
+&lt;input id="field" class="form-input" type="text" placeholder="..."&gt;</pre>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Title Input (large variant)</div>
+          <div class="sg-demo">
+            <input class="demo-form-input" type="text" placeholder="Recipe name"
+              style="font-size:clamp(1.5rem,2.5vw,2.5rem); font-weight:700; letter-spacing:-0.03em;">
+          </div>
+          <pre class="sg-code">&lt;input class="form-input form-input--title" type="text" placeholder="Recipe name"&gt;</pre>
+          <p class="sg-note">Add <strong>form-input--title</strong> to make the title input match the visual weight of the recipe's <code>h1</code>. Creates continuity between the form and the finished detail page.</p>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Select</div>
+          <div class="sg-demo" style="max-width:200px;">
+            <label class="demo-form-label">Difficulty</label>
+            <select class="demo-form-input">
+              <option value="" disabled selected>Select</option>
+              <option>Easy</option>
+              <option>Medium</option>
+              <option>Hard</option>
+            </select>
+          </div>
+          <pre class="sg-code">&lt;select class="form-input"&gt;
+  &lt;option value="" disabled selected&gt;Select&lt;/option&gt;
+  &lt;option&gt;Easy&lt;/option&gt;
+&lt;/select&gt;</pre>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           TABS
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="tabs">
+        <div class="sg-section__title">Tabs</div>
+        <p class="sg-section__desc">Used on the profile page to switch between Posts and Cooking. Sticky below the app header. Active tab has a 3px black bottom border.</p>
+
+        <div class="sg-demo" style="padding:0;">
+          <div class="demo-tab-bar">
+            <div class="demo-tab-item demo-tab-item--active">Posts</div>
+            <div class="demo-tab-item">Cooking</div>
+          </div>
+        </div>
+        <pre class="sg-code">&lt;div class="content-tab-bar" role="tablist"&gt;
+  &lt;button class="tab-item tab-item--active" data-tab="tab-posts"&gt;Posts&lt;/button&gt;
+  &lt;button class="tab-item" data-tab="tab-cooking"&gt;Cooking&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class="tab-panel tab-panel--active" id="tab-posts"&gt;...&lt;/div&gt;
+&lt;div class="tab-panel" id="tab-cooking"&gt;...&lt;/div&gt;</pre>
+        <p class="sg-note">Tab switching is handled by a small JS snippet at the bottom of <code>profile.html</code>. It toggles <strong>tab-item--active</strong> on buttons and <strong>tab-panel--active</strong> on panels. No framework needed.</p>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           NAVIGATION
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="navigation">
+        <div class="sg-section__title">Navigation</div>
+        <p class="sg-section__desc">The app header is fixed and shared across every page. Copy the block verbatim and swap the active classes. Never put inline styles on nav elements — all state is handled by CSS classes.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">App Header</div>
+          <div class="sg-demo" style="padding:0; overflow:hidden;">
+            <div style="display:flex; align-items:center; justify-content:space-between; height:60px; padding-inline:var(--space-8); border-bottom:1px solid var(--color-border);">
+              <span style="font-size:var(--font-size-xl); font-weight:700; letter-spacing:-0.04em; text-transform:uppercase;">We Eat</span>
+              <div style="display:flex; align-items:center; gap:0;">
+                <span style="font-size:10px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-text-muted); padding:0 16px; border-bottom:2px solid transparent;">Home</span>
+                <span style="font-size:10px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-text-muted); padding:0 16px; border-bottom:2px solid transparent;">Explore</span>
+                <span style="font-size:10px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-text-primary); padding:0 16px; border-bottom:2px solid #111;">Profile</span>
+                <div style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; background:#111; color:#fff; border-radius:50%; margin: 0 8px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                </div>
+                <button class="btn-icon" style="color:var(--color-text-muted);">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                </button>
+                <button class="btn-icon" style="color:var(--color-text-muted);">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;header class="app-header"&gt;
+  &lt;a href="home.html" class="app-header__logo"&gt;We Eat&lt;/a&gt;
+  &lt;nav class="app-nav"&gt;
+    &lt;a href="home.html"    class="app-nav__link"&gt;Home&lt;/a&gt;
+    &lt;a href="explore.html" class="app-nav__link"&gt;Explore&lt;/a&gt;
+    &lt;a href="plan.html"    class="app-nav__link"&gt;Plan&lt;/a&gt;
+    &lt;!-- Add app-nav__link--active to the current page's link --&gt;
+
+    &lt;a href="recipe-new.html" class="app-nav__create" aria-label="Create recipe"&gt;
+      &lt;svg ...&gt;&lt;/svg&gt;
+    &lt;/a&gt;
+
+    &lt;div class="app-header__icon-wrap"&gt;
+      &lt;a href="#" class="btn-icon app-nav__icon" aria-label="Notifications"&gt;...&lt;/a&gt;
+      &lt;span class="app-header__badge"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;a href="profile.html" class="btn-icon app-nav__icon" aria-label="Profile"&gt;...&lt;/a&gt;
+    &lt;!-- Add app-nav__icon--active on the current page's icon --&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;</pre>
+          <p class="sg-note">
+            <strong>app-nav__link--active</strong> — black bottom border on the current text link.<br>
+            <strong>app-nav__icon--active</strong> — switches icon color to <code>--color-text-primary</code>.<br>
+            <strong>app-nav__create</strong> — 28px black circle with white + icon. Links to <code>recipe-new.html</code>.<br>
+            Text links hide at ≤1024px; the bottom nav takes over on mobile.
+          </p>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Section Label</div>
+          <div class="sg-demo">
+            <div class="demo-section-label">Ingredients</div>
+          </div>
+          <pre class="sg-code">&lt;div class="section-label"&gt;Ingredients&lt;/div&gt;</pre>
+          <p class="sg-note">Used above major content blocks on the recipe pages. 10px bold uppercase with 2px solid black bottom border — the heaviest border in the system.</p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           PROFILE PATTERNS
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="profile">
+        <div class="sg-section__title">Profile Patterns</div>
+        <p class="sg-section__desc">Components specific to the user profile page.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Stats Row</div>
+          <div class="sg-demo">
+            <div class="demo-stats">
+              <div>
+                <div class="demo-stat__value">47</div>
+                <div class="demo-stat__label">Recipes</div>
+              </div>
+              <div>
+                <div class="demo-stat__value">1.2k</div>
+                <div class="demo-stat__label">Followers</div>
+              </div>
+              <div>
+                <div class="demo-stat__value">384</div>
+                <div class="demo-stat__label">Following</div>
+              </div>
+            </div>
+          </div>
+          <p class="sg-note">Flex row with thin border top and bottom. Values use <code>--font-size-xl</code> bold tight tracking. Labels use the 10px uppercase widest pattern.</p>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Gamification Badge</div>
+          <div class="sg-demo">
+            <div class="demo-badge">
+              <span class="demo-badge__title">Master Chef</span>
+              <span class="demo-badge__sub">Top 2% of cooks on We Eat</span>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;div class="profile-badge"&gt;
+  &lt;span class="profile-badge__title"&gt;Master Chef&lt;/span&gt;
+  &lt;span class="profile-badge__sub"&gt;Top 2% of cooks on We Eat&lt;/span&gt;
+&lt;/div&gt;</pre>
+          <p class="sg-note">The <strong>only</strong> use of <code>--color-accent</code> (#f2c438) on the profile page — a 3px left rule. No emoji, no filled background. The restraint is intentional: one gold element on an otherwise black-and-white page draws the eye immediately.</p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           RECIPE PATTERNS
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="recipe">
+        <div class="sg-section__title">Recipe Patterns</div>
+        <p class="sg-section__desc">Components used on the recipe detail and create pages.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Meta Strip</div>
+          <div class="sg-demo">
+            <div class="demo-meta">
+              <div class="demo-meta__item">
+                <div class="demo-meta__value">20 min</div>
+                <div class="demo-meta__label">Prep Time</div>
+              </div>
+              <div class="demo-meta__item">
+                <div class="demo-meta__value">70 min</div>
+                <div class="demo-meta__label">Cook Time</div>
+              </div>
+              <div class="demo-meta__item">
+                <div class="demo-meta__value">4</div>
+                <div class="demo-meta__label">Servings</div>
+              </div>
+              <div class="demo-meta__item">
+                <div class="demo-meta__value">Easy</div>
+                <div class="demo-meta__label">Difficulty</div>
+              </div>
+            </div>
+          </div>
+          <p class="sg-note">Anchored to the bottom of the right column in the recipe intro via <code>margin-top: auto</code> on the flex column. Values use <code>--font-size-md</code> bold; labels use 10px uppercase widest.</p>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Ingredient Item</div>
+          <div class="sg-demo">
+            <div class="demo-ingredient-item">
+              <span class="demo-ingredient-amount">2 cups</span>
+              <span class="demo-ingredient-name">brown rice, uncooked</span>
+            </div>
+            <div class="demo-ingredient-item">
+              <span class="demo-ingredient-amount">3 tbsp</span>
+              <span class="demo-ingredient-name">soy sauce</span>
+              <span class="demo-ingredient-note">low sodium</span>
+            </div>
+            <div class="demo-ingredient-item">
+              <span class="demo-ingredient-amount">½ tsp</span>
+              <span class="demo-ingredient-name">chili flakes</span>
+              <span class="demo-ingredient-note">optional</span>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;div class="ingredient-item"&gt;
+  &lt;span class="ingredient-item__amount"&gt;2 cups&lt;/span&gt;
+  &lt;span class="ingredient-item__name"&gt;brown rice, uncooked&lt;/span&gt;
+  &lt;span class="ingredient-item__note"&gt;optional&lt;/span&gt; &lt;!-- optional --&gt;
+&lt;/div&gt;</pre>
+          <p class="sg-note">Amount is fixed-width (52px), muted, semibold. Name is primary color. Note pushes to the far right via <code>margin-left: auto</code> — only shown when relevant.</p>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Direction Step</div>
+          <div class="sg-demo">
+            <div class="demo-direction-step">
+              <span class="demo-step-number">01</span>
+              <p class="demo-step-text">
+                Rinse the brown rice under cold water until the water runs clear. Cook according to package instructions — typically a 1:2 ratio with water, simmered covered for 40–45 minutes.
+                <span class="demo-step-tip">Rinsing removes excess starch and gives you fluffier, less clumpy rice.</span>
+              </p>
+            </div>
+            <div class="demo-direction-step" style="border-bottom:none;">
+              <span class="demo-step-number">02</span>
+              <p class="demo-step-text">Slice the chicken breast against the grain into strips roughly ½ inch thick. Pat dry with paper towels.</p>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;div class="direction-step"&gt;
+  &lt;span class="direction-step__number"&gt;01&lt;/span&gt;
+  &lt;p class="direction-step__text"&gt;
+    Step text here.
+    &lt;span class="direction-step__tip"&gt;Optional tip in italic muted.&lt;/span&gt;
+  &lt;/p&gt;
+&lt;/div&gt;</pre>
+          <p class="sg-note">
+            Step number uses <code>--font-size-2xl</code> (40px) at <code>--color-border-strong</code> (#D0D0D0) — large enough to anchor the eye without competing with the text.<br>
+            <strong>direction-step__tip</strong> — italic, muted, displayed as block below the main text. Use for technique notes.
+          </p>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Direction Set &amp; Ingredient Group Headers</div>
+          <div class="sg-demo">
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; color:var(--color-text-secondary); padding-bottom:var(--space-3); border-bottom:1px solid var(--color-border); margin-bottom:var(--space-4);">For the Sauce</div>
+            <div style="font-size:10px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; color:var(--color-text-secondary); padding-bottom:var(--space-3); border-bottom:1px solid var(--color-border);">Prep</div>
+          </div>
+          <pre class="sg-code">&lt;div class="ingredient-group__name"&gt;For the Sauce&lt;/div&gt;
+&lt;div class="direction-set__name"&gt;Prep&lt;/div&gt;</pre>
+          <p class="sg-note">10px uppercase wider tracking in <code>--color-text-secondary</code>. Lighter than section labels — these are sub-groupings within a section, not top-level anchors.</p>
+        </div>
+      </section>
+
+
+    </main>
+  </div>
+
+
+  <script>
+    /* Sidebar scroll spy — highlights the current section */
+    const links    = document.querySelectorAll('.sg-nav-link');
+    const sections = document.querySelectorAll('.sg-section');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          links.forEach(l => l.classList.remove('is-active'));
+          const active = document.querySelector(`.sg-nav-link[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>

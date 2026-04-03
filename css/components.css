@@ -1,0 +1,146 @@
+/* =============================================================
+   COMPONENTS — Shared, reusable UI components
+   Grows as new pages are added. Only cross-page patterns here.
+============================================================= */
+
+/* ── Buttons ─────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--btn-radius);  /* 0px — sharp rectangular */
+  border: 1px solid transparent;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast),
+              border-color var(--transition-fast);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+/* Primary — black fill, white text, uppercase */
+.btn-primary {
+  background-color: var(--color-black);
+  border-color: var(--color-black);
+  color: var(--color-white);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+}
+.btn-primary:hover {
+  background-color: #333;
+  border-color: #333;
+}
+
+/* Secondary — outline, inverts on hover */
+.btn-secondary {
+  background-color: transparent;
+  border-color: var(--color-black);
+  color: var(--color-text-primary);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+.btn-secondary:hover {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+/* Ghost — no border, underline on hover */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+}
+.btn-ghost:hover {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+}
+
+/* Ghost muted */
+.btn-ghost-muted {
+  background-color: transparent;
+  color: var(--color-text-muted);
+}
+.btn-ghost-muted:hover {
+  color: var(--color-text-primary);
+}
+
+/* Size variants */
+.btn-sm {
+  padding: var(--space-2) var(--space-4);
+  font-size: 11px;
+}
+.btn-lg {
+  padding: var(--space-4) var(--space-10);
+  font-size: var(--font-size-sm);
+}
+
+/* Icon button — 40x40 square */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
+}
+.btn-icon:hover {
+  color: var(--color-text-primary);
+}
+.btn-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ── Avatar ──────────────────────────────────────────────── */
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+}
+
+.avatar--lg {
+  width: var(--avatar-size-lg);
+  height: var(--avatar-size-lg);
+}
+
+.avatar--sm {
+  width: var(--avatar-size-sm);
+  height: var(--avatar-size-sm);
+}
+
+/* ── Chips ───────────────────────────────────────────────── */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  padding: 3px var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+.chip:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+.chip--active {
+  border-color: var(--color-black);
+  color: var(--color-text-primary);
+}

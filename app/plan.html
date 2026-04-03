@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meal Plan — We Eat</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <style>
+
+    /* ════════════════════════════════════════════════════════
+       PLANNER TOPBAR — title, week nav, settings
+    ════════════════════════════════════════════════════════ */
+
+    .planner-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-6);
+      padding-block: var(--space-8) var(--space-6);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .planner-title {
+      font-size: clamp(1.75rem, 3vw, var(--font-size-3xl));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: var(--line-height-tight);
+    }
+
+    .planner-week-nav {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .planner-week-label {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-normal);
+      min-width: 148px;
+      text-align: center;
+    }
+
+    .planner-today-btn {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: none;
+      border: none;
+      padding: 0 0 0 var(--space-3);
+      border-left: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: color var(--transition-fast);
+      display: none; /* shown via JS when not on current week */
+    }
+    .planner-today-btn:hover { color: var(--color-text-primary); }
+    .planner-today-btn--visible { display: inline; }
+
+    .planner-settings-link {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color var(--transition-fast);
+    }
+    .planner-settings-link:hover { color: var(--color-text-primary); }
+
+    @media (max-width: 600px) {
+      .planner-topbar { flex-wrap: wrap; gap: var(--space-4); }
+      .planner-settings-link { display: none; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       WEEK SUMMARY STRIP
+    ════════════════════════════════════════════════════════ */
+
+    .planner-summary {
+      display: flex;
+      gap: var(--space-10);
+      padding-block: var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .planner-summary__stat {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .planner-summary__value {
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1;
+    }
+
+    .planner-summary__label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* Single accent usage for the page — planned count */
+    .planner-summary__stat--accent .planner-summary__value {
+      color: var(--color-accent);
+    }
+
+    @media (max-width: 480px) {
+      .planner-summary { gap: var(--space-6); }
+      .planner-summary__value { font-size: var(--font-size-lg); }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       STICKY COLUMN LABELS — visible while scrolling
+    ════════════════════════════════════════════════════════ */
+
+    .planner-col-header {
+      position: sticky;
+      top: var(--nav-height);
+      z-index: var(--z-sticky);
+      display: grid;
+      grid-template-columns: 100px 1fr 1fr 1fr;
+      gap: var(--space-4);
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+      padding-block: var(--space-3);
+    }
+
+    .planner-col-header__day { /* empty spacer */ }
+
+    .planner-col-header__label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      padding-left: var(--space-2);
+    }
+
+    @media (max-width: 768px) {
+      .planner-col-header { display: none; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       PLANNER BODY & DAY ROWS
+    ════════════════════════════════════════════════════════ */
+
+    .planner-body {
+      padding-bottom: var(--space-20);
+    }
+
+    .planner-day {
+      display: grid;
+      grid-template-columns: 100px 1fr 1fr 1fr;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding-block: var(--space-6);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    @media (max-width: 768px) {
+      .planner-day {
+        grid-template-columns: 1fr;
+        gap: var(--space-5);
+      }
+    }
+
+    /* Day label column */
+    .planner-day__label {
+      padding-top: var(--space-1);
+    }
+
+    .planner-day__name {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .planner-day__date {
+      display: block;
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    /* TODAY marker — accent left rule */
+    .planner-day--today .planner-day__label {
+      border-left: 3px solid var(--color-accent);
+      padding-left: var(--space-3);
+      margin-left: -3px;
+    }
+
+    .planner-day--today .planner-day__name {
+      color: var(--color-text-primary);
+    }
+
+    .planner-day__today-badge {
+      display: inline-block;
+      margin-top: var(--space-1);
+      font-size: 9px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--color-accent);
+      color: var(--color-black);
+      padding: 2px var(--space-2);
+    }
+
+    @media (max-width: 768px) {
+      .planner-day__label {
+        display: flex;
+        align-items: baseline;
+        gap: var(--space-2);
+        margin-bottom: var(--space-1);
+      }
+      .planner-day--today .planner-day__label {
+        flex-wrap: wrap;
+      }
+      .planner-day__date { display: none; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       MEAL COLUMN
+    ════════════════════════════════════════════════════════ */
+
+    .planner-meal {}
+
+    .planner-meal__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-3);
+      padding-bottom: var(--space-2);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .planner-meal__head-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .planner-meal__add {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      padding: 0;
+      transition: color var(--transition-fast);
+      flex-shrink: 0;
+    }
+    .planner-meal__add:hover { color: var(--color-text-primary); }
+    .planner-meal__add svg { width: 16px; height: 16px; }
+
+    .planner-meal__cards {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    /* visible on desktop, hidden on mobile (col header handles labeling) */
+    @media (min-width: 769px) {
+      .planner-col-header { display: grid; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       MEAL CARD — recipe within a slot
+    ════════════════════════════════════════════════════════ */
+
+    .meal-card {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2);
+      border: 1px solid var(--color-border);
+      background: var(--color-white);
+      cursor: pointer;
+      position: relative;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color var(--transition-fast);
+    }
+    .meal-card:hover { border-color: var(--color-border-strong); }
+
+    .meal-card__img {
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0;
+      display: block;
+      object-fit: cover;
+    }
+
+    .meal-card__info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .meal-card__title {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .meal-card__meta {
+      display: block;
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-top: 3px;
+    }
+
+    .meal-card__remove {
+      opacity: 0;
+      width: 20px;
+      height: 20px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      font-size: 18px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 0;
+      transition: opacity var(--transition-fast), color var(--transition-fast);
+    }
+    .meal-card:hover .meal-card__remove { opacity: 1; }
+    .meal-card__remove:hover { color: var(--color-error); }
+
+    /* Placeholder image colors per recipe type */
+    .meal-card__img[data-hue="amber"]  { background: #F5E9D3; }
+    .meal-card__img[data-hue="green"]  { background: #D4EAD9; }
+    .meal-card__img[data-hue="rose"]   { background: #EDD4D4; }
+    .meal-card__img[data-hue="blue"]   { background: #D4DCE8; }
+    .meal-card__img[data-hue="wheat"]  { background: #EAE4D4; }
+    .meal-card__img[data-hue="plum"]   { background: #E0D4EA; }
+
+    /* ════════════════════════════════════════════════════════
+       EMPTY SLOT — dashed add target
+    ════════════════════════════════════════════════════════ */
+
+    .meal-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      height: 56px;
+      border: 1px dashed var(--color-border);
+      color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-medium);
+      letter-spacing: var(--letter-spacing-wide);
+      cursor: pointer;
+      background: none;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      transition: border-color var(--transition-fast), color var(--transition-fast);
+    }
+    .meal-empty:hover {
+      border-color: var(--color-border-strong);
+      color: var(--color-text-primary);
+    }
+    .meal-empty svg { width: 14px; height: 14px; }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP HEADER
+       NAV: Plan is active.
+  ═══════════════════════════════════════════════════════ -->
+  <header class="app-header">
+    <a href="home.html" class="app-header__logo"><img src="../assets/logo.svg" alt="We Eat"></a>
+
+    <nav class="app-nav">
+      <a href="home.html" class="app-nav__link">Home</a>
+      <a href="explore.html" class="app-nav__link">Explore</a>
+      <a href="plan.html" class="app-nav__link app-nav__link--active">Plan</a>
+
+      <div class="app-nav__create-wrap">
+        <button class="app-nav__create" aria-label="Create" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+        </button>
+        <div class="create-menu" role="menu">
+          <span class="create-menu__label">Create</span>
+          <a href="post-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            Post
+          </a>
+          <a href="recipe-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            Recipe
+          </a>
+          <a href="cookbook-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            Cookbook
+          </a>
+          <div class="create-menu__divider"></div>
+          <a href="profile.html?action=new-order" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Order
+          </a>
+        </div>
+      </div>
+
+      <!-- Notification bell -->
+      <div class="app-header__icon-wrap">
+        <a href="#" class="btn-icon app-nav__icon" aria-label="Notifications">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+        </a>
+        <span class="app-header__badge"></span>
+      </div>
+
+      <!-- Profile icon -->
+      <a href="profile.html" class="btn-icon app-nav__icon" aria-label="Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+        </svg>
+      </a>
+    </nav>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP BODY
+  ═══════════════════════════════════════════════════════ -->
+  <div class="app-body">
+    <div class="page-container">
+
+
+      <!-- ── Planner top bar ──────────────────────────────── -->
+      <div class="planner-topbar">
+
+        <h1 class="planner-title">Meal Planner</h1>
+
+        <div class="planner-week-nav">
+          <button class="btn-icon" id="prev-week" aria-label="Previous week">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+          <span class="planner-week-label" id="week-label">Mar 30 – Apr 5</span>
+          <button class="btn-icon" id="next-week" aria-label="Next week">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+          <button class="planner-today-btn" id="today-btn">Today</button>
+        </div>
+
+        <a href="#" class="planner-settings-link">Settings</a>
+
+      </div>
+
+
+      <!-- ── Week summary ────────────────────────────────── -->
+      <div class="planner-summary">
+        <div class="planner-summary__stat planner-summary__stat--accent">
+          <span class="planner-summary__value">11</span>
+          <span class="planner-summary__label">Meals Planned</span>
+        </div>
+        <div class="planner-summary__stat">
+          <span class="planner-summary__value">4</span>
+          <span class="planner-summary__label">Days Covered</span>
+        </div>
+        <div class="planner-summary__stat">
+          <span class="planner-summary__value">10</span>
+          <span class="planner-summary__label">Slots Open</span>
+        </div>
+      </div>
+
+
+      <!-- ── Sticky column header ───────────────────────── -->
+      <div class="planner-col-header" aria-hidden="true">
+        <div class="planner-col-header__day"></div>
+        <div class="planner-col-header__label">Breakfast</div>
+        <div class="planner-col-header__label">Lunch</div>
+        <div class="planner-col-header__label">Dinner</div>
+      </div>
+
+
+      <!-- ════════════════════════════════════════════════════
+           PLANNER BODY
+      ════════════════════════════════════════════════════ -->
+      <div class="planner-body">
+
+
+        <!-- ─── Monday Mar 30 ──────────────────────────── -->
+        <div class="planner-day">
+
+          <div class="planner-day__label">
+            <span class="planner-day__name">Mon</span>
+            <span class="planner-day__date">Mar 30</span>
+          </div>
+
+          <!-- Breakfast -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Breakfast</span>
+              <button class="planner-meal__add" aria-label="Add breakfast">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="amber"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Overnight Oats</span>
+                  <span class="meal-card__meta">1 serving · 5 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+          <!-- Lunch -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Lunch</span>
+              <button class="planner-meal__add" aria-label="Add lunch">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="green"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Greek Salad</span>
+                  <span class="meal-card__meta">2 servings · 10 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+          <!-- Dinner -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Dinner</span>
+              <button class="planner-meal__add" aria-label="Add dinner">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="rose"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Chicken Stir Fry</span>
+                  <span class="meal-card__meta">4 servings · 25 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="wheat"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Jasmine Rice</span>
+                  <span class="meal-card__meta">4 servings · 20 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+        </div>
+        <!-- /Monday -->
+
+
+        <!-- ─── Tuesday Mar 31 ─────────────────────────── -->
+        <div class="planner-day">
+
+          <div class="planner-day__label">
+            <span class="planner-day__name">Tue</span>
+            <span class="planner-day__date">Mar 31</span>
+          </div>
+
+          <!-- Breakfast -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Breakfast</span>
+              <button class="planner-meal__add" aria-label="Add breakfast">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="green"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Avocado Toast</span>
+                  <span class="meal-card__meta">1 serving · 10 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+          <!-- Lunch — empty -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Lunch</span>
+              <button class="planner-meal__add" aria-label="Add lunch">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <button class="meal-empty" aria-label="Add a lunch recipe">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Add recipe
+              </button>
+            </div>
+          </div>
+
+          <!-- Dinner -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Dinner</span>
+              <button class="planner-meal__add" aria-label="Add dinner">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="wheat"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Pasta Primavera</span>
+                  <span class="meal-card__meta">2 servings · 30 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+        </div>
+        <!-- /Tuesday -->
+
+
+        <!-- ─── Wednesday Apr 1 ────────────────────────── -->
+        <div class="planner-day">
+
+          <div class="planner-day__label">
+            <span class="planner-day__name">Wed</span>
+            <span class="planner-day__date">Apr 1</span>
+          </div>
+
+          <!-- Breakfast — empty -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Breakfast</span>
+              <button class="planner-meal__add" aria-label="Add breakfast">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <button class="meal-empty" aria-label="Add a breakfast recipe">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Add recipe
+              </button>
+            </div>
+          </div>
+
+          <!-- Lunch -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Lunch</span>
+              <button class="planner-meal__add" aria-label="Add lunch">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="green"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Buddha Bowl</span>
+                  <span class="meal-card__meta">1 serving · 20 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+          <!-- Dinner -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Dinner</span>
+              <button class="planner-meal__add" aria-label="Add dinner">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="blue"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Salmon & Rice</span>
+                  <span class="meal-card__meta">2 servings · 35 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+        </div>
+        <!-- /Wednesday -->
+
+
+        <!-- ─── Thursday Apr 2 — TODAY ─────────────────── -->
+        <div class="planner-day planner-day--today">
+
+          <div class="planner-day__label">
+            <span class="planner-day__name">Thu</span>
+            <span class="planner-day__date">Apr 2</span>
+            <span class="planner-day__today-badge">Today</span>
+          </div>
+
+          <!-- Breakfast -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Breakfast</span>
+              <button class="planner-meal__add" aria-label="Add breakfast">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="amber"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Banana Smoothie</span>
+                  <span class="meal-card__meta">1 serving · 5 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+          <!-- Lunch -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Lunch</span>
+              <button class="planner-meal__add" aria-label="Add lunch">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="green"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Chicken Caesar Wrap</span>
+                  <span class="meal-card__meta">1 serving · 15 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+          <!-- Dinner — empty -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Dinner</span>
+              <button class="planner-meal__add" aria-label="Add dinner">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <button class="meal-empty" aria-label="Add a dinner recipe">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Add recipe
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <!-- /Thursday TODAY -->
+
+
+        <!-- ─── Friday Apr 3 — all empty ──────────────── -->
+        <div class="planner-day">
+
+          <div class="planner-day__label">
+            <span class="planner-day__name">Fri</span>
+            <span class="planner-day__date">Apr 3</span>
+          </div>
+
+          <!-- Breakfast — empty -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Breakfast</span>
+              <button class="planner-meal__add" aria-label="Add breakfast">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <button class="meal-empty" aria-label="Add a breakfast recipe">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Add recipe
+              </button>
+            </div>
+          </div>
+
+          <!-- Lunch — empty -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Lunch</span>
+              <button class="planner-meal__add" aria-label="Add lunch">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <button class="meal-empty" aria-label="Add a lunch recipe">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Add recipe
+              </button>
+            </div>
+          </div>
+
+          <!-- Dinner — empty -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Dinner</span>
+              <button class="planner-meal__add" aria-label="Add dinner">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <button class="meal-empty" aria-label="Add a dinner recipe">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Add recipe
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <!-- /Friday -->
+
+
+        <!-- ─── Saturday Apr 4 ─────────────────────────── -->
+        <div class="planner-day">
+
+          <div class="planner-day__label">
+            <span class="planner-day__name">Sat</span>
+            <span class="planner-day__date">Apr 4</span>
+          </div>
+
+          <!-- Breakfast -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Breakfast</span>
+              <button class="planner-meal__add" aria-label="Add breakfast">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="amber"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Buttermilk Pancakes</span>
+                  <span class="meal-card__meta">4 servings · 30 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="rose"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Fruit Bowl</span>
+                  <span class="meal-card__meta">2 servings · 5 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+          <!-- Lunch -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Lunch</span>
+              <button class="planner-meal__add" aria-label="Add lunch">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="wheat"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Grilled Cheese</span>
+                  <span class="meal-card__meta">2 servings · 15 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+          <!-- Dinner — empty -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Dinner</span>
+              <button class="planner-meal__add" aria-label="Add dinner">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <button class="meal-empty" aria-label="Add a dinner recipe">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Add recipe
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <!-- /Saturday -->
+
+
+        <!-- ─── Sunday Apr 5 ───────────────────────────── -->
+        <div class="planner-day" style="border-bottom: none;">
+
+          <div class="planner-day__label">
+            <span class="planner-day__name">Sun</span>
+            <span class="planner-day__date">Apr 5</span>
+          </div>
+
+          <!-- Breakfast -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Breakfast</span>
+              <button class="planner-meal__add" aria-label="Add breakfast">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="amber"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">French Toast</span>
+                  <span class="meal-card__meta">2 servings · 20 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+          <!-- Lunch — empty -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Lunch</span>
+              <button class="planner-meal__add" aria-label="Add lunch">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <button class="meal-empty" aria-label="Add a lunch recipe">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Add recipe
+              </button>
+            </div>
+          </div>
+
+          <!-- Dinner -->
+          <div class="planner-meal">
+            <div class="planner-meal__head">
+              <span class="planner-meal__head-label">Dinner</span>
+              <button class="planner-meal__add" aria-label="Add dinner">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+            </div>
+            <div class="planner-meal__cards">
+              <a class="meal-card" href="recipe.html">
+                <div class="meal-card__img" data-hue="rose"></div>
+                <div class="meal-card__info">
+                  <span class="meal-card__title">Roast Chicken</span>
+                  <span class="meal-card__meta">4 servings · 90 min</span>
+                </div>
+                <button class="meal-card__remove" aria-label="Remove">×</button>
+              </a>
+            </div>
+          </div>
+
+        </div>
+        <!-- /Sunday -->
+
+
+      </div>
+      <!-- /planner-body -->
+
+
+    </div>
+    <!-- /page-container -->
+  </div>
+  <!-- /app-body -->
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       BOTTOM NAV (mobile only — hidden on desktop)
+       NAV: Plan is active.
+  ═══════════════════════════════════════════════════════ -->
+  <nav class="app-bottom-nav" aria-label="Main navigation">
+
+    <a href="home.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+      </svg>
+      Home
+    </a>
+
+    <a href="explore.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      Explore
+    </a>
+
+    <a href="plan.html" class="app-bottom-nav__item app-bottom-nav__item--active">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+      </svg>
+      Plan
+    </a>
+
+    <a href="profile.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+      </svg>
+      Profile
+    </a>
+
+  </nav>
+
+
+  <script src="../js/app.js"></script>
+  <script>
+    /* ──────────────────────────────────────────────────────
+       Week navigation — cycle through weeks, show "Today"
+       button when not on the current week.
+    ────────────────────────────────────────────────────── */
+
+    const WEEK_OFFSET_KEY = 'planner-week-offset';
+    let weekOffset = 0;
+
+    const weekLabel   = document.getElementById('week-label');
+    const prevBtn     = document.getElementById('prev-week');
+    const nextBtn     = document.getElementById('next-week');
+    const todayBtn    = document.getElementById('today-btn');
+    const todayRow    = document.querySelector('.planner-day--today');
+
+    /* Base week: Mon Mar 30 – Sun Apr 5 */
+    const BASE_START = new Date(2026, 2, 30); // month is 0-indexed
+
+    const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    function formatWeekLabel(offset) {
+      const start = new Date(BASE_START);
+      start.setDate(start.getDate() + offset * 7);
+      const end   = new Date(start);
+      end.setDate(end.getDate() + 6);
+
+      const sM = MONTH_NAMES[start.getMonth()];
+      const eM = MONTH_NAMES[end.getMonth()];
+      const sD = start.getDate();
+      const eD = end.getDate();
+
+      return sM === eM
+        ? `${sM} ${sD} – ${eD}`
+        : `${sM} ${sD} – ${eM} ${eD}`;
+    }
+
+    function render() {
+      weekLabel.textContent = formatWeekLabel(weekOffset);
+
+      if (weekOffset !== 0) {
+        todayBtn.classList.add('planner-today-btn--visible');
+        if (todayRow) todayRow.style.display = 'none';
+      } else {
+        todayBtn.classList.remove('planner-today-btn--visible');
+        if (todayRow) todayRow.style.display = '';
+      }
+    }
+
+    prevBtn.addEventListener('click', () => { weekOffset--; render(); });
+    nextBtn.addEventListener('click', () => { weekOffset++; render(); });
+    todayBtn.addEventListener('click', () => { weekOffset = 0; render(); });
+
+    render();
+
+
+    /* ──────────────────────────────────────────────────────
+       Remove meal card on × button click
+    ────────────────────────────────────────────────────── */
+
+    document.querySelectorAll('.meal-card__remove').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        const card = btn.closest('.meal-card');
+        const slot = card.closest('.planner-meal__cards');
+        card.remove();
+
+        /* If the slot is now empty, show an empty-state button */
+        if (!slot.querySelector('.meal-card')) {
+          const empty = document.createElement('button');
+          empty.className = 'meal-empty';
+          empty.setAttribute('aria-label', 'Add a recipe');
+          empty.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+            </svg>
+            Add recipe`;
+          slot.appendChild(empty);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

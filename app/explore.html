@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore — We Eat</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <style>
+
+    /* ════════════════════════════════════════════════════════
+       SEARCH HERO — editorial full-bleed, dark
+    ════════════════════════════════════════════════════════ */
+
+    .explore-hero {
+      background: var(--color-black);
+      color: var(--color-white);
+      padding: var(--space-16) 0 var(--space-12);
+    }
+
+    .explore-hero__eyebrow {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: var(--space-4);
+    }
+
+    .explore-hero__title {
+      font-size: clamp(2.5rem, 6vw, var(--font-size-display));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: var(--line-height-tight);
+      color: var(--color-white);
+      margin-bottom: var(--space-8);
+    }
+
+    .explore-search {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      max-width: 600px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+      padding-bottom: var(--space-3);
+      transition: border-color 0.2s;
+    }
+
+    .explore-search:focus-within {
+      border-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .explore-search svg {
+      width: 20px;
+      height: 20px;
+      color: rgba(255, 255, 255, 0.4);
+      flex-shrink: 0;
+    }
+
+    .explore-search__input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--color-white);
+      font-size: var(--font-size-lg);
+      font-family: inherit;
+      font-weight: var(--font-weight-medium);
+      padding: 0;
+    }
+
+    .explore-search__input::placeholder {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .explore-search__submit {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.5);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      transition: color 0.2s;
+    }
+    .explore-search__submit:hover { color: var(--color-white); }
+    .explore-search__submit svg { width: 20px; height: 20px; }
+
+    /* ════════════════════════════════════════════════════════
+       CATEGORY FILTER — sticky below header
+    ════════════════════════════════════════════════════════ */
+
+    .explore-filters {
+      position: sticky;
+      top: var(--nav-height);
+      z-index: var(--z-sticky);
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .explore-filters__inner {
+      display: flex;
+      gap: var(--space-2);
+      padding-block: var(--space-3);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .explore-filters__inner::-webkit-scrollbar { display: none; }
+
+    /* ════════════════════════════════════════════════════════
+       EXPLORE SECTIONS — shared layout patterns
+    ════════════════════════════════════════════════════════ */
+
+    .explore-section {
+      padding-block: var(--space-10) var(--space-12);
+    }
+
+    .explore-section--subtle { background: var(--color-bg-subtle); }
+
+    .explore-section__head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: var(--space-6);
+      gap: var(--space-4);
+    }
+
+    .explore-section__eyebrow {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .explore-section__title {
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: var(--line-height-tight);
+    }
+
+    .explore-section__see-all {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      white-space: nowrap;
+      padding-bottom: 4px; /* align with title baseline */
+      transition: color var(--transition-fast);
+      flex-shrink: 0;
+    }
+    .explore-section__see-all:hover { color: var(--color-text-primary); }
+
+    /* ── Horizontal scroll row ──────────────────────────── */
+
+    .scroll-row {
+      display: flex;
+      gap: var(--space-4);
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 2px; /* prevent border clipping */
+    }
+
+    .scroll-row::-webkit-scrollbar { display: none; }
+
+    /* ════════════════════════════════════════════════════════
+       FEATURED CARD — Trending Now hero
+    ════════════════════════════════════════════════════════ */
+
+    .feature-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 440px;
+      border: 1px solid var(--color-border);
+    }
+
+    .feature-card__img {
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+      display: block;
+      object-fit: cover;
+    }
+
+    .feature-card__body {
+      padding: var(--space-10) var(--space-8);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .feature-card__rank {
+      font-size: clamp(3rem, 7vw, 96px);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1;
+      /* Single accent use for the explore page */
+      color: var(--color-accent);
+    }
+
+    .feature-card__label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .feature-card__title {
+      font-size: clamp(1.5rem, 3vw, var(--font-size-2xl));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: var(--line-height-tight);
+      margin-bottom: var(--space-3);
+    }
+
+    .feature-card__author {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-6);
+    }
+
+    .feature-card__author-img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .feature-card__author-name {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
+    .feature-card__meta {
+      display: flex;
+      gap: var(--space-5);
+      margin-bottom: var(--space-8);
+    }
+
+    .feature-card__meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .feature-card__meta-value {
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1;
+    }
+
+    .feature-card__meta-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    @media (max-width: 768px) {
+      .feature-card {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .feature-card__img { min-height: 240px; }
+      .feature-card__body { padding: var(--space-6); }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RECIPE CARD — explore scroll row
+    ════════════════════════════════════════════════════════ */
+
+    .recipe-card-x {
+      flex-shrink: 0;
+      width: 230px;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .recipe-card-x__img {
+      width: 230px;
+      aspect-ratio: 4 / 3;
+      display: block;
+      object-fit: cover;
+      margin-bottom: var(--space-3);
+    }
+
+    .recipe-card-x__title {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.35;
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .recipe-card-x__meta {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       USER CARD — people to follow
+    ════════════════════════════════════════════════════════ */
+
+    .user-card {
+      flex-shrink: 0;
+      width: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: var(--space-5) var(--space-4);
+      border: 1px solid var(--color-border);
+    }
+
+    .user-card__avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: block;
+      object-fit: cover;
+      margin-bottom: var(--space-3);
+    }
+
+    .user-card__name {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.2;
+      margin-bottom: 3px;
+    }
+
+    .user-card__handle {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .user-card__stat {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-4);
+    }
+
+    .user-card__link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+      flex: 1;
+      width: 100%;
+    }
+    .user-card__link:hover { opacity: 0.75; }
+
+    .user-card__follow {
+      width: 100%;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       COOKBOOK CARD — portrait covers
+    ════════════════════════════════════════════════════════ */
+
+    .cookbook-card {
+      flex-shrink: 0;
+      width: 190px;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .cookbook-card__cover {
+      width: 190px;
+      aspect-ratio: 3 / 4;
+      display: block;
+      object-fit: cover;
+      margin-bottom: var(--space-3);
+    }
+
+    .cookbook-card__title {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .cookbook-card__meta {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESTAURANT GRID — text-driven, editorial
+    ════════════════════════════════════════════════════════ */
+
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+
+    @media (max-width: 1024px) {
+      .restaurant-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      .restaurant-grid { grid-template-columns: 1fr; }
+    }
+
+    .restaurant-card {
+      border: 1px solid var(--color-border);
+      padding: var(--space-5);
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color var(--transition-fast);
+    }
+
+    .restaurant-card:hover { border-color: var(--color-border-strong); }
+
+    .restaurant-card__cuisine {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .restaurant-card__name {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.1;
+      margin-bottom: var(--space-5);
+    }
+
+    .restaurant-card__footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-2);
+    }
+
+    .restaurant-card__count {
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1;
+    }
+
+    .restaurant-card__count-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+
+    .restaurant-card__avatars {
+      display: flex;
+      align-items: center;
+    }
+
+    .restaurant-card__avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--color-white);
+      display: block;
+    }
+    .restaurant-card__avatars .restaurant-card__avatar + .restaurant-card__avatar {
+      margin-left: -8px;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       ORDER CARD — social restaurant orders
+    ════════════════════════════════════════════════════════ */
+
+    .order-card {
+      flex-shrink: 0;
+      width: 280px;
+      border: 1px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
+      background: var(--color-white);
+    }
+
+    /* Who saved it + where */
+    .order-card__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .order-card__avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .order-card__user-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .order-card__username {
+      display: block;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.2;
+    }
+
+    .order-card__location {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .order-card__at {
+      font-size: 10px;
+      color: var(--color-text-muted);
+    }
+
+    .order-card__restaurant {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: var(--color-text-primary);
+    }
+
+    /* The order itself — receipt-style */
+    .order-card__body {
+      padding: var(--space-4);
+      flex: 1;
+    }
+
+    .order-card__items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .order-card__item {
+      line-height: 1.4;
+    }
+
+    .order-card__item--main {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .order-card__item--mod {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      padding-left: var(--space-3);
+    }
+
+    .order-card__item--mod::before {
+      content: '+ ';
+      color: var(--color-text-muted);
+    }
+
+    .order-card__item--mod-remove::before {
+      content: '– ';
+      color: var(--color-text-muted);
+    }
+
+    .order-card__note {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      font-style: italic;
+      border-top: 1px solid var(--color-border);
+      padding-top: var(--space-3);
+      margin-top: var(--space-3);
+    }
+
+    /* Footer: save count + save button */
+    .order-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-4);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .order-card__saves {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
+    .order-card__save-btn {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      color: var(--color-text-muted);
+      padding: var(--space-1) var(--space-3);
+      transition: border-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .order-card__save-btn:hover {
+      border-color: var(--color-border-strong);
+      color: var(--color-text-primary);
+    }
+
+    .order-card__save-btn--saved {
+      border-color: var(--color-black);
+      color: var(--color-text-primary);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       PLACEHOLDER IMAGE COLORS
+    ════════════════════════════════════════════════════════ */
+
+    [data-hue="amber"]  { background: #F5E9D3; }
+    [data-hue="green"]  { background: #D4EAD9; }
+    [data-hue="rose"]   { background: #EDD4D4; }
+    [data-hue="blue"]   { background: #D4DCE8; }
+    [data-hue="wheat"]  { background: #EAE4D4; }
+    [data-hue="plum"]   { background: #E0D4EA; }
+    [data-hue="teal"]   { background: #D4E8E6; }
+    [data-hue="coral"]  { background: #EDD9D4; }
+    [data-hue="sage"]   { background: #D4E4D8; }
+    [data-hue="slate"]  { background: #DCDCE8; }
+    [data-hue="dark-green"] { background: #B8D4BE; }
+    [data-hue="dark-amber"] { background: #DEC89A; }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP HEADER — Explore active
+  ═══════════════════════════════════════════════════════ -->
+  <header class="app-header">
+    <a href="home.html" class="app-header__logo"><img src="../assets/logo.svg" alt="We Eat"></a>
+
+    <nav class="app-nav">
+      <a href="home.html" class="app-nav__link">Home</a>
+      <a href="explore.html" class="app-nav__link app-nav__link--active">Explore</a>
+      <a href="plan.html" class="app-nav__link">Plan</a>
+
+      <div class="app-nav__create-wrap">
+        <button class="app-nav__create" aria-label="Create" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+        </button>
+        <div class="create-menu" role="menu">
+          <span class="create-menu__label">Create</span>
+          <a href="post-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            Post
+          </a>
+          <a href="recipe-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            Recipe
+          </a>
+          <a href="cookbook-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            Cookbook
+          </a>
+          <div class="create-menu__divider"></div>
+          <a href="profile.html?action=new-order" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Order
+          </a>
+        </div>
+      </div>
+
+      <div class="app-header__icon-wrap">
+        <a href="#" class="btn-icon app-nav__icon" aria-label="Notifications">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+        </a>
+        <span class="app-header__badge"></span>
+      </div>
+
+      <a href="profile.html" class="btn-icon app-nav__icon" aria-label="Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+        </svg>
+      </a>
+    </nav>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP BODY
+  ═══════════════════════════════════════════════════════ -->
+  <div class="app-body">
+
+
+    <!-- ── Search Hero ───────────────────────────────────── -->
+    <div class="explore-hero">
+      <div class="page-container">
+        <p class="explore-hero__eyebrow">We Eat · Discover</p>
+        <h1 class="explore-hero__title">Find your next<br>favorite meal.</h1>
+        <div class="explore-search">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input
+            class="explore-search__input"
+            type="search"
+            placeholder="Recipes, people, restaurants…"
+            aria-label="Search"
+          >
+          <button class="explore-search__submit" aria-label="Search">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── Category Filter (sticky) ─────────────────────── -->
+    <div class="explore-filters">
+      <div class="page-container">
+        <div class="explore-filters__inner" role="tablist" aria-label="Filter content">
+          <button class="chip chip--active" data-filter="all" role="tab" aria-selected="true">All</button>
+          <button class="chip" data-filter="recipes" role="tab" aria-selected="false">Recipes</button>
+          <button class="chip" data-filter="people" role="tab" aria-selected="false">People</button>
+          <button class="chip" data-filter="cookbooks" role="tab" aria-selected="false">Cookbooks</button>
+          <button class="chip" data-filter="restaurants" role="tab" aria-selected="false">Restaurants</button>
+          <button class="chip" data-filter="orders" role="tab" aria-selected="false">Orders</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         TRENDING NOW — featured editorial card
+    ═══════════════════════════════════════════════════ -->
+    <div class="explore-section" data-section="recipes">
+      <div class="page-container">
+
+        <div class="explore-section__head">
+          <div>
+            <p class="explore-section__eyebrow">This Week</p>
+            <h2 class="explore-section__title">Trending Now</h2>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__img" data-hue="teal" role="img" aria-label="Miso Glazed Salmon"></div>
+          <div class="feature-card__body">
+            <div>
+              <div class="feature-card__rank">#1</div>
+            </div>
+            <div>
+              <p class="feature-card__label">Recipe of the Week</p>
+              <h3 class="feature-card__title">Miso Glazed Salmon with Sesame Rice</h3>
+              <div class="feature-card__author">
+                <div class="feature-card__author-img" data-hue="slate" role="img" aria-label="yumi.cooks"></div>
+                <span class="feature-card__author-name">@yumi.cooks</span>
+              </div>
+              <div class="feature-card__meta">
+                <div class="feature-card__meta-item">
+                  <span class="feature-card__meta-value">25</span>
+                  <span class="feature-card__meta-label">Minutes</span>
+                </div>
+                <div class="feature-card__meta-item">
+                  <span class="feature-card__meta-value">2</span>
+                  <span class="feature-card__meta-label">Servings</span>
+                </div>
+                <div class="feature-card__meta-item">
+                  <span class="feature-card__meta-value">4.9k</span>
+                  <span class="feature-card__meta-label">Saves</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <a href="recipe.html" class="btn btn-primary">View Recipe</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         PEOPLE TO FOLLOW
+    ═══════════════════════════════════════════════════ -->
+    <div class="explore-section explore-section--subtle" data-section="people">
+      <div class="page-container">
+
+        <div class="explore-section__head">
+          <div>
+            <p class="explore-section__eyebrow">Community</p>
+            <h2 class="explore-section__title">People to Follow</h2>
+          </div>
+          <a href="#" class="explore-section__see-all">See All</a>
+        </div>
+
+        <div class="scroll-row" role="list">
+
+          <div class="user-card" role="listitem">
+            <a href="user.html" class="user-card__link">
+              <div class="user-card__avatar" data-hue="rose" role="img" aria-label="Sofia K."></div>
+              <span class="user-card__name">Sofia K.</span>
+              <span class="user-card__handle">@sofia_k</span>
+              <span class="user-card__stat">142 Recipes</span>
+            </a>
+            <button class="btn btn-secondary btn-sm user-card__follow">Follow</button>
+          </div>
+
+          <div class="user-card" role="listitem">
+            <a href="user.html" class="user-card__link">
+              <div class="user-card__avatar" data-hue="sage" role="img" aria-label="Marco T."></div>
+              <span class="user-card__name">Marco T.</span>
+              <span class="user-card__handle">@marcoeats</span>
+              <span class="user-card__stat">89 Recipes</span>
+            </a>
+            <button class="btn btn-secondary btn-sm user-card__follow">Follow</button>
+          </div>
+
+          <div class="user-card" role="listitem">
+            <a href="user.html" class="user-card__link">
+              <div class="user-card__avatar" data-hue="blue" role="img" aria-label="Yumi N."></div>
+              <span class="user-card__name">Yumi N.</span>
+              <span class="user-card__handle">@yumi.cooks</span>
+              <span class="user-card__stat">203 Recipes</span>
+            </a>
+            <button class="btn btn-secondary btn-sm user-card__follow">Follow</button>
+          </div>
+
+          <div class="user-card" role="listitem">
+            <a href="user.html" class="user-card__link">
+              <div class="user-card__avatar" data-hue="amber" role="img" aria-label="James P."></div>
+              <span class="user-card__name">James P.</span>
+              <span class="user-card__handle">@the_baker</span>
+              <span class="user-card__stat">67 Recipes</span>
+            </a>
+            <button class="btn btn-secondary btn-sm user-card__follow">Follow</button>
+          </div>
+
+          <div class="user-card" role="listitem">
+            <a href="user.html" class="user-card__link">
+              <div class="user-card__avatar" data-hue="coral" role="img" aria-label="Priya M."></div>
+              <span class="user-card__name">Priya M.</span>
+              <span class="user-card__handle">@priyakitchen</span>
+              <span class="user-card__stat">311 Recipes</span>
+            </a>
+            <button class="btn btn-secondary btn-sm user-card__follow">Follow</button>
+          </div>
+
+          <div class="user-card" role="listitem">
+            <a href="user.html" class="user-card__link">
+              <div class="user-card__avatar" data-hue="plum" role="img" aria-label="Lena V."></div>
+              <span class="user-card__name">Lena V.</span>
+              <span class="user-card__handle">@lena.eats</span>
+              <span class="user-card__stat">55 Recipes</span>
+            </a>
+            <button class="btn btn-secondary btn-sm user-card__follow">Follow</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         POPULAR RECIPES
+    ═══════════════════════════════════════════════════ -->
+    <div class="explore-section" data-section="recipes">
+      <div class="page-container">
+
+        <div class="explore-section__head">
+          <div>
+            <p class="explore-section__eyebrow">Most Saved</p>
+            <h2 class="explore-section__title">Popular Recipes</h2>
+          </div>
+          <a href="#" class="explore-section__see-all">See All</a>
+        </div>
+
+        <div class="scroll-row" role="list">
+
+          <a class="recipe-card-x" href="recipe.html" role="listitem">
+            <div class="recipe-card-x__img" data-hue="green" role="img" aria-label="Kimchi Fried Rice"></div>
+            <span class="recipe-card-x__title">Kimchi Fried Rice</span>
+            <span class="recipe-card-x__meta">@yumi.cooks · 20 min</span>
+          </a>
+
+          <a class="recipe-card-x" href="recipe.html" role="listitem">
+            <div class="recipe-card-x__img" data-hue="amber" role="img" aria-label="Shakshuka"></div>
+            <span class="recipe-card-x__title">Shakshuka</span>
+            <span class="recipe-card-x__meta">@sofia_k · 30 min</span>
+          </a>
+
+          <a class="recipe-card-x" href="recipe.html" role="listitem">
+            <div class="recipe-card-x__img" data-hue="wheat" role="img" aria-label="Tiramisu"></div>
+            <span class="recipe-card-x__title">Tiramisu</span>
+            <span class="recipe-card-x__meta">@the_baker · 45 min</span>
+          </a>
+
+          <a class="recipe-card-x" href="recipe.html" role="listitem">
+            <div class="recipe-card-x__img" data-hue="coral" role="img" aria-label="Butter Chicken"></div>
+            <span class="recipe-card-x__title">Butter Chicken</span>
+            <span class="recipe-card-x__meta">@priyakitchen · 50 min</span>
+          </a>
+
+          <a class="recipe-card-x" href="recipe.html" role="listitem">
+            <div class="recipe-card-x__img" data-hue="blue" role="img" aria-label="Pasta Cacio e Pepe"></div>
+            <span class="recipe-card-x__title">Pasta Cacio e Pepe</span>
+            <span class="recipe-card-x__meta">@marcoeats · 20 min</span>
+          </a>
+
+          <a class="recipe-card-x" href="recipe.html" role="listitem">
+            <div class="recipe-card-x__img" data-hue="sage" role="img" aria-label="Thai Basil Stir Fry"></div>
+            <span class="recipe-card-x__title">Thai Basil Stir Fry</span>
+            <span class="recipe-card-x__meta">@yumi.cooks · 15 min</span>
+          </a>
+
+          <a class="recipe-card-x" href="recipe.html" role="listitem">
+            <div class="recipe-card-x__img" data-hue="rose" role="img" aria-label="Strawberry Pavlova"></div>
+            <span class="recipe-card-x__title">Strawberry Pavlova</span>
+            <span class="recipe-card-x__meta">@lena.eats · 90 min</span>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         COOKBOOKS
+    ═══════════════════════════════════════════════════ -->
+    <div class="explore-section explore-section--subtle" data-section="cookbooks">
+      <div class="page-container">
+
+        <div class="explore-section__head">
+          <div>
+            <p class="explore-section__eyebrow">Curated Collections</p>
+            <h2 class="explore-section__title">Cookbooks</h2>
+          </div>
+          <a href="#" class="explore-section__see-all">See All</a>
+        </div>
+
+        <div class="scroll-row" role="list">
+
+          <a class="cookbook-card" href="#" role="listitem">
+            <div class="cookbook-card__cover" data-hue="dark-green" role="img" aria-label="Summer Grilling"></div>
+            <span class="cookbook-card__title">Summer Grilling</span>
+            <span class="cookbook-card__meta">@marcoeats · 18 recipes</span>
+          </a>
+
+          <a class="cookbook-card" href="#" role="listitem">
+            <div class="cookbook-card__cover" data-hue="sage" role="img" aria-label="Plant-Based Weekdays"></div>
+            <span class="cookbook-card__title">Plant-Based Weekdays</span>
+            <span class="cookbook-card__meta">@yumi.cooks · 31 recipes</span>
+          </a>
+
+          <a class="cookbook-card" href="#" role="listitem">
+            <div class="cookbook-card__cover" data-hue="dark-amber" role="img" aria-label="Baking Basics"></div>
+            <span class="cookbook-card__title">Baking Basics</span>
+            <span class="cookbook-card__meta">@the_baker · 24 recipes</span>
+          </a>
+
+          <a class="cookbook-card" href="#" role="listitem">
+            <div class="cookbook-card__cover" data-hue="slate" role="img" aria-label="Quick Weeknights"></div>
+            <span class="cookbook-card__title">Quick Weeknights</span>
+            <span class="cookbook-card__meta">@sofia_k · 40 recipes</span>
+          </a>
+
+          <a class="cookbook-card" href="#" role="listitem">
+            <div class="cookbook-card__cover" data-hue="coral" role="img" aria-label="Spice Route"></div>
+            <span class="cookbook-card__title">Spice Route</span>
+            <span class="cookbook-card__meta">@priyakitchen · 27 recipes</span>
+          </a>
+
+          <a class="cookbook-card" href="#" role="listitem">
+            <div class="cookbook-card__cover" data-hue="rose" role="img" aria-label="Desserts Only"></div>
+            <span class="cookbook-card__title">Desserts Only</span>
+            <span class="cookbook-card__meta">@lena.eats · 15 recipes</span>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         RESTAURANTS — text-heavy, editorial grid
+    ═══════════════════════════════════════════════════ -->
+    <div class="explore-section" data-section="restaurants">
+      <div class="page-container">
+
+        <div class="explore-section__head">
+          <div>
+            <p class="explore-section__eyebrow">Most Orders Saved</p>
+            <h2 class="explore-section__title">Restaurants</h2>
+          </div>
+          <a href="#" class="explore-section__see-all">See All</a>
+        </div>
+
+        <div class="restaurant-grid" role="list">
+
+          <a class="restaurant-card" href="#" role="listitem">
+            <p class="restaurant-card__cuisine">Mexican · Fast Casual</p>
+            <h3 class="restaurant-card__name">Chipotle</h3>
+            <div class="restaurant-card__footer">
+              <div>
+                <span class="restaurant-card__count">2.4k</span>
+                <span class="restaurant-card__count-label">Orders Saved</span>
+              </div>
+              <div class="restaurant-card__avatars" aria-hidden="true">
+                <div class="restaurant-card__avatar" data-hue="rose"></div>
+                <div class="restaurant-card__avatar" data-hue="blue"></div>
+                <div class="restaurant-card__avatar" data-hue="amber"></div>
+              </div>
+            </div>
+          </a>
+
+          <a class="restaurant-card" href="#" role="listitem">
+            <p class="restaurant-card__cuisine">Salads · Health</p>
+            <h3 class="restaurant-card__name">Sweetgreen</h3>
+            <div class="restaurant-card__footer">
+              <div>
+                <span class="restaurant-card__count">1.8k</span>
+                <span class="restaurant-card__count-label">Orders Saved</span>
+              </div>
+              <div class="restaurant-card__avatars" aria-hidden="true">
+                <div class="restaurant-card__avatar" data-hue="sage"></div>
+                <div class="restaurant-card__avatar" data-hue="coral"></div>
+                <div class="restaurant-card__avatar" data-hue="plum"></div>
+              </div>
+            </div>
+          </a>
+
+          <a class="restaurant-card" href="#" role="listitem">
+            <p class="restaurant-card__cuisine">American · Burgers</p>
+            <h3 class="restaurant-card__name">Shake Shack</h3>
+            <div class="restaurant-card__footer">
+              <div>
+                <span class="restaurant-card__count">1.1k</span>
+                <span class="restaurant-card__count-label">Orders Saved</span>
+              </div>
+              <div class="restaurant-card__avatars" aria-hidden="true">
+                <div class="restaurant-card__avatar" data-hue="wheat"></div>
+                <div class="restaurant-card__avatar" data-hue="teal"></div>
+                <div class="restaurant-card__avatar" data-hue="rose"></div>
+              </div>
+            </div>
+          </a>
+
+          <a class="restaurant-card" href="#" role="listitem">
+            <p class="restaurant-card__cuisine">Japanese · Fine Dining</p>
+            <h3 class="restaurant-card__name">Nobu</h3>
+            <div class="restaurant-card__footer">
+              <div>
+                <span class="restaurant-card__count">876</span>
+                <span class="restaurant-card__count-label">Orders Saved</span>
+              </div>
+              <div class="restaurant-card__avatars" aria-hidden="true">
+                <div class="restaurant-card__avatar" data-hue="blue"></div>
+                <div class="restaurant-card__avatar" data-hue="slate"></div>
+                <div class="restaurant-card__avatar" data-hue="amber"></div>
+              </div>
+            </div>
+          </a>
+
+          <a class="restaurant-card" href="#" role="listitem">
+            <p class="restaurant-card__cuisine">Mediterranean · Casual</p>
+            <h3 class="restaurant-card__name">Cava</h3>
+            <div class="restaurant-card__footer">
+              <div>
+                <span class="restaurant-card__count">743</span>
+                <span class="restaurant-card__count-label">Orders Saved</span>
+              </div>
+              <div class="restaurant-card__avatars" aria-hidden="true">
+                <div class="restaurant-card__avatar" data-hue="coral"></div>
+                <div class="restaurant-card__avatar" data-hue="green"></div>
+                <div class="restaurant-card__avatar" data-hue="plum"></div>
+              </div>
+            </div>
+          </a>
+
+          <a class="restaurant-card" href="#" role="listitem">
+            <p class="restaurant-card__cuisine">Ramen · Japanese</p>
+            <h3 class="restaurant-card__name">Ichiran</h3>
+            <div class="restaurant-card__footer">
+              <div>
+                <span class="restaurant-card__count">612</span>
+                <span class="restaurant-card__count-label">Orders Saved</span>
+              </div>
+              <div class="restaurant-card__avatars" aria-hidden="true">
+                <div class="restaurant-card__avatar" data-hue="rose"></div>
+                <div class="restaurant-card__avatar" data-hue="amber"></div>
+                <div class="restaurant-card__avatar" data-hue="teal"></div>
+              </div>
+            </div>
+          </a>
+
+          <a class="restaurant-card" href="#" role="listitem">
+            <p class="restaurant-card__cuisine">Pizza · Italian</p>
+            <h3 class="restaurant-card__name">Roberta's</h3>
+            <div class="restaurant-card__footer">
+              <div>
+                <span class="restaurant-card__count">589</span>
+                <span class="restaurant-card__count-label">Orders Saved</span>
+              </div>
+              <div class="restaurant-card__avatars" aria-hidden="true">
+                <div class="restaurant-card__avatar" data-hue="wheat"></div>
+                <div class="restaurant-card__avatar" data-hue="sage"></div>
+                <div class="restaurant-card__avatar" data-hue="rose"></div>
+              </div>
+            </div>
+          </a>
+
+          <a class="restaurant-card" href="#" role="listitem">
+            <p class="restaurant-card__cuisine">Sushi · Omakase</p>
+            <h3 class="restaurant-card__name">Sugarfish</h3>
+            <div class="restaurant-card__footer">
+              <div>
+                <span class="restaurant-card__count">401</span>
+                <span class="restaurant-card__count-label">Orders Saved</span>
+              </div>
+              <div class="restaurant-card__avatars" aria-hidden="true">
+                <div class="restaurant-card__avatar" data-hue="blue"></div>
+                <div class="restaurant-card__avatar" data-hue="coral"></div>
+                <div class="restaurant-card__avatar" data-hue="slate"></div>
+              </div>
+            </div>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         ORDERS — social restaurant orders
+    ═══════════════════════════════════════════════════ -->
+    <div class="explore-section explore-section--subtle" data-section="orders">
+      <div class="page-container">
+
+        <div class="explore-section__head">
+          <div>
+            <p class="explore-section__eyebrow">What They're Getting</p>
+            <h2 class="explore-section__title">Popular Orders</h2>
+          </div>
+          <a href="#" class="explore-section__see-all">See All</a>
+        </div>
+
+        <div class="scroll-row" role="list">
+
+
+          <!-- Order 1: Chipotle -->
+          <div class="order-card" role="listitem">
+            <div class="order-card__header">
+              <div class="order-card__avatar" data-hue="rose" role="img" aria-label="sofia_k"></div>
+              <div class="order-card__user-info">
+                <span class="order-card__username">@sofia_k</span>
+                <div class="order-card__location">
+                  <span class="order-card__at">at</span>
+                  <span class="order-card__restaurant">Chipotle</span>
+                </div>
+              </div>
+            </div>
+            <div class="order-card__body">
+              <ul class="order-card__items">
+                <li class="order-card__item order-card__item--main">Chicken Burrito Bowl</li>
+                <li class="order-card__item order-card__item--mod">Extra guac</li>
+                <li class="order-card__item order-card__item--mod-remove order-card__item--mod">No sour cream</li>
+                <li class="order-card__item order-card__item--mod">Mild salsa</li>
+                <li class="order-card__item order-card__item--mod">Extra fajita veggies</li>
+              </ul>
+              <p class="order-card__note">"My go-to. Never changes."</p>
+            </div>
+            <div class="order-card__footer">
+              <span class="order-card__saves">48 saves</span>
+              <button class="order-card__save-btn">Save</button>
+            </div>
+          </div>
+
+
+          <!-- Order 2: Sweetgreen -->
+          <div class="order-card" role="listitem">
+            <div class="order-card__header">
+              <div class="order-card__avatar" data-hue="sage" role="img" aria-label="marcoeats"></div>
+              <div class="order-card__user-info">
+                <span class="order-card__username">@marcoeats</span>
+                <div class="order-card__location">
+                  <span class="order-card__at">at</span>
+                  <span class="order-card__restaurant">Sweetgreen</span>
+                </div>
+              </div>
+            </div>
+            <div class="order-card__body">
+              <ul class="order-card__items">
+                <li class="order-card__item order-card__item--main">Harvest Bowl</li>
+                <li class="order-card__item order-card__item--mod">Roasted chicken</li>
+                <li class="order-card__item order-card__item--mod">Lemon squeeze dressing</li>
+                <li class="order-card__item order-card__item--mod">Extra balsamic</li>
+              </ul>
+              <p class="order-card__note">"Pre-workout lunch, every time."</p>
+            </div>
+            <div class="order-card__footer">
+              <span class="order-card__saves">31 saves</span>
+              <button class="order-card__save-btn">Save</button>
+            </div>
+          </div>
+
+
+          <!-- Order 3: Nobu -->
+          <div class="order-card" role="listitem">
+            <div class="order-card__header">
+              <div class="order-card__avatar" data-hue="blue" role="img" aria-label="yumi.cooks"></div>
+              <div class="order-card__user-info">
+                <span class="order-card__username">@yumi.cooks</span>
+                <div class="order-card__location">
+                  <span class="order-card__at">at</span>
+                  <span class="order-card__restaurant">Nobu</span>
+                </div>
+              </div>
+            </div>
+            <div class="order-card__body">
+              <ul class="order-card__items">
+                <li class="order-card__item order-card__item--main">Black Cod Miso</li>
+                <li class="order-card__item order-card__item--main" style="margin-top:6px">Yellowtail Jalapeño</li>
+                <li class="order-card__item order-card__item--main" style="margin-top:6px">Dragon Roll</li>
+              </ul>
+              <p class="order-card__note">"Worth every penny for special occasions."</p>
+            </div>
+            <div class="order-card__footer">
+              <span class="order-card__saves">74 saves</span>
+              <button class="order-card__save-btn">Save</button>
+            </div>
+          </div>
+
+
+          <!-- Order 4: Shake Shack -->
+          <div class="order-card" role="listitem">
+            <div class="order-card__header">
+              <div class="order-card__avatar" data-hue="amber" role="img" aria-label="the_baker"></div>
+              <div class="order-card__user-info">
+                <span class="order-card__username">@the_baker</span>
+                <div class="order-card__location">
+                  <span class="order-card__at">at</span>
+                  <span class="order-card__restaurant">Shake Shack</span>
+                </div>
+              </div>
+            </div>
+            <div class="order-card__body">
+              <ul class="order-card__items">
+                <li class="order-card__item order-card__item--main">ShackBurger</li>
+                <li class="order-card__item order-card__item--mod">Extra ShackSauce</li>
+                <li class="order-card__item order-card__item--main" style="margin-top:6px">Cheese Fries</li>
+                <li class="order-card__item order-card__item--main" style="margin-top:6px">Vanilla Shake</li>
+              </ul>
+            </div>
+            <div class="order-card__footer">
+              <span class="order-card__saves">62 saves</span>
+              <button class="order-card__save-btn">Save</button>
+            </div>
+          </div>
+
+
+          <!-- Order 5: Cava -->
+          <div class="order-card" role="listitem">
+            <div class="order-card__header">
+              <div class="order-card__avatar" data-hue="coral" role="img" aria-label="priyakitchen"></div>
+              <div class="order-card__user-info">
+                <span class="order-card__username">@priyakitchen</span>
+                <div class="order-card__location">
+                  <span class="order-card__at">at</span>
+                  <span class="order-card__restaurant">Cava</span>
+                </div>
+              </div>
+            </div>
+            <div class="order-card__body">
+              <ul class="order-card__items">
+                <li class="order-card__item order-card__item--main">Grain Bowl</li>
+                <li class="order-card__item order-card__item--mod">Falafel + Braised Lamb</li>
+                <li class="order-card__item order-card__item--mod">Tzatziki</li>
+                <li class="order-card__item order-card__item--mod">Harissa Honey</li>
+                <li class="order-card__item order-card__item--mod">Pickled onions</li>
+              </ul>
+              <p class="order-card__note">"The lamb + harissa combo is unreal."</p>
+            </div>
+            <div class="order-card__footer">
+              <span class="order-card__saves">29 saves</span>
+              <button class="order-card__save-btn">Save</button>
+            </div>
+          </div>
+
+
+          <!-- Order 6: Ichiran -->
+          <div class="order-card" role="listitem">
+            <div class="order-card__header">
+              <div class="order-card__avatar" data-hue="plum" role="img" aria-label="lena.eats"></div>
+              <div class="order-card__user-info">
+                <span class="order-card__username">@lena.eats</span>
+                <div class="order-card__location">
+                  <span class="order-card__at">at</span>
+                  <span class="order-card__restaurant">Ichiran</span>
+                </div>
+              </div>
+            </div>
+            <div class="order-card__body">
+              <ul class="order-card__items">
+                <li class="order-card__item order-card__item--main">Tonkotsu Ramen</li>
+                <li class="order-card__item order-card__item--mod">Spice level 3</li>
+                <li class="order-card__item order-card__item--mod">Richness: rich</li>
+                <li class="order-card__item order-card__item--mod">Extra green onion</li>
+                <li class="order-card__item order-card__item--mod">Soft-boiled egg</li>
+              </ul>
+              <p class="order-card__note">"Fill out the form exactly like this."</p>
+            </div>
+            <div class="order-card__footer">
+              <span class="order-card__saves">41 saves</span>
+              <button class="order-card__save-btn">Save</button>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+  <!-- /app-body -->
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       BOTTOM NAV — Explore active
+  ═══════════════════════════════════════════════════════ -->
+  <nav class="app-bottom-nav" aria-label="Main navigation">
+
+    <a href="home.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+      </svg>
+      Home
+    </a>
+
+    <a href="explore.html" class="app-bottom-nav__item app-bottom-nav__item--active">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      Explore
+    </a>
+
+    <a href="plan.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+      </svg>
+      Plan
+    </a>
+
+    <a href="profile.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+      </svg>
+      Profile
+    </a>
+
+  </nav>
+
+
+  <script src="../js/app.js"></script>
+  <script>
+    /* ──────────────────────────────────────────────────────
+       Category filter chips — show / hide sections
+    ────────────────────────────────────────────────────── */
+
+    const chips    = document.querySelectorAll('[data-filter]');
+    const sections = document.querySelectorAll('[data-section]');
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const filter = chip.dataset.filter;
+
+        /* Update chip state */
+        chips.forEach(c => {
+          c.classList.remove('chip--active');
+          c.setAttribute('aria-selected', 'false');
+        });
+        chip.classList.add('chip--active');
+        chip.setAttribute('aria-selected', 'true');
+
+        /* Show / hide sections */
+        sections.forEach(section => {
+          if (filter === 'all' || section.dataset.section === filter) {
+            section.style.display = '';
+          } else {
+            section.style.display = 'none';
+          }
+        });
+
+        /* Trending card belongs to "recipes" — also show on "all" */
+      });
+    });
+
+    /* ──────────────────────────────────────────────────────
+       Follow button toggle
+    ────────────────────────────────────────────────────── */
+
+    document.querySelectorAll('.user-card__follow').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const following = btn.textContent.trim() === 'Following';
+        btn.textContent = following ? 'Follow' : 'Following';
+        btn.classList.toggle('btn-primary', !following);
+        btn.classList.toggle('btn-secondary', following);
+      });
+    });
+
+    /* ──────────────────────────────────────────────────────
+       Save order toggle
+    ────────────────────────────────────────────────────── */
+
+    document.querySelectorAll('.order-card__save-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const saved = btn.classList.contains('order-card__save-btn--saved');
+        const saveEl = btn.closest('.order-card__footer').querySelector('.order-card__saves');
+        const current = parseInt(saveEl.textContent);
+
+        if (saved) {
+          btn.textContent = 'Save';
+          btn.classList.remove('order-card__save-btn--saved');
+          saveEl.textContent = `${current - 1} saves`;
+        } else {
+          btn.textContent = 'Saved';
+          btn.classList.add('order-card__save-btn--saved');
+          saveEl.textContent = `${current + 1} saves`;
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Recipe — We Eat</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <style>
+
+    /* ════════════════════════════════════════════════════════
+       PAGE
+    ════════════════════════════════════════════════════════ */
+
+    .recipe-form-page {
+      padding-block: var(--space-8) var(--space-20);
+    }
+
+    /* ── Page header row ────────────────────────────────── */
+
+    .form-page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-8);
+    }
+
+    .form-page-title {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .form-page-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       INTRO: IMAGE UPLOAD (left) + BASICS (right)
+    ════════════════════════════════════════════════════════ */
+
+    .form-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+      align-items: stretch;
+      margin-bottom: var(--space-12);
+    }
+
+    @media (max-width: 900px) {
+      .form-intro { grid-template-columns: 1fr; gap: var(--space-8); }
+    }
+
+    /* ── Image upload ───────────────────────────────────── */
+
+    .image-upload-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background-color: var(--color-bg-subtle);
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .image-upload-input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .image-upload-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-3);
+      border: 2px dashed var(--color-border-strong);
+      transition: border-color var(--transition-fast), background-color var(--transition-fast);
+      pointer-events: none;
+    }
+    .image-upload-wrap:hover .image-upload-placeholder {
+      border-color: var(--color-black);
+      background-color: var(--color-bg-subtle);
+    }
+    .image-upload-placeholder svg {
+      width: 28px;
+      height: 28px;
+      color: var(--color-text-muted);
+    }
+    .image-upload-placeholder__label {
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .image-upload-preview {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    /* ── Basics: right column ───────────────────────────── */
+
+    .form-basics {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Form inputs — bottom-border only, Nike style ───── */
+
+    .form-field {
+      margin-bottom: var(--space-5);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .form-input {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      padding: var(--space-2) 0;
+      font-family: var(--font-primary);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-regular);
+      color: var(--color-text-primary);
+      background: transparent;
+      outline: none;
+      transition: border-color var(--transition-fast);
+    }
+    .form-input:focus { border-bottom-color: var(--color-black); }
+    .form-input::placeholder { color: var(--color-text-muted); }
+
+    .form-input--title {
+      font-size: clamp(1.5rem, 2.5vw, var(--font-size-2xl));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      padding-bottom: var(--space-3);
+    }
+
+    .form-textarea {
+      resize: none;
+      min-height: 80px;
+      line-height: var(--line-height-relaxed);
+    }
+
+    /* Meta inputs — 2×2 grid */
+    .form-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 var(--space-6);
+      margin-top: auto;
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .form-meta-grid .form-field { margin-bottom: var(--space-4); }
+
+    /* ════════════════════════════════════════════════════════
+       FORM BODY: SIDEBAR (ingredients + tools) | DIRECTIONS
+    ════════════════════════════════════════════════════════ */
+
+    .form-body {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: var(--space-16);
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .form-body { grid-template-columns: 1fr; gap: var(--space-12); }
+    }
+
+    /* ── Section label ──────────────────────────────────── */
+
+    .section-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      padding-bottom: var(--space-4);
+      border-bottom: 2px solid var(--color-black);
+      margin-bottom: var(--space-6);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       DYNAMIC BLOCKS — shared chrome for groups/sets
+    ════════════════════════════════════════════════════════ */
+
+    .dynamic-block {
+      border: 1px solid var(--color-border);
+      padding: var(--space-5);
+      margin-bottom: var(--space-4);
+    }
+
+    .dynamic-block__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
+    }
+
+    .dynamic-block__name {
+      flex: 1;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      padding: var(--space-1) 0;
+      background: transparent;
+      font-family: var(--font-primary);
+      letter-spacing: var(--letter-spacing-wide);
+      text-transform: uppercase;
+      color: var(--color-text-secondary);
+      outline: none;
+    }
+    .dynamic-block__name:focus { border-bottom-color: var(--color-black); }
+    .dynamic-block__name::placeholder { color: var(--color-text-muted); }
+
+    /* Remove block/row button */
+    .remove-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      color: var(--color-text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color var(--transition-fast);
+    }
+    .remove-btn:hover { color: var(--color-error); }
+    .remove-btn svg { width: 14px; height: 14px; }
+
+    /* Add row/block button */
+    .add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: var(--space-3) 0;
+      transition: color var(--transition-fast);
+    }
+    .add-btn:hover { color: var(--color-text-primary); }
+    .add-btn svg { width: 12px; height: 12px; }
+
+    /* Add block button — full width, dashed border */
+    .add-block-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: var(--space-4);
+      border: 1px dashed var(--color-border-strong);
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: none;
+      cursor: pointer;
+      transition: border-color var(--transition-fast), color var(--transition-fast);
+      margin-top: var(--space-2);
+    }
+    .add-block-btn:hover { border-color: var(--color-black); color: var(--color-text-primary); }
+    .add-block-btn svg { width: 12px; height: 12px; }
+
+    /* ════════════════════════════════════════════════════════
+       INGREDIENT ROWS
+    ════════════════════════════════════════════════════════ */
+
+    .ingredient-row {
+      display: grid;
+      grid-template-columns: 72px 1fr 64px 28px;
+      gap: var(--space-3);
+      align-items: end;
+      margin-bottom: var(--space-3);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       TOOLS
+    ════════════════════════════════════════════════════════ */
+
+    .tools-section {
+      margin-top: var(--space-8);
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .tool-row {
+      display: grid;
+      grid-template-columns: 1fr 28px;
+      gap: var(--space-3);
+      align-items: end;
+      margin-bottom: var(--space-3);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       DIRECTION STEPS
+    ════════════════════════════════════════════════════════ */
+
+    .step-row {
+      display: grid;
+      grid-template-columns: 48px 1fr 28px;
+      gap: var(--space-4);
+      align-items: start;
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .step-row:last-of-type { border-bottom: none; }
+
+    .step-number {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-border-strong);
+      line-height: 1;
+      letter-spacing: var(--letter-spacing-tight);
+      padding-top: var(--space-2);
+      user-select: none;
+    }
+
+    .step-textarea {
+      min-height: 72px;
+      padding-top: var(--space-2);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FORM FOOTER
+    ════════════════════════════════════════════════════════ */
+
+    .form-footer {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-top: var(--space-16);
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--color-border);
+    }
+
+  </style>
+</head>
+<body class="page-app">
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP HEADER
+       NAV: copy this block unchanged to every page.
+       Swap --active class on the correct link/icon per page.
+  ═══════════════════════════════════════════════════════ -->
+  <header class="app-header">
+    <a href="home.html" class="app-header__logo"><img src="../assets/logo.svg" alt="We Eat"></a>
+
+    <nav class="app-nav">
+      <a href="home.html" class="app-nav__link">Home</a>
+      <a href="explore.html" class="app-nav__link">Explore</a>
+      <a href="plan.html" class="app-nav__link">Plan</a>
+
+      <div class="app-nav__create-wrap">
+        <button class="app-nav__create" aria-label="Create" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+        </button>
+        <div class="create-menu" role="menu">
+          <span class="create-menu__label">Create</span>
+          <a href="post-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            Post
+          </a>
+          <a href="recipe-new.html" class="create-menu__item create-menu__item--active" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            Recipe
+          </a>
+          <a href="cookbook-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            Cookbook
+          </a>
+          <div class="create-menu__divider"></div>
+          <a href="profile.html?action=new-order" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Order
+          </a>
+        </div>
+      </div>
+
+      <div class="app-header__icon-wrap">
+        <a href="#" class="btn-icon app-nav__icon" aria-label="Notifications">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+        </a>
+        <span class="app-header__badge"></span>
+      </div>
+
+      <a href="profile.html" class="btn-icon app-nav__icon" aria-label="Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+        </svg>
+      </a>
+    </nav>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP BODY
+  ═══════════════════════════════════════════════════════ -->
+  <div class="app-body">
+    <div class="page-container recipe-form-page">
+      <form id="recipe-form" novalidate>
+
+        <!-- Page header -->
+        <div class="form-page-header">
+          <span class="form-page-title">New Recipe</span>
+          <div class="form-page-actions">
+            <a href="profile.html" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Publish</button>
+          </div>
+        </div>
+
+
+        <!-- ══════════════════════════════════════════════
+             INTRO: IMAGE UPLOAD + BASICS
+        ═══════════════════════════════════════════════ -->
+        <div class="form-intro">
+
+          <!-- Left: cover photo upload -->
+          <div class="image-upload-wrap" id="image-upload-wrap">
+            <input type="file" class="image-upload-input" id="image-input" accept="image/*" aria-label="Upload cover photo">
+            <div class="image-upload-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              <span class="image-upload-placeholder__label">Upload Cover Photo</span>
+            </div>
+            <img class="image-upload-preview" id="image-preview" alt="Cover photo preview">
+          </div>
+
+          <!-- Right: title, description, meta -->
+          <div class="form-basics">
+
+            <div class="form-field">
+              <label class="form-label" for="recipe-title">Title</label>
+              <input id="recipe-title" class="form-input form-input--title" type="text" placeholder="Recipe name" autocomplete="off">
+            </div>
+
+            <div class="form-field" style="flex:1; display:flex; flex-direction:column;">
+              <label class="form-label" for="recipe-desc">Description</label>
+              <textarea id="recipe-desc" class="form-input form-textarea" placeholder="What makes this recipe worth making?" style="flex:1;"></textarea>
+            </div>
+
+            <!-- Meta stats — 2×2, pushed to bottom -->
+            <div class="form-meta-grid">
+              <div class="form-field">
+                <label class="form-label" for="prep-time">Prep Time</label>
+                <input id="prep-time" class="form-input" type="text" placeholder="e.g. 20 min">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="cook-time">Cook Time</label>
+                <input id="cook-time" class="form-input" type="text" placeholder="e.g. 40 min">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="servings">Servings</label>
+                <input id="servings" class="form-input" type="text" placeholder="e.g. 4">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="difficulty">Difficulty</label>
+                <select id="difficulty" class="form-input">
+                  <option value="" disabled selected>Select</option>
+                  <option>Easy</option>
+                  <option>Medium</option>
+                  <option>Hard</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- ══════════════════════════════════════════════
+             FORM BODY: SIDEBAR | DIRECTIONS
+        ═══════════════════════════════════════════════ -->
+        <div class="form-body">
+
+          <!-- ── LEFT: Ingredients + Tools ─────────────── -->
+          <div class="form-sidebar">
+
+            <!-- INGREDIENTS -->
+            <div class="section-label">Ingredients</div>
+
+            <div id="ingredient-groups-container"></div>
+
+            <button type="button" class="add-block-btn" id="add-group-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+              </svg>
+              Add Ingredient Group
+            </button>
+
+            <!-- TOOLS -->
+            <div class="tools-section">
+              <div class="section-label">Tools</div>
+              <div id="tools-container"></div>
+              <button type="button" class="add-btn" id="add-tool-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                </svg>
+                Add Tool
+              </button>
+            </div>
+
+          </div>
+
+          <!-- ── RIGHT: Directions ──────────────────────── -->
+          <div class="form-directions">
+
+            <div class="section-label">Directions</div>
+
+            <div id="direction-sets-container"></div>
+
+            <button type="button" class="add-block-btn" id="add-set-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+              </svg>
+              Add Direction Set
+            </button>
+
+          </div>
+        </div>
+
+        <!-- Form footer -->
+        <div class="form-footer">
+          <button type="submit" class="btn btn-primary">Publish Recipe</button>
+          <a href="profile.html" class="btn btn-secondary">Cancel</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       BOTTOM NAV (mobile only)
+  ═══════════════════════════════════════════════════════ -->
+  <nav class="app-bottom-nav" aria-label="Main navigation">
+    <a href="home.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+      </svg>
+      Home
+    </a>
+    <a href="explore.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      Explore
+    </a>
+    <a href="plan.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+      </svg>
+      Plan
+    </a>
+    <a href="profile.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+      </svg>
+      Profile
+    </a>
+  </nav>
+
+
+  <script src="../js/app.js"></script>
+  <script>
+    /* ════════════════════════════════════════════════════════
+       IMAGE UPLOAD PREVIEW
+    ════════════════════════════════════════════════════════ */
+    const imageInput   = document.getElementById('image-input');
+    const imagePreview = document.getElementById('image-preview');
+    const placeholder  = document.querySelector('.image-upload-placeholder');
+
+    imageInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      imagePreview.src = URL.createObjectURL(file);
+      imagePreview.style.display = 'block';
+      placeholder.style.display  = 'none';
+    });
+
+    /* ════════════════════════════════════════════════════════
+       REMOVE SVG — reused inline
+    ════════════════════════════════════════════════════════ */
+    const REMOVE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>`;
+    const PLUS_ICON   = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>`;
+
+    /* ════════════════════════════════════════════════════════
+       STEP NUMBERING — runs after any add/remove
+    ════════════════════════════════════════════════════════ */
+    function renumberSteps() {
+      document.querySelectorAll('#direction-sets-container .step-number').forEach((el, i) => {
+        el.textContent = String(i + 1).padStart(2, '0');
+      });
+    }
+
+    /* ════════════════════════════════════════════════════════
+       INGREDIENT GROUPS
+    ════════════════════════════════════════════════════════ */
+    let groupId = 0;
+
+    function addIngredientGroup() {
+      groupId++;
+      const id = `ig-${groupId}`;
+      const block = document.createElement('div');
+      block.className = 'dynamic-block';
+      block.id = id;
+      block.innerHTML = `
+        <div class="dynamic-block__header">
+          <input class="dynamic-block__name" type="text" placeholder="Group name (e.g. For the Sauce)">
+          <button type="button" class="remove-btn" title="Remove group">${REMOVE_ICON}</button>
+        </div>
+        <div class="ingredient-rows-container"></div>
+        <button type="button" class="add-btn add-ingredient-btn">${PLUS_ICON} Add Ingredient</button>
+      `;
+      block.querySelector('.remove-btn').addEventListener('click', () => block.remove());
+      block.querySelector('.add-ingredient-btn').addEventListener('click', () => addIngredientRow(block));
+      document.getElementById('ingredient-groups-container').appendChild(block);
+      addIngredientRow(block);
+    }
+
+    function addIngredientRow(block) {
+      const row = document.createElement('div');
+      row.className = 'ingredient-row';
+      row.innerHTML = `
+        <input class="form-input" type="text" placeholder="Amount">
+        <input class="form-input" type="text" placeholder="Ingredient">
+        <input class="form-input" type="text" placeholder="Note">
+        <button type="button" class="remove-btn" title="Remove">${REMOVE_ICON}</button>
+      `;
+      row.querySelector('.remove-btn').addEventListener('click', () => row.remove());
+      block.querySelector('.ingredient-rows-container').appendChild(row);
+    }
+
+    document.getElementById('add-group-btn').addEventListener('click', addIngredientGroup);
+
+    /* ════════════════════════════════════════════════════════
+       TOOLS
+    ════════════════════════════════════════════════════════ */
+    function addTool() {
+      const row = document.createElement('div');
+      row.className = 'tool-row';
+      row.innerHTML = `
+        <input class="form-input" type="text" placeholder="Tool name">
+        <button type="button" class="remove-btn" title="Remove">${REMOVE_ICON}</button>
+      `;
+      row.querySelector('.remove-btn').addEventListener('click', () => row.remove());
+      document.getElementById('tools-container').appendChild(row);
+    }
+
+    document.getElementById('add-tool-btn').addEventListener('click', addTool);
+
+    /* ════════════════════════════════════════════════════════
+       DIRECTION SETS
+    ════════════════════════════════════════════════════════ */
+    let setId = 0;
+
+    function addDirectionSet() {
+      setId++;
+      const id = `ds-${setId}`;
+      const block = document.createElement('div');
+      block.className = 'dynamic-block';
+      block.id = id;
+      block.innerHTML = `
+        <div class="dynamic-block__header">
+          <input class="dynamic-block__name" type="text" placeholder="Set name (e.g. Prep)">
+          <button type="button" class="remove-btn" title="Remove set">${REMOVE_ICON}</button>
+        </div>
+        <div class="steps-container"></div>
+        <button type="button" class="add-btn add-step-btn">${PLUS_ICON} Add Step</button>
+      `;
+      block.querySelector('.remove-btn').addEventListener('click', () => {
+        block.remove();
+        renumberSteps();
+      });
+      block.querySelector('.add-step-btn').addEventListener('click', () => {
+        addStep(block);
+        renumberSteps();
+      });
+      document.getElementById('direction-sets-container').appendChild(block);
+      addStep(block);
+      renumberSteps();
+    }
+
+    function addStep(block) {
+      const row = document.createElement('div');
+      row.className = 'step-row';
+      row.innerHTML = `
+        <span class="step-number">00</span>
+        <textarea class="form-input form-textarea step-textarea" placeholder="Describe this step…" rows="3"></textarea>
+        <button type="button" class="remove-btn" title="Remove step">${REMOVE_ICON}</button>
+      `;
+      row.querySelector('.remove-btn').addEventListener('click', () => {
+        row.remove();
+        renumberSteps();
+      });
+      block.querySelector('.steps-container').appendChild(row);
+    }
+
+    document.getElementById('add-set-btn').addEventListener('click', addDirectionSet);
+
+    /* ════════════════════════════════════════════════════════
+       FORM SUBMIT
+    ════════════════════════════════════════════════════════ */
+    document.getElementById('recipe-form').addEventListener('submit', e => {
+      e.preventDefault();
+      // TODO: collect form data and POST to API
+      alert('Recipe saved! (prototype — no backend yet)');
+    });
+
+    /* ════════════════════════════════════════════════════════
+       INIT — start with one group, one tool, one set
+    ════════════════════════════════════════════════════════ */
+    addIngredientGroup();
+    addTool();
+    addDirectionSet();
+  </script>
+
+</body>
+</html>
