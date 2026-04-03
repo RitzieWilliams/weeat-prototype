@@ -487,6 +487,413 @@
       flex-wrap: wrap;
     }
 
+    /* ════════════════════════════════════════════════════════
+       NEW COMPONENT DEMOS
+    ════════════════════════════════════════════════════════ */
+
+    /* ── Create menu dropdown ───────────────────────────── */
+
+    .demo-create-menu-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .demo-create-menu {
+      display: block;
+      min-width: 200px;
+      border: 1px solid var(--color-border-strong);
+      box-shadow: var(--shadow-elevated);
+      background: var(--color-white);
+    }
+
+    .demo-create-menu__label {
+      display: block;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      padding: var(--space-3) var(--space-4) var(--space-2);
+    }
+
+    .demo-create-menu__item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-primary);
+      border-left: 3px solid transparent;
+      text-decoration: none;
+    }
+
+    .demo-create-menu__item--active {
+      border-left-color: var(--color-accent);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .demo-create-menu__item:hover {
+      background-color: var(--color-bg-subtle);
+    }
+
+    .demo-create-menu__item svg {
+      width: 16px;
+      height: 16px;
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+    }
+
+    .demo-create-menu__divider {
+      height: 1px;
+      background-color: var(--color-border);
+      margin: var(--space-1) 0;
+    }
+
+    /* ── data-hue palette ───────────────────────────────── */
+
+    .hue-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: var(--space-3);
+    }
+
+    .hue-swatch {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .hue-swatch__block {
+      width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+    }
+
+    .hue-swatch__name {
+      font-size: 10px;
+      font-family: 'Courier New', monospace;
+      color: var(--color-text-muted);
+    }
+
+    /* ── Post card demo ─────────────────────────────────── */
+
+    .demo-post {
+      border: 1px solid var(--color-border);
+      max-width: 500px;
+    }
+
+    .demo-post__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-4);
+    }
+
+    .demo-post__author {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .demo-post__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .demo-post__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .demo-post__name {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      display: block;
+    }
+
+    .demo-post__byline {
+      font-size: 10px;
+      color: var(--color-text-muted);
+      display: block;
+    }
+
+    .demo-post__img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      background: var(--color-bg-subtle);
+    }
+
+    .demo-post__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-3) var(--space-4) var(--space-2);
+    }
+
+    .demo-post__like {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-muted);
+      padding: var(--space-2) var(--space-3);
+    }
+
+    .demo-post__like--liked {
+      color: var(--color-accent);
+    }
+
+    .demo-post__like svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .demo-post__caption {
+      padding: 0 var(--space-4) var(--space-3);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    .demo-post__section {
+      padding: var(--space-2) var(--space-4) var(--space-4);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .demo-post__section-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-3);
+      display: block;
+    }
+
+    .demo-post-recipe {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3);
+      border: 1px solid var(--color-border);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .demo-post-recipe__img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .demo-post-recipe__title {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      display: block;
+    }
+
+    .demo-post-recipe__meta {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      display: block;
+    }
+
+    .demo-post-order {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3);
+      border: 1px solid var(--color-border);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .demo-post-order__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #DAF0E4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      flex-shrink: 0;
+    }
+
+    .demo-post-order__restaurant {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      display: block;
+    }
+
+    .demo-post-order__preview {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      display: block;
+    }
+
+    /* ── Recipe row demo ────────────────────────────────── */
+
+    .demo-recipe-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .demo-recipe-row:last-child { border-bottom: none; }
+
+    .demo-recipe-row__img {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--color-bg-subtle);
+    }
+
+    .demo-recipe-row__body { flex: 1; min-width: 0; }
+
+    .demo-recipe-row__title {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .demo-recipe-row__meta {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      display: flex;
+      gap: var(--space-4);
+    }
+
+    /* ── Order row demo ─────────────────────────────────── */
+
+    .demo-order-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .demo-order-row:last-child { border-bottom: none; }
+
+    .demo-order-row__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .demo-order-row__restaurant {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      margin-bottom: 2px;
+    }
+
+    .demo-order-row__preview {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .demo-order-row__saves {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-left: auto;
+      padding-right: var(--space-2);
+    }
+
+    /* ── Tier card / progress bar demo ─────────────────── */
+
+    .demo-tier-card {
+      border: 1px solid var(--color-border-strong);
+      padding: var(--space-4);
+      margin-bottom: var(--space-3);
+    }
+
+    .demo-tier-card__name {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      margin-bottom: var(--space-1);
+    }
+
+    .demo-tier-card__pts {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-3);
+    }
+
+    .demo-tier-card__bar-track {
+      height: 4px;
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border);
+      margin-bottom: var(--space-2);
+    }
+
+    .demo-tier-card__bar-fill {
+      height: 100%;
+      background: var(--color-accent);
+    }
+
+    .demo-tier-card__footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
+    .demo-tier-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+    }
+
+    .demo-tier-row:last-child { border-bottom: none; }
+
+    .demo-tier-row svg { width: 16px; height: 16px; flex-shrink: 0; }
+
   </style>
 </head>
 <body>
@@ -513,18 +920,24 @@
 
         <div class="sg-nav-group">
           <div class="sg-nav-group__label">Components</div>
-          <a href="#buttons"     class="sg-nav-link">Buttons</a>
-          <a href="#chips"       class="sg-nav-link">Chips</a>
-          <a href="#avatar"      class="sg-nav-link">Avatar</a>
-          <a href="#forms"       class="sg-nav-link">Forms</a>
-          <a href="#tabs"        class="sg-nav-link">Tabs</a>
-          <a href="#navigation"  class="sg-nav-link">Navigation</a>
+          <a href="#buttons"      class="sg-nav-link">Buttons</a>
+          <a href="#chips"        class="sg-nav-link">Chips</a>
+          <a href="#avatar"       class="sg-nav-link">Avatar</a>
+          <a href="#forms"        class="sg-nav-link">Forms</a>
+          <a href="#tabs"         class="sg-nav-link">Tabs</a>
+          <a href="#navigation"   class="sg-nav-link">Navigation</a>
+          <a href="#create-menu"  class="sg-nav-link">Create Menu</a>
         </div>
 
         <div class="sg-nav-group">
           <div class="sg-nav-group__label">Patterns</div>
-          <a href="#profile"     class="sg-nav-link">Profile</a>
-          <a href="#recipe"      class="sg-nav-link">Recipe</a>
+          <a href="#hue"          class="sg-nav-link">Hue Placeholders</a>
+          <a href="#post"         class="sg-nav-link">Post Card</a>
+          <a href="#content-rows" class="sg-nav-link">Content Rows</a>
+          <a href="#profile"      class="sg-nav-link">Profile</a>
+          <a href="#recipe"       class="sg-nav-link">Recipe</a>
+          <a href="#ranks"         class="sg-nav-link">Ranks</a>
+          <a href="#notifications" class="sg-nav-link">Notifications</a>
         </div>
 
       </nav>
@@ -1040,30 +1453,32 @@
             </div>
           </div>
           <pre class="sg-code">&lt;header class="app-header"&gt;
-  &lt;a href="home.html" class="app-header__logo"&gt;We Eat&lt;/a&gt;
+  &lt;a href="home.html" class="app-header__logo"&gt;&lt;img src="../assets/logo.svg" alt="We Eat"&gt;&lt;/a&gt;
   &lt;nav class="app-nav"&gt;
     &lt;a href="home.html"    class="app-nav__link"&gt;Home&lt;/a&gt;
     &lt;a href="explore.html" class="app-nav__link"&gt;Explore&lt;/a&gt;
-    &lt;a href="plan.html"    class="app-nav__link"&gt;Plan&lt;/a&gt;
-    &lt;!-- Add app-nav__link--active to the current page's link --&gt;
+    &lt;a href="plan.html"    class="app-nav__link app-nav__link--active"&gt;Plan&lt;/a&gt;
 
-    &lt;a href="recipe-new.html" class="app-nav__create" aria-label="Create recipe"&gt;
-      &lt;svg ...&gt;&lt;/svg&gt;
-    &lt;/a&gt;
+    &lt;div class="app-nav__create-wrap"&gt;
+      &lt;button class="app-nav__create" aria-label="Create"
+              aria-haspopup="true" aria-expanded="false"&gt;
+        &lt;svg ...&gt;&lt;/svg&gt;
+      &lt;/button&gt;
+      &lt;div class="create-menu" role="menu"&gt;...&lt;/div&gt;
+    &lt;/div&gt;
 
     &lt;div class="app-header__icon-wrap"&gt;
       &lt;a href="#" class="btn-icon app-nav__icon" aria-label="Notifications"&gt;...&lt;/a&gt;
       &lt;span class="app-header__badge"&gt;&lt;/span&gt;
     &lt;/div&gt;
-
     &lt;a href="profile.html" class="btn-icon app-nav__icon" aria-label="Profile"&gt;...&lt;/a&gt;
-    &lt;!-- Add app-nav__icon--active on the current page's icon --&gt;
   &lt;/nav&gt;
 &lt;/header&gt;</pre>
           <p class="sg-note">
             <strong>app-nav__link--active</strong> — black bottom border on the current text link.<br>
             <strong>app-nav__icon--active</strong> — switches icon color to <code>--color-text-primary</code>.<br>
-            <strong>app-nav__create</strong> — 28px black circle with white + icon. Links to <code>recipe-new.html</code>.<br>
+            <strong>app-nav__create-wrap</strong> — <code>position: relative</code> wrapper; the create button and dropdown are siblings inside it.<br>
+            <strong>app-nav__create</strong> — 28px black circle. Now a <code>&lt;button&gt;</code>, not an <code>&lt;a&gt;</code>. Wired by <code>js/app.js</code>.<br>
             Text links hide at ≤1024px; the bottom nav takes over on mobile.
           </p>
         </div>
@@ -1076,6 +1491,644 @@
           <pre class="sg-code">&lt;div class="section-label"&gt;Ingredients&lt;/div&gt;</pre>
           <p class="sg-note">Used above major content blocks on the recipe pages. 10px bold uppercase with 2px solid black bottom border — the heaviest border in the system.</p>
         </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           CREATE MENU
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="create-menu">
+        <div class="sg-section__title">Create Menu</div>
+        <p class="sg-section__desc">Clicking the + button in the nav opens a dropdown with four creation options. Wired globally by <code>js/app.js</code> — no per-page JS needed.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Dropdown (open state)</div>
+          <div class="sg-demo" style="display:flex; gap:var(--space-8); align-items:flex-start; flex-wrap:wrap;">
+            <div>
+              <div class="demo-create-btn" style="margin-bottom:var(--space-3);">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </div>
+              <div class="demo-create-menu">
+                <span class="demo-create-menu__label">Create</span>
+                <a href="#" class="demo-create-menu__item">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  Post
+                </a>
+                <a href="#" class="demo-create-menu__item demo-create-menu__item--active">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                  Recipe
+                </a>
+                <a href="#" class="demo-create-menu__item">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                  Cookbook
+                </a>
+                <div class="demo-create-menu__divider"></div>
+                <a href="#" class="demo-create-menu__item">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                  Order
+                </a>
+              </div>
+            </div>
+            <div>
+              <p class="sg-note" style="max-width:280px; margin:0;">
+                <strong>create-menu__item--active</strong> — 3px golden left border (<code>--color-accent</code>) marks the current creation type. This is this page's single accent use on <code>recipe-new.html</code>, <code>post-new.html</code>, and <code>cookbook-new.html</code>.<br><br>
+                Order is separated by a 1px divider — it navigates to <code>profile.html?action=new-order</code> and auto-opens the order modal.
+              </p>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;div class="app-nav__create-wrap"&gt;
+  &lt;button class="app-nav__create" aria-label="Create"
+          aria-haspopup="true" aria-expanded="false"&gt;...&lt;/button&gt;
+
+  &lt;div class="create-menu" role="menu"&gt;
+    &lt;span class="create-menu__label"&gt;Create&lt;/span&gt;
+    &lt;a href="post-new.html"     class="create-menu__item" role="menuitem"&gt;...Post&lt;/a&gt;
+    &lt;a href="recipe-new.html"   class="create-menu__item create-menu__item--active" role="menuitem"&gt;...Recipe&lt;/a&gt;
+    &lt;a href="cookbook-new.html" class="create-menu__item" role="menuitem"&gt;...Cookbook&lt;/a&gt;
+    &lt;div class="create-menu__divider"&gt;&lt;/div&gt;
+    &lt;a href="profile.html?action=new-order" class="create-menu__item" role="menuitem"&gt;...Order&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+          <p class="sg-note">Toggle class <code>create-menu--open</code> on the menu to show/hide. <code>js/app.js</code> handles click, outside-click, and Escape globally via <code>document.addEventListener('DOMContentLoaded', initCreateMenu)</code>. The <code>--active</code> item class is set manually in the HTML of each creation page — no JS needed.</p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           HUE PLACEHOLDERS
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="hue">
+        <div class="sg-section__title">Hue Placeholders</div>
+        <p class="sg-section__desc">The <code>data-hue</code> attribute system provides colored placeholder divs for recipe images, order icons, and user avatars throughout the prototype. Two tones per hue: full (used for colored blocks) and light (used for circle icons).</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Full palette</div>
+          <div class="sg-demo">
+            <div class="hue-grid">
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#F6E2A0;">AMB</div>
+                <span class="hue-swatch__name">amber</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#FBF0CC;">AMB-LT</div>
+                <span class="hue-swatch__name">amber-lt</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#B5D9C5;">GRN</div>
+                <span class="hue-swatch__name">green</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#DAF0E4;">GRN-LT</div>
+                <span class="hue-swatch__name">green-lt</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#F5C4C4;">RSE</div>
+                <span class="hue-swatch__name">rose</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#FADDDD;">RSE-LT</div>
+                <span class="hue-swatch__name">rose-lt</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#C0D8F5;">BLU</div>
+                <span class="hue-swatch__name">blue</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#DDEEFF;">BLU-LT</div>
+                <span class="hue-swatch__name">blue-lt</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#D4C0E8;">PLM</div>
+                <span class="hue-swatch__name">plum</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#EAE0F5;">PLM-LT</div>
+                <span class="hue-swatch__name">plum-lt</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#B0DDD8;">TEA</div>
+                <span class="hue-swatch__name">teal</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#D8F0EE;">TEA-LT</div>
+                <span class="hue-swatch__name">teal-lt</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#F5CAB8;">COR</div>
+                <span class="hue-swatch__name">coral</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#EEE0C0;">WHT</div>
+                <span class="hue-swatch__name">wheat</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#D0D8D0;">SGE</div>
+                <span class="hue-swatch__name">sage</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#4A5A4A; color:#fff;">D-GRN</div>
+                <span class="hue-swatch__name">dark-green</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#7A5A20; color:#fff;">D-AMB</div>
+                <span class="hue-swatch__name">dark-amber</span>
+              </div>
+              <div class="hue-swatch">
+                <div class="hue-swatch__block" style="background:#2C3A4A; color:#fff;">SLT</div>
+                <span class="hue-swatch__name">slate</span>
+              </div>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;div data-hue="amber-lt"&gt;CHI&lt;/div&gt;   &lt;!-- order icon circle --&gt;
+&lt;div data-hue="green"&gt;&lt;/div&gt;         &lt;!-- recipe placeholder block --&gt;</pre>
+          <p class="sg-note">
+            <strong>Full hues</strong> (amber, green, rose…) are used for recipe card image placeholders and meal plan cells — more saturated, block-level usage.<br>
+            <strong>Light hues</strong> (amber-lt, green-lt…) are used for order row circles and user card avatars — softer, smaller circular contexts.<br>
+            The <code>data-hue</code> CSS is defined inline in each page's <code>&lt;style&gt;</code> block, not in the shared CSS.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           POST CARD
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="post">
+        <div class="sg-section__title">Post Card</div>
+        <p class="sg-section__desc">The feed post is the core social unit. It combines authorship, media, actions, a caption, and optional attached recipes or orders.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Full post anatomy</div>
+          <div class="sg-demo" style="padding:0; max-width:480px;">
+            <div class="demo-post">
+              <div class="demo-post__header">
+                <a href="user.html" class="demo-post__author">
+                  <div class="demo-post__avatar"><img src="https://i.pravatar.cc/200?img=45" alt="Priya M."></div>
+                  <div>
+                    <span class="demo-post__name">Priya M.</span>
+                    <span class="demo-post__byline">@priyakitchen · 2h ago</span>
+                  </div>
+                </a>
+                <button class="btn-icon" style="color:var(--color-text-muted);">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="20" height="20"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+                </button>
+              </div>
+              <img class="demo-post__img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Butter chicken">
+              <div class="demo-post__actions">
+                <button class="demo-post__like demo-post__like--liked">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  341
+                </button>
+                <button class="demo-post__like">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                  58
+                </button>
+              </div>
+              <p class="demo-post__caption">Third attempt and I finally nailed it. Made the butter chicken from scratch — no shortcuts.</p>
+              <div class="demo-post__section">
+                <span class="demo-post__section-label">Recipe</span>
+                <a href="recipe.html" class="demo-post-recipe">
+                  <img class="demo-post-recipe__img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=200&q=80" alt="Butter chicken">
+                  <div>
+                    <span class="demo-post-recipe__title">Butter Chicken</span>
+                    <span class="demo-post-recipe__meta">@priyakitchen · 50 min · 4 servings</span>
+                  </div>
+                </a>
+              </div>
+              <div class="demo-post__section">
+                <span class="demo-post__section-label">Order</span>
+                <a href="#" class="demo-post-order">
+                  <div class="demo-post-order__icon">CAV</div>
+                  <div>
+                    <span class="demo-post-order__restaurant">Cava</span>
+                    <span class="demo-post-order__preview">Grain Bowl · falafel, harissa honey</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <p class="sg-note">
+            <strong>Like button</strong> — <code>post__like-btn--liked</code> sets <code>color: var(--color-accent)</code> and fills the heart SVG path. This is the single accent use on <code>home.html</code> and <code>post.html</code>.<br>
+            <strong>Post menu (⋯)</strong> — Own posts show Edit / Delete. Others show Not Interested / Report. Danger items use <code>color: var(--color-error)</code>.<br>
+            <strong>Attached recipe</strong> — bordered card linking to <code>recipe.html</code>. Thumbnail + title + meta.<br>
+            <strong>Attached order</strong> — bordered card with hue circle icon, restaurant name, and preview text.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           CONTENT ROWS
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="content-rows">
+        <div class="sg-section__title">Content Rows</div>
+        <p class="sg-section__desc">List rows used in the Profile and User pages to display recipes and saved restaurant orders.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Recipe Row</div>
+          <div class="sg-demo" style="padding: var(--space-4) var(--space-6);">
+            <div class="demo-recipe-row">
+              <img class="demo-recipe-row__img" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=200&q=80" alt="">
+              <div class="demo-recipe-row__body">
+                <div class="demo-recipe-row__title">Weekly Meal Prep Formula</div>
+                <div class="demo-recipe-row__meta">
+                  <span>90 min</span>
+                  <span>4 servings</span>
+                  <span>203 saves</span>
+                </div>
+              </div>
+              <!-- Own recipe: no save button -->
+            </div>
+            <div class="demo-recipe-row">
+              <img class="demo-recipe-row__img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=200&q=80" alt="">
+              <div class="demo-recipe-row__body">
+                <div class="demo-recipe-row__title">Butter Chicken</div>
+                <div class="demo-recipe-row__meta">
+                  <span>50 min</span>
+                  <span>4 servings</span>
+                  <span>@priyakitchen</span>
+                </div>
+              </div>
+              <!-- Other user's recipe: save button (outline = not saved, filled = saved) -->
+              <button class="btn-icon" style="color:var(--color-text-muted); flex-shrink:0;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+              </button>
+            </div>
+            <div class="demo-recipe-row" style="border-bottom:none;">
+              <img class="demo-recipe-row__img" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=200&q=80" alt="">
+              <div class="demo-recipe-row__body">
+                <div class="demo-recipe-row__title">Roasted Veggie Bowl</div>
+                <div class="demo-recipe-row__meta">
+                  <span>35 min</span>
+                  <span>1 serving</span>
+                  <span>@plant.plates</span>
+                </div>
+              </div>
+              <!-- Saved recipe: filled bookmark, click removes from saved -->
+              <button class="btn-icon" style="color:var(--color-text-primary); flex-shrink:0;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+              </button>
+            </div>
+          </div>
+          <p class="sg-note">
+            64×64px thumbnail, sharp edges. Three variants:<br>
+            <strong>Own recipe</strong> — no bookmark (you can't save your own recipe).<br>
+            <strong>Other user's recipe (unsaved)</strong> — outline bookmark; click saves it.<br>
+            <strong>Saved recipe</strong> — filled black bookmark + <code>@username</code> in meta; click removes from saved.
+          </p>
+        </div>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Order Row</div>
+          <div class="sg-demo" style="padding: var(--space-4) var(--space-6);">
+            <div class="demo-order-row">
+              <div class="demo-order-row__icon" style="background:#DAF0E4;">SG</div>
+              <div style="flex:1; min-width:0;">
+                <div class="demo-order-row__restaurant">Sweetgreen</div>
+                <div class="demo-order-row__preview">Harvest Bowl · roasted chicken, extra balsamic</div>
+              </div>
+              <span class="demo-order-row__saves">31 saves</span>
+              <!-- Own order: ⋯ options menu -->
+              <button class="btn-icon" style="color:var(--color-text-muted); flex-shrink:0;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+              </button>
+            </div>
+            <div class="demo-order-row" style="border-bottom:none;">
+              <div class="demo-order-row__icon" style="background:#FBF0CC;">CHI</div>
+              <div style="flex:1; min-width:0;">
+                <div class="demo-order-row__restaurant">Chipotle</div>
+                <div class="demo-order-row__preview">Chicken Bowl · black beans, extra guac, no sour cream</div>
+              </div>
+              <span class="demo-order-row__saves">17 saves</span>
+              <!-- Other user's order: save bookmark -->
+              <button class="btn-icon" style="color:var(--color-text-muted); flex-shrink:0;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+              </button>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;div class="order-row"&gt;
+  &lt;div class="order-row__icon" data-hue="amber-lt"&gt;CHI&lt;/div&gt;
+  &lt;div class="order-row__body"&gt;
+    &lt;div class="order-row__restaurant"&gt;Chipotle&lt;/div&gt;
+    &lt;div class="order-row__preview"&gt;Chicken Bowl · extra guac&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;span class="order-row__saves"&gt;48 saves&lt;/span&gt;
+  &lt;div class="order-row__actions"&gt;...&lt;/div&gt;
+&lt;/div&gt;</pre>
+          <p class="sg-note">
+            The circular icon uses a 2–3 letter abbreviation of the restaurant name in a <code>data-hue</code> light-toned circle.<br>
+            <strong>Own orders</strong> — ⋯ options button (edit/delete).<br>
+            <strong>Other user's orders</strong> — save bookmark toggle.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           RANKS PATTERNS
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="ranks">
+        <div class="sg-section__title">Ranks</div>
+        <p class="sg-section__desc">Tier progression system across three rank tracks: Presence, Kitchen, and Palate. Each track has completed tiers (muted + checkmark), an active tier card with a progress bar, and locked tiers (muted + lock icon).</p>
+
+        <!-- Tier states -->
+        <div class="sg-sub">
+          <div class="sg-sub__title">Tier States</div>
+          <div class="sg-demo" style="max-width:300px">
+
+            <style>
+              /* demo-scoped ranks styles */
+              .demo-tier-list { display:flex; flex-direction:column; border-top:1px solid var(--color-border); padding-top:var(--space-4); }
+              .demo-tier-row  { display:flex; align-items:center; gap:var(--space-3); padding-block:var(--space-3); border-bottom:1px solid var(--color-border); }
+              .demo-tier-row:last-child { border-bottom:none; }
+              .demo-tier-row__icon { width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+              .demo-tier-row__name { flex:1; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); letter-spacing:var(--letter-spacing-tight); }
+              .demo-tier-row__threshold { font-size:var(--font-size-xs); color:var(--color-text-muted); white-space:nowrap; }
+              .demo-tier-row--completed .demo-tier-row__name,
+              .demo-tier-row--completed .demo-tier-row__icon { color:var(--color-text-muted); }
+              .demo-tier-row--locked .demo-tier-row__name { color:var(--color-text-muted); font-weight:var(--font-weight-medium); }
+              .demo-tier-row--locked .demo-tier-row__icon { color:var(--color-border-strong); }
+              .demo-tier-card { border:1px solid var(--color-border-strong); padding:var(--space-4); margin-block:var(--space-2); }
+              .demo-tier-card__header { display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-3); margin-bottom:var(--space-4); }
+              .demo-tier-card__name { font-size:var(--font-size-md); font-weight:var(--font-weight-bold); letter-spacing:var(--letter-spacing-tight); line-height:1; }
+              .demo-tier-card__range { font-size:var(--font-size-xs); color:var(--color-text-muted); white-space:nowrap; }
+              .demo-tier-card__bar-track { height:4px; background:var(--color-bg-subtle); margin-bottom:var(--space-3); overflow:hidden; }
+              .demo-tier-card__bar-fill { height:100%; background:var(--color-accent); }
+              .demo-tier-card__meta { display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); }
+              .demo-tier-card__progress { font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); letter-spacing:var(--letter-spacing-tight); }
+              .demo-tier-card__next { font-size:var(--font-size-xs); color:var(--color-text-muted); text-align:right; }
+            </style>
+
+            <div class="demo-tier-list">
+
+              <!-- Completed -->
+              <div class="demo-tier-row demo-tier-row--completed">
+                <span class="demo-tier-row__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                </span>
+                <span class="demo-tier-row__name">Lurker</span>
+                <span class="demo-tier-row__threshold">0 pts</span>
+              </div>
+
+              <div class="demo-tier-row demo-tier-row--completed">
+                <span class="demo-tier-row__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                </span>
+                <span class="demo-tier-row__name">Regular</span>
+                <span class="demo-tier-row__threshold">100 pts</span>
+              </div>
+
+              <!-- Active tier card -->
+              <div class="demo-tier-card">
+                <div class="demo-tier-card__header">
+                  <span class="demo-tier-card__name">Contributor</span>
+                  <span class="demo-tier-card__range">250 – 499 pts</span>
+                </div>
+                <div class="demo-tier-card__bar-track">
+                  <div class="demo-tier-card__bar-fill" style="width:75%"></div>
+                </div>
+                <div class="demo-tier-card__meta">
+                  <span class="demo-tier-card__progress">438 pts</span>
+                  <span class="demo-tier-card__next">62 pts to Influencer</span>
+                </div>
+              </div>
+
+              <!-- Locked -->
+              <div class="demo-tier-row demo-tier-row--locked">
+                <span class="demo-tier-row__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </span>
+                <span class="demo-tier-row__name">Influencer</span>
+                <span class="demo-tier-row__threshold">500 pts</span>
+              </div>
+
+              <div class="demo-tier-row demo-tier-row--locked">
+                <span class="demo-tier-row__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </span>
+                <span class="demo-tier-row__name">Tastemaker</span>
+                <span class="demo-tier-row__threshold">1000 pts</span>
+              </div>
+
+            </div>
+          </div>
+          <p class="sg-note">
+            <strong>Completed</strong> — checkmark SVG, name + icon in <code>--color-text-muted</code>.<br>
+            <strong>Active</strong> — bordered card (<code>.tier-card</code>), progress bar fill uses <code>var(--color-accent)</code> (page accent).<br>
+            <strong>Locked</strong> — lock SVG, name in muted medium weight, icon in <code>--color-border-strong</code>.
+          </p>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="sg-sub">
+          <div class="sg-sub__title">Progress Bar</div>
+          <div class="sg-demo">
+            <div style="max-width:300px">
+              <div class="demo-tier-card__bar-track">
+                <div class="demo-tier-card__bar-fill" style="width:75%"></div>
+              </div>
+            </div>
+          </div>
+          <pre class="sg-code"><code>&lt;div class="tier-card__bar-track"&gt;
+  &lt;div class="tier-card__bar-fill" style="width: 75%"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <p class="sg-note">Track is <code>4px</code> tall, <code>background: var(--color-bg-subtle)</code>. Fill uses <code>background: var(--color-accent)</code> — this is the <strong>page accent</strong> on ranks.html. Width set inline as a percentage of progress within the active tier.</p>
+        </div>
+
+        <!-- Rank tracks -->
+        <div class="sg-sub">
+          <div class="sg-sub__title">Three Rank Tracks</div>
+          <p class="sg-note" style="margin-bottom:0">
+            <strong>Presence</strong> — social activity: posts, likes received, comments, followers, shares.<br>
+            <strong>Kitchen</strong> — cooking content: recipes posted, saves received, cookbook entries.<br>
+            <strong>Palate</strong> — food discovery: orders logged, places reviewed, cuisine variety.
+          </p>
+        </div>
+
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           NOTIFICATIONS PATTERNS
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="notifications">
+        <div class="sg-section__title">Notifications</div>
+        <p class="sg-section__desc">A user receives a notification when someone likes their post, comments on their post, saves their recipe, comments on their recipe, saves their order, comments on their order, or follows them. Rows are grouped by date (Today / Yesterday / Earlier) with a 10px uppercase label. Unread rows use a <code>3px</code> left accent border.</p>
+
+        <!-- Notification row variants -->
+        <div class="sg-sub">
+          <div class="sg-sub__title">Row Variants</div>
+          <div class="sg-demo">
+            <style>
+              /* demo-scoped notification styles */
+              .demo-notif-row {
+                display: flex; align-items: center; gap: var(--space-3);
+                padding: var(--space-4) var(--space-4) var(--space-4) var(--space-3);
+                border: 1px solid var(--color-border); border-left-width: 3px;
+                border-left-color: transparent; background: var(--color-white);
+                margin-bottom: 2px; text-decoration: none; color: inherit;
+              }
+              .demo-notif-row--unread { border-left-color: var(--color-accent); }
+              .demo-notif-row__type { width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--color-text-muted); }
+              .demo-notif-row__type svg { width:16px; height:16px; }
+              .demo-notif-row--like .demo-notif-row__type { color: var(--color-accent); }
+              .demo-notif-row__avatar { width:36px; height:36px; border-radius:50%; flex-shrink:0; }
+              .demo-notif-row__body { flex:1; min-width:0; }
+              .demo-notif-row__text { font-size:var(--font-size-sm); line-height:var(--line-height-snug); margin:0 0 var(--space-1); }
+              .demo-notif-row__text strong { font-weight:var(--font-weight-semibold); }
+              .demo-notif-row__excerpt { display:block; font-size:var(--font-size-xs); color:var(--color-text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+              .demo-notif-row__time { display:block; font-size:10px; font-weight:var(--font-weight-bold); letter-spacing:var(--letter-spacing-widest); text-transform:uppercase; color:var(--color-text-muted); margin-top:var(--space-1); }
+              .demo-notif-row__thumb { width:44px; height:44px; flex-shrink:0; border:1px solid var(--color-border); }
+              .demo-notif-row__dot { width:8px; height:8px; border-radius:50%; background:var(--color-accent); flex-shrink:0; }
+            </style>
+
+            <!-- Like post — unread -->
+            <a href="#" class="demo-notif-row demo-notif-row--unread demo-notif-row--like">
+              <div class="demo-notif-row__type">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/></svg>
+              </div>
+              <div class="demo-notif-row__avatar" data-hue="amber"></div>
+              <div class="demo-notif-row__body">
+                <p class="demo-notif-row__text"><strong>@alexfoodie</strong> liked your post.</p>
+                <span class="demo-notif-row__time">2h</span>
+              </div>
+              <div class="demo-notif-row__thumb" data-hue="green-lt"></div>
+              <span class="demo-notif-row__dot"></span>
+            </a>
+
+            <!-- Comment on post — unread -->
+            <a href="#" class="demo-notif-row demo-notif-row--unread demo-notif-row--comment">
+              <div class="demo-notif-row__type">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+              </div>
+              <div class="demo-notif-row__avatar" data-hue="rose"></div>
+              <div class="demo-notif-row__body">
+                <p class="demo-notif-row__text"><strong>@priyakitchen</strong> commented on your post.</p>
+                <span class="demo-notif-row__excerpt">"This looks absolutely amazing, I have to try this!"</span>
+                <span class="demo-notif-row__time">4h</span>
+              </div>
+              <div class="demo-notif-row__thumb" data-hue="green-lt"></div>
+              <span class="demo-notif-row__dot"></span>
+            </a>
+
+            <!-- Save recipe — unread -->
+            <a href="#" class="demo-notif-row demo-notif-row--unread demo-notif-row--save">
+              <div class="demo-notif-row__type">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+              </div>
+              <div class="demo-notif-row__avatar" data-hue="blue"></div>
+              <div class="demo-notif-row__body">
+                <p class="demo-notif-row__text"><strong>@chefmarcus</strong> saved your Chicken Tikka Masala.</p>
+                <span class="demo-notif-row__time">6h</span>
+              </div>
+              <div class="demo-notif-row__thumb" data-hue="amber-lt"></div>
+              <span class="demo-notif-row__dot"></span>
+            </a>
+
+            <!-- Comment on recipe — read -->
+            <a href="#" class="demo-notif-row demo-notif-row--comment">
+              <div class="demo-notif-row__type">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+              </div>
+              <div class="demo-notif-row__avatar" data-hue="teal"></div>
+              <div class="demo-notif-row__body">
+                <p class="demo-notif-row__text"><strong>@foodlover88</strong> commented on your recipe.</p>
+                <span class="demo-notif-row__excerpt">"What temperature do you bake this at?"</span>
+                <span class="demo-notif-row__time">9h</span>
+              </div>
+              <div class="demo-notif-row__thumb" data-hue="amber-lt"></div>
+            </a>
+
+            <!-- Follow — unread, no thumbnail -->
+            <a href="#" class="demo-notif-row demo-notif-row--unread demo-notif-row--follow">
+              <div class="demo-notif-row__type">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+              </div>
+              <div class="demo-notif-row__avatar" data-hue="plum"></div>
+              <div class="demo-notif-row__body">
+                <p class="demo-notif-row__text"><strong>@sarahbakes</strong> started following you.</p>
+                <span class="demo-notif-row__time">Yesterday</span>
+              </div>
+              <span class="demo-notif-row__dot"></span>
+            </a>
+
+            <!-- Save order — read -->
+            <a href="#" class="demo-notif-row demo-notif-row--save">
+              <div class="demo-notif-row__type">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+              </div>
+              <div class="demo-notif-row__avatar" data-hue="coral"></div>
+              <div class="demo-notif-row__body">
+                <p class="demo-notif-row__text"><strong>@milesaway</strong> saved your order at Nobu.</p>
+                <span class="demo-notif-row__time">Yesterday</span>
+              </div>
+              <div class="demo-notif-row__thumb" data-hue="slate-lt"></div>
+            </a>
+
+            <!-- Comment on order — read -->
+            <a href="#" class="demo-notif-row demo-notif-row--comment">
+              <div class="demo-notif-row__type">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+              </div>
+              <div class="demo-notif-row__avatar" data-hue="wheat"></div>
+              <div class="demo-notif-row__body">
+                <p class="demo-notif-row__text"><strong>@tonygourmet</strong> commented on your order.</p>
+                <span class="demo-notif-row__excerpt">"How was the omakase? Worth it?"</span>
+                <span class="demo-notif-row__time">Yesterday</span>
+              </div>
+              <div class="demo-notif-row__thumb" data-hue="slate-lt"></div>
+            </a>
+
+          </div>
+          <p class="sg-note">
+            <strong>Unread</strong> — <code>border-left-color: var(--color-accent)</code> + amber dot on right.<br>
+            <strong>Read</strong> — transparent left border, no dot.<br>
+            <strong>Like icon</strong> — <code>color: var(--color-accent)</code>. All other icons use <code>--color-text-muted</code>.<br>
+            <strong>Thumbnail</strong> — 44×44px, present for post/recipe/order notifications. Omitted for follow.<br>
+            <strong>Excerpt</strong> — truncated comment preview, shown for comment notifications only.
+          </p>
+        </div>
+
+        <!-- Code snippet -->
+        <div class="sg-sub">
+          <div class="sg-sub__title">Markup</div>
+          <pre class="sg-code"><code>&lt;!-- Unread notification row --&gt;
+&lt;a href="post.html" class="notif-row notif-row--unread notif-row--like"&gt;
+  &lt;div class="notif-row__type"&gt;&lt;!-- icon svg --&gt;&lt;/div&gt;
+  &lt;div class="notif-row__avatar" data-hue="amber"&gt;&lt;/div&gt;
+  &lt;div class="notif-row__body"&gt;
+    &lt;p class="notif-row__text"&gt;&lt;strong&gt;@alexfoodie&lt;/strong&gt; liked your post.&lt;/p&gt;
+    &lt;span class="notif-row__time"&gt;2h&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="notif-row__thumb" data-hue="green-lt"&gt;&lt;/div&gt;
+  &lt;span class="notif-row__dot"&gt;&lt;/span&gt;
+&lt;/a&gt;
+
+&lt;!-- Read notification row (no --unread modifier, no dot, no thumb for follow) --&gt;
+&lt;a href="user.html" class="notif-row notif-row--follow"&gt;
+  &lt;div class="notif-row__type"&gt;&lt;!-- icon svg --&gt;&lt;/div&gt;
+  &lt;div class="notif-row__avatar" data-hue="plum"&gt;&lt;/div&gt;
+  &lt;div class="notif-row__body"&gt;
+    &lt;p class="notif-row__text"&gt;&lt;strong&gt;@sarahbakes&lt;/strong&gt; started following you.&lt;/p&gt;
+    &lt;span class="notif-row__time"&gt;Yesterday&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/a&gt;</code></pre>
+        </div>
+
+        <!-- Notification types reference -->
+        <div class="sg-sub">
+          <div class="sg-sub__title">Notification Types</div>
+          <p class="sg-note" style="margin-bottom:0">
+            <strong>like-post</strong> — filled heart, accent color, links to post.<br>
+            <strong>comment-post</strong> — chat bubble outline, links to post + shows excerpt.<br>
+            <strong>save-recipe</strong> — filled bookmark, links to recipe.<br>
+            <strong>comment-recipe</strong> — chat bubble outline, links to recipe + shows excerpt.<br>
+            <strong>save-order</strong> — filled bookmark, links to order/profile.<br>
+            <strong>comment-order</strong> — chat bubble outline, links to order + shows excerpt.<br>
+            <strong>follow</strong> — user-plus outline, links to user.html, no thumbnail.
+          </p>
+        </div>
+
       </section>
 
 
