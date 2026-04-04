@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>sofia_k's post — We Eat</title>
+  <title>marcoeats at Nobu — We Eat</title>
   <link rel="stylesheet" href="../css/tokens.css">
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/components.css">
@@ -12,16 +12,11 @@
   <style>
 
     /* ════════════════════════════════════════════════════════
-       POST DETAIL — image pinned left, content scrolls right
+       ORDER DETAIL — image pinned left, content scrolls right
+       Same split-panel layout as post.html.
     ════════════════════════════════════════════════════════ */
 
-    /*
-     * The app-body adds margin-top: nav-height.
-     * We fill the remaining viewport with the 2-column layout.
-     * On mobile it collapses to a single scrolling column.
-     */
-
-    .post-detail {
+    .order-detail {
       display: grid;
       grid-template-columns: 1fr 400px;
       max-width: 1060px;
@@ -32,15 +27,15 @@
 
     /* ── Left: pinned image ────────────────────────────────── */
 
-    .post-detail__media {
-      position: sticky;          /* sticks within the grid */
+    .order-detail__media {
+      position: sticky;
       top: 0;
       aspect-ratio: 1 / 1;
       background: var(--color-black);
       overflow: hidden;
     }
 
-    .post-detail__img {
+    .order-detail__img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -50,7 +45,7 @@
 
     /* ── Right: fixed-height panel ─────────────────────────── */
 
-    .post-detail__panel {
+    .order-detail__panel {
       display: flex;
       flex-direction: column;
       height: calc(100dvh - var(--nav-height));
@@ -59,9 +54,9 @@
       background: var(--color-white);
     }
 
-    /* ── Panel header — sticky within the panel ────────────── */
+    /* ── Panel header ────────────────────────────────────────── */
 
-    .post-detail__header {
+    .order-detail__header {
       display: flex;
       align-items: center;
       gap: var(--space-3);
@@ -71,13 +66,13 @@
       background: var(--color-white);
     }
 
-    .post-detail__back {
+    .order-detail__back {
       flex-shrink: 0;
-      color: var(--color-text);
+      color: var(--color-text-primary);
       text-decoration: none;
     }
 
-    .post-detail__author {
+    .order-detail__author {
       display: flex;
       align-items: center;
       gap: var(--space-3);
@@ -87,7 +82,7 @@
       min-width: 0;
     }
 
-    .post-detail__avatar {
+    .order-detail__avatar {
       width: 36px;
       height: 36px;
       border-radius: 50%;
@@ -95,7 +90,7 @@
       flex-shrink: 0;
     }
 
-    .post-detail__name {
+    .order-detail__name {
       display: block;
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-semibold);
@@ -103,22 +98,22 @@
       line-height: 1.2;
     }
 
-    .post-detail__byline {
+    .order-detail__byline {
       display: block;
       font-size: var(--font-size-xs);
       color: var(--color-text-muted);
     }
 
-    /* ••• menu & dropdown — same pattern as home feed */
+    /* ── Options dropdown ─────────────────────────────────── */
 
-    .post-menu {
+    .order-menu {
       position: relative;
       flex-shrink: 0;
     }
 
-    .post-menu__btn { color: var(--color-text-muted); }
+    .order-menu__btn { color: var(--color-text-muted); }
 
-    .post-menu__dropdown {
+    .order-menu__dropdown {
       display: none;
       position: absolute;
       top: calc(100% + var(--space-2));
@@ -130,9 +125,9 @@
       z-index: 50;
     }
 
-    .post-menu__dropdown--open { display: block; }
+    .order-menu__dropdown--open { display: block; }
 
-    .post-menu__item {
+    .order-menu__item {
       display: block;
       width: 100%;
       text-align: left;
@@ -148,100 +143,119 @@
       transition: background var(--transition-fast);
     }
 
-    .post-menu__item:last-child { border-bottom: none; }
-    .post-menu__item:hover { background: var(--color-bg-subtle); }
-    .post-menu__item--danger { color: var(--color-error); }
+    .order-menu__item:last-child { border-bottom: none; }
+    .order-menu__item:hover { background: var(--color-bg-subtle); }
+    .order-menu__item--danger { color: var(--color-error); }
 
     /* ── Scrollable body ────────────────────────────────────── */
 
-    .post-detail__scroll {
+    .order-detail__scroll {
       flex: 1;
       overflow-y: auto;
       scrollbar-width: thin;
       scrollbar-color: var(--color-border) transparent;
     }
 
-    .post-detail__scroll::-webkit-scrollbar { width: 4px; }
-    .post-detail__scroll::-webkit-scrollbar-track { background: transparent; }
-    .post-detail__scroll::-webkit-scrollbar-thumb { background: var(--color-border); }
+    .order-detail__scroll::-webkit-scrollbar { width: 4px; }
+    .order-detail__scroll::-webkit-scrollbar-track { background: transparent; }
+    .order-detail__scroll::-webkit-scrollbar-thumb { background: var(--color-border); }
 
-    /* ── Actions: like + comments ───────────────────────────── */
+    /* ── Restaurant meta ────────────────────────────────────── */
 
-    .post-detail__actions {
+    .order-meta {
+      padding: var(--space-5) var(--space-5) var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .order-meta__restaurant {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      color: var(--color-text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .order-meta__details {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
+    /* ── Actions row — save + share ─────────────────────────── */
+
+    .order-actions {
       display: flex;
       align-items: center;
-      gap: var(--space-5);
+      gap: var(--space-3);
       padding: var(--space-4) var(--space-5);
       border-bottom: 1px solid var(--color-border);
     }
 
-    .pd-like-btn {
+    .order-save-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: none;
+      border: 1px solid var(--color-border-strong);
+      cursor: pointer;
+      padding: var(--space-2) var(--space-4);
+      font-family: inherit;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wide);
+      text-transform: uppercase;
+      color: var(--color-text-primary);
+      transition: background var(--transition-fast),
+                  color var(--transition-fast),
+                  border-color var(--transition-fast);
+    }
+
+    .order-save-btn:hover {
+      background: var(--color-black);
+      color: var(--color-white);
+      border-color: var(--color-black);
+    }
+
+    .order-save-btn--saved {
+      background: var(--color-black);
+      color: var(--color-white);
+      border-color: var(--color-black);
+    }
+
+    .order-save-btn svg { width: 14px; height: 14px; }
+
+    .order-save-count {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      flex: 1;
+    }
+
+    .order-share-btn {
       display: inline-flex;
       align-items: center;
       gap: var(--space-2);
       background: none;
       border: none;
       cursor: pointer;
-      padding: 0;
+      padding: var(--space-2) 0;
       font-family: inherit;
-      font-size: var(--font-size-sm);
+      font-size: var(--font-size-xs);
       font-weight: var(--font-weight-semibold);
-      color: var(--color-text-primary);
-      transition: opacity var(--transition-fast);
-    }
-
-    .pd-like-btn:hover { opacity: 0.65; }
-
-    .pd-like-icon {
-      width: 20px;
-      height: 20px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      transition: fill var(--transition-fast), stroke var(--transition-fast);
-    }
-
-    /* PAGE ACCENT — liked heart turns golden */
-    .pd-like-btn--liked { color: var(--color-accent); }
-    .pd-like-btn--liked .pd-like-icon {
-      fill: var(--color-accent);
-      stroke: var(--color-accent);
-    }
-
-    .pd-comment-count {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
+      letter-spacing: var(--letter-spacing-wide);
+      text-transform: uppercase;
       color: var(--color-text-muted);
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-2);
+      transition: color var(--transition-fast);
     }
 
-    .pd-comment-count svg { width: 18px; height: 18px; }
+    .order-share-btn:hover { color: var(--color-text-primary); }
+    .order-share-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
 
-    /* ── Caption ────────────────────────────────────────────── */
+    /* ── Items section ──────────────────────────────────────── */
 
-    .post-detail__caption {
-      padding: var(--space-4) var(--space-5);
-      font-size: var(--font-size-sm);
-      line-height: var(--line-height-relaxed);
-      color: var(--color-text-secondary);
+    .order-items {
       border-bottom: 1px solid var(--color-border);
     }
 
-    .post-detail__caption-author {
-      font-weight: var(--font-weight-bold);
-      color: var(--color-text-primary);
-      margin-right: var(--space-2);
-    }
-
-    /* ── Linked sections (recipes / orders) ─────────────────── */
-
-    .post-detail__section {
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .post-detail__section-label {
+    .order-items__label {
       display: block;
       font-size: 10px;
       font-weight: var(--font-weight-bold);
@@ -251,97 +265,96 @@
       padding: var(--space-3) var(--space-5) var(--space-2);
     }
 
-    .pd-recipe {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
+    .order-item {
       padding: var(--space-3) var(--space-5);
-      text-decoration: none;
-      color: inherit;
-      transition: background var(--transition-fast);
+      border-top: 1px solid var(--color-border);
     }
 
-    .pd-recipe:hover { background: var(--color-bg-subtle); }
-
-    .pd-recipe__img {
-      width: 44px;
-      height: 44px;
-      object-fit: cover;
-      flex-shrink: 0;
-      display: block;
-      background: var(--color-bg-subtle);
+    .order-item__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-3);
+      margin-bottom: var(--space-2);
     }
 
-    .pd-recipe__info { flex: 1; min-width: 0; }
-
-    .pd-recipe__title {
-      display: block;
+    .order-item__name {
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-semibold);
       letter-spacing: var(--letter-spacing-tight);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 2px;
+      color: var(--color-text-primary);
     }
 
-    .pd-recipe__meta {
+    .order-item__price {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+      flex-shrink: 0;
+    }
+
+    .order-item__mods {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .order-item__mod {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-2);
       font-size: var(--font-size-xs);
+    }
+
+    .order-item__mod-symbol {
+      font-size: 11px;
+      font-weight: var(--font-weight-bold);
+      flex-shrink: 0;
+      width: 12px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .order-item__mod-symbol--add    { color: var(--color-success); }
+    .order-item__mod-symbol--remove { color: var(--color-error); }
+    .order-item__mod-symbol--note   { color: var(--color-text-muted); }
+
+    .order-item__mod-text {
+      color: var(--color-text-secondary);
+      flex: 1;
+    }
+
+    .order-item__mod-price {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+    }
+
+    /* ── Total row ─────────────────────────────────────────── */
+
+    .order-items__total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-3) var(--space-5);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .order-items__total-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
       color: var(--color-text-muted);
     }
 
-    .pd-recipe__arrow { color: var(--color-text-muted); flex-shrink: 0; }
-    .pd-recipe__arrow svg { width: 14px; height: 14px; }
-
-    .pd-order {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      padding: var(--space-3) var(--space-5);
-      text-decoration: none;
-      color: inherit;
-      transition: background var(--transition-fast);
-    }
-
-    .pd-order:hover { background: var(--color-bg-subtle); }
-
-    .pd-order__icon {
-      width: 40px;
-      height: 40px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9px;
-      font-weight: var(--font-weight-bold);
-      letter-spacing: 0.06em;
-      color: var(--color-text-secondary);
-      background: var(--color-bg-subtle);
-    }
-
-    .pd-order__info { flex: 1; min-width: 0; }
-
-    .pd-order__restaurant {
-      display: block;
+    .order-items__total-amount {
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-bold);
-      letter-spacing: var(--letter-spacing-tight);
-      margin-bottom: 2px;
+      color: var(--color-text-primary);
     }
-
-    .pd-order__preview {
-      font-size: var(--font-size-xs);
-      color: var(--color-text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .pd-order__arrow { color: var(--color-text-muted); flex-shrink: 0; }
-    .pd-order__arrow svg { width: 14px; height: 14px; }
 
     /* ════════════════════════════════════════════════════════
-       COMMENTS
+       COMMENTS — mirrors post.html
     ════════════════════════════════════════════════════════ */
 
     .comments-header {
@@ -363,8 +376,6 @@
       font-size: var(--font-size-xs);
       color: var(--color-text-muted);
     }
-
-    /* ── Single comment ─────────────────────────────────────── */
 
     .comment {
       display: flex;
@@ -404,8 +415,6 @@
       margin-top: 4px;
     }
 
-    /* Delete button — only visible on own comments, revealed on hover */
-
     .comment__delete {
       width: 20px;
       height: 20px;
@@ -426,8 +435,6 @@
 
     .comment:hover .comment__delete { opacity: 1; }
     .comment__delete:hover { color: var(--color-error); }
-
-    /* Deletion animation */
 
     .comment--removing {
       overflow: hidden;
@@ -504,36 +511,32 @@
        MOBILE — single scrolling column
     ════════════════════════════════════════════════════════ */
 
-    /* Image inline on mobile (hidden from left column, shown here) */
-    .post-detail__mobile-img {
+    .order-detail__mobile-img {
       display: none;
     }
 
     @media (max-width: 768px) {
 
-      .post-detail {
+      .order-detail {
         grid-template-columns: 1fr;
         height: auto;
         border-inline: none;
         border-bottom: none;
       }
 
-      /* Hide the left image column */
-      .post-detail__media { display: none; }
+      .order-detail__media { display: none; }
 
-      /* Right panel becomes a normal block */
-      .post-detail__panel {
+      .order-detail__panel {
         height: auto;
         overflow: visible;
         border-left: none;
       }
 
-      .post-detail__scroll {
+      .order-detail__scroll {
         overflow-y: visible;
       }
 
-      /* Show image inline above the actions */
-      .post-detail__mobile-img {
+      .order-detail__mobile-img {
         display: block;
         width: 100%;
         aspect-ratio: 1 / 1;
@@ -541,7 +544,6 @@
         border-bottom: 1px solid var(--color-border);
       }
 
-      /* Comment input stays at the bottom but is no longer flex-fixed */
       .comment-input-bar {
         position: sticky;
         bottom: var(--app-bottom-nav-h);
@@ -555,7 +557,7 @@
 <body>
 
   <!-- ═══════════════════════════════════════════════════════
-       APP HEADER — no active nav link (detail page)
+       APP HEADER
   ═══════════════════════════════════════════════════════ -->
   <header class="app-header">
     <a href="home.html" class="app-header__logo"><img src="../assets/logo.svg" alt="We Eat"></a>
@@ -612,47 +614,51 @@
 
 
   <!-- ═══════════════════════════════════════════════════════
-       POST DETAIL
+       ORDER DETAIL
   ═══════════════════════════════════════════════════════ -->
   <div class="app-body">
-    <div class="post-detail">
+    <div class="order-detail">
 
 
       <!-- ── LEFT: pinned image ──────────────────────────── -->
-      <div class="post-detail__media" aria-hidden="true">
-        <img class="post-detail__img"
-             src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=80"
-             alt="Weekly meal prep bowls">
+      <div class="order-detail__media" aria-hidden="true">
+        <img class="order-detail__img"
+             src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=1200&q=80"
+             alt="Nobu restaurant">
       </div>
 
 
       <!-- ── RIGHT: panel ────────────────────────────────── -->
-      <div class="post-detail__panel">
+      <!--
+        data-own="false"  → viewing another user's order (Save + Report visible)
+        data-own="true"   → your own order (Edit + Delete visible, Save hidden)
+      -->
+      <div class="order-detail__panel" id="order-panel" data-own="false">
 
 
-        <!-- Post header (top of panel) -->
-        <div class="post-detail__header">
+        <!-- Panel header -->
+        <div class="order-detail__header">
 
-          <a class="post-detail__back btn-icon" href="home.html" aria-label="Back to feed">
+          <a class="order-detail__back btn-icon" href="profile.html" aria-label="Back">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
             </svg>
           </a>
 
-          <a class="post-detail__author" href="profile.html">
-            <img class="post-detail__avatar"
-                 src="https://i.pravatar.cc/200?img=47"
-                 alt="Sofia K.">
+          <a class="order-detail__author" href="user.html">
+            <img class="order-detail__avatar"
+                 src="https://i.pravatar.cc/200?img=52"
+                 alt="Marco T.">
             <div>
-              <span class="post-detail__name">Sofia K.</span>
-              <span class="post-detail__byline">@sofia_k · 2h ago</span>
+              <span class="order-detail__name">Marco T.</span>
+              <span class="order-detail__byline">@marcoeats · 3d ago</span>
             </div>
           </a>
 
-          <div class="post-menu">
-            <button class="btn-icon post-menu__btn"
-                    id="post-menu-btn"
-                    aria-label="Post options"
+          <div class="order-menu">
+            <button class="btn-icon order-menu__btn"
+                    id="order-menu-btn"
+                    aria-label="Order options"
                     aria-expanded="false">
               <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
                 <circle cx="5" cy="12" r="2"/>
@@ -660,10 +666,14 @@
                 <circle cx="19" cy="12" r="2"/>
               </svg>
             </button>
-            <div class="post-menu__dropdown" id="post-menu-dropdown" role="menu">
-              <!-- Own post: edit + delete -->
-              <button class="post-menu__item" role="menuitem">Edit Post</button>
-              <button class="post-menu__item post-menu__item--danger" role="menuitem">Delete Post</button>
+            <div class="order-menu__dropdown" id="order-menu-dropdown" role="menu">
+              <!-- Owner-only actions — shown when data-own="true" -->
+              <button class="order-menu__item order-menu__item--owner" role="menuitem">Edit Order</button>
+              <button class="order-menu__item order-menu__item--danger order-menu__item--owner" role="menuitem">Delete Order</button>
+              <!-- Visitor-only actions — shown when data-own="false" -->
+              <button class="order-menu__item order-menu__item--visitor" role="menuitem">Report</button>
+              <!-- Always visible -->
+              <button class="order-menu__item order-menu__item--share" role="menuitem">Share</button>
             </div>
           </div>
 
@@ -671,59 +681,119 @@
 
 
         <!-- ── Scrollable content ──────────────────────── -->
-        <div class="post-detail__scroll" id="scroll-area">
+        <div class="order-detail__scroll">
 
           <!-- Inline image (mobile only) -->
-          <img class="post-detail__mobile-img"
-               src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80"
-               alt="Weekly meal prep bowls">
+          <img class="order-detail__mobile-img"
+               src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80"
+               alt="Nobu restaurant">
 
-          <!-- Actions -->
-          <div class="post-detail__actions">
-            <button class="pd-like-btn pd-like-btn--liked"
-                    aria-label="Unlike"
-                    aria-pressed="true"
-                    data-count="212">
-              <svg class="pd-like-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          <!-- Restaurant meta -->
+          <div class="order-meta">
+            <div class="order-meta__restaurant">Nobu</div>
+            <div class="order-meta__details">Japanese · Omakase &nbsp;·&nbsp; Tribeca, NY</div>
+          </div>
+
+          <!-- Actions — save + share -->
+          <div class="order-actions">
+
+            <!-- Save (hidden for owner via JS) -->
+            <button class="order-save-btn" id="save-btn" aria-pressed="false">
+              <svg id="save-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
               </svg>
-              <span class="pd-like-count">212</span>
+              <span id="save-label">Save</span>
             </button>
-            <span class="pd-comment-count">
+
+            <span class="order-save-count" id="save-count">74 saves</span>
+
+            <button class="order-share-btn" id="share-btn" aria-label="Share order">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/>
               </svg>
-              <span id="comment-count-display">8 comments</span>
-            </span>
+              Share
+            </button>
+
           </div>
 
-          <!-- Caption -->
-          <p class="post-detail__caption">
-            <span class="post-detail__caption-author">sofia_k</span>
-            Weekly meal prep done. Roasted everything on Sunday, portioned for 5 days. This formula never fails — grain base, roasted veg, a protein, and a sauce that does the work. No shortcuts, just a solid Sunday afternoon.
-          </p>
+          <!-- Order items -->
+          <div class="order-items">
 
-          <!-- Linked recipe -->
-          <div class="post-detail__section">
-            <span class="post-detail__section-label">Recipes</span>
-            <a class="pd-recipe" href="recipe.html">
-              <img class="pd-recipe__img"
-                   src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=200&q=80"
-                   alt="Weekly Meal Prep Formula">
-              <div class="pd-recipe__info">
-                <span class="pd-recipe__title">Weekly Meal Prep Formula</span>
-                <span class="pd-recipe__meta">@sofia_k · 90 min · 4 servings · 203 saves</span>
+            <span class="order-items__label">Items</span>
+
+            <!-- ── Item 1 ──────────────────────────────── -->
+            <div class="order-item">
+              <div class="order-item__header">
+                <span class="order-item__name">Black Cod Miso</span>
+                <span class="order-item__price">$38.00</span>
               </div>
-              <span class="pd-recipe__arrow">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-              </span>
-            </a>
+              <div class="order-item__mods">
+                <div class="order-item__mod">
+                  <span class="order-item__mod-symbol order-item__mod-symbol--add">+</span>
+                  <span class="order-item__mod-text">extra miso glaze on the side</span>
+                </div>
+                <div class="order-item__mod">
+                  <span class="order-item__mod-symbol order-item__mod-symbol--note">~</span>
+                  <span class="order-item__mod-text">plate family style if possible</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Item 2 ──────────────────────────────── -->
+            <div class="order-item">
+              <div class="order-item__header">
+                <span class="order-item__name">Yellowtail Jalapeño</span>
+                <span class="order-item__price">$24.00</span>
+              </div>
+              <div class="order-item__mods">
+                <div class="order-item__mod">
+                  <span class="order-item__mod-symbol order-item__mod-symbol--remove">−</span>
+                  <span class="order-item__mod-text">ponzu</span>
+                </div>
+                <div class="order-item__mod">
+                  <span class="order-item__mod-symbol order-item__mod-symbol--add">+</span>
+                  <span class="order-item__mod-text">extra jalapeño</span>
+                </div>
+                <div class="order-item__mod">
+                  <span class="order-item__mod-symbol order-item__mod-symbol--note">~</span>
+                  <span class="order-item__mod-text">extra thin slices if possible</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Item 3 ──────────────────────────────── -->
+            <div class="order-item">
+              <div class="order-item__header">
+                <span class="order-item__name">Dragon Roll</span>
+                <span class="order-item__price">$22.00</span>
+              </div>
+              <div class="order-item__mods">
+                <div class="order-item__mod">
+                  <span class="order-item__mod-symbol order-item__mod-symbol--add">+</span>
+                  <span class="order-item__mod-text">extra avocado</span>
+                  <span class="order-item__mod-price">+$2.50</span>
+                </div>
+                <div class="order-item__mod">
+                  <span class="order-item__mod-symbol order-item__mod-symbol--note">~</span>
+                  <span class="order-item__mod-text">light on the eel sauce</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Total ──────────────────────────────── -->
+            <div class="order-items__total">
+              <span class="order-items__total-label">Total</span>
+              <span class="order-items__total-amount">$86.50</span>
+            </div>
+
           </div>
+          <!-- /order-items -->
+
 
           <!-- Comments -->
           <div class="comments-header">
             <span class="comments-label">Comments</span>
-            <span class="comments-count" id="comments-count-label">8 comments</span>
+            <span class="comments-count" id="comments-count-label">5 comments</span>
           </div>
 
           <div id="comments-list">
@@ -736,14 +806,14 @@
               <div class="comment__body">
                 <p class="comment__text">
                   <span class="comment__author">sofia_k</span>
-                  @yumi.cooks farro! It holds up really well in the fridge — still has bite on day 4.
+                  This order is iconic. The black cod is everything — so glad you remove the ponzu on the yellowtail too.
                 </p>
-                <span class="comment__time">45m ago</span>
+                <span class="comment__time">1h ago</span>
               </div>
               <button class="comment__delete" aria-label="Delete comment" title="Delete">×</button>
             </div>
 
-            <!-- Comment 2 — other user -->
+            <!-- Comment 2 -->
             <div class="comment">
               <img class="comment__avatar"
                    src="https://i.pravatar.cc/200?img=45"
@@ -751,28 +821,13 @@
               <div class="comment__body">
                 <p class="comment__text">
                   <span class="comment__author">yumi.cooks</span>
-                  Saving this! What grain do you use? It looks like farro but could be barley too.
+                  Do you always skip the ponzu? I feel like it's essential to the dish but maybe I'm wrong.
                 </p>
-                <span class="comment__time">1h ago</span>
+                <span class="comment__time">3h ago</span>
               </div>
             </div>
 
-            <!-- Comment 3 — own, deletable -->
-            <div class="comment" data-own="true">
-              <img class="comment__avatar"
-                   src="https://i.pravatar.cc/200?img=47"
-                   alt="sofia_k">
-              <div class="comment__body">
-                <p class="comment__text">
-                  <span class="comment__author">sofia_k</span>
-                  The protein is baked salmon with a miso glaze — 20 minutes in the oven. So easy.
-                </p>
-                <span class="comment__time">1h ago</span>
-              </div>
-              <button class="comment__delete" aria-label="Delete comment" title="Delete">×</button>
-            </div>
-
-            <!-- Comment 4 -->
+            <!-- Comment 3 — creator reply -->
             <div class="comment">
               <img class="comment__avatar"
                    src="https://i.pravatar.cc/200?img=52"
@@ -780,9 +835,23 @@
               <div class="comment__body">
                 <p class="comment__text">
                   <span class="comment__author">marcoeats</span>
-                  This looks incredible. What's the protein here? I can never get mine to look this clean.
+                  @yumi.cooks I prefer it without — lets the fish speak for itself. Try it once.
                 </p>
-                <span class="comment__time">2h ago</span>
+                <span class="comment__time">4h ago</span>
+              </div>
+            </div>
+
+            <!-- Comment 4 -->
+            <div class="comment">
+              <img class="comment__avatar"
+                   src="https://i.pravatar.cc/200?img=36"
+                   alt="priyakitchen">
+              <div class="comment__body">
+                <p class="comment__text">
+                  <span class="comment__author">priyakitchen</span>
+                  Saving this for my birthday dinner next month. Worth every dollar.
+                </p>
+                <span class="comment__time">1d ago</span>
               </div>
             </div>
 
@@ -794,51 +863,9 @@
               <div class="comment__body">
                 <p class="comment__text">
                   <span class="comment__author">lena.eats</span>
-                  Ok I need this in my life immediately. Do you use the same sauce every week or rotate?
+                  Extra avocado on the dragon roll is a power move. Stealing this whole order.
                 </p>
-                <span class="comment__time">3h ago</span>
-              </div>
-            </div>
-
-            <!-- Comment 6 -->
-            <div class="comment">
-              <img class="comment__avatar"
-                   src="https://i.pravatar.cc/200?img=36"
-                   alt="priyakitchen">
-              <div class="comment__body">
-                <p class="comment__text">
-                  <span class="comment__author">priyakitchen</span>
-                  Meal prep goals honestly. How many days does this keep before it starts to go?
-                </p>
-                <span class="comment__time">4h ago</span>
-              </div>
-            </div>
-
-            <!-- Comment 7 -->
-            <div class="comment">
-              <img class="comment__avatar"
-                   src="https://i.pravatar.cc/200?img=13"
-                   alt="the_baker">
-              <div class="comment__body">
-                <p class="comment__text">
-                  <span class="comment__author">the_baker</span>
-                  I need to get on this routine. Do you prep every Sunday or switch it up?
-                </p>
-                <span class="comment__time">5h ago</span>
-              </div>
-            </div>
-
-            <!-- Comment 8 -->
-            <div class="comment">
-              <img class="comment__avatar"
-                   src="https://i.pravatar.cc/200?img=64"
-                   alt="alexchef">
-              <div class="comment__body">
-                <p class="comment__text">
-                  <span class="comment__author">alexchef</span>
-                  What sauce is that on the bowl? Looks like a tahini dressing but could be miso too.
-                </p>
-                <span class="comment__time">6h ago</span>
+                <span class="comment__time">2d ago</span>
               </div>
             </div>
 
@@ -846,10 +873,10 @@
           <!-- /comments-list -->
 
         </div>
-        <!-- /post-detail__scroll -->
+        <!-- /order-detail__scroll -->
 
 
-        <!-- ── Comment input (locked to bottom of panel) ── -->
+        <!-- Comment input (locked to bottom of panel) -->
         <div class="comment-input-bar">
           <img class="comment-input-bar__avatar"
                src="https://i.pravatar.cc/200?img=47"
@@ -869,13 +896,12 @@
           </button>
         </div>
 
-
       </div>
-      <!-- /post-detail__panel -->
+      <!-- /order-detail__panel -->
 
 
     </div>
-    <!-- /post-detail -->
+    <!-- /order-detail -->
   </div>
   <!-- /app-body -->
 
@@ -885,7 +911,7 @@
   ═══════════════════════════════════════════════════════ -->
   <nav class="app-bottom-nav" aria-label="Main navigation">
 
-    <a href="home.html" class="app-bottom-nav__item app-bottom-nav__item--active">
+    <a href="home.html" class="app-bottom-nav__item">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
       </svg>
@@ -918,8 +944,93 @@
 
   <script src="../js/app.js"></script>
   <script>
+
     /* ──────────────────────────────────────────────────────
-       Helpers — shared comment count across both displays
+       Owner vs. visitor — show/hide context-sensitive UI
+       Toggle data-own on #order-panel to switch states.
+    ────────────────────────────────────────────────────── */
+
+    const panel  = document.getElementById('order-panel');
+    const isOwn  = panel.dataset.own === 'true';
+
+    document.querySelectorAll('.order-menu__item--owner').forEach(el => {
+      el.style.display = isOwn ? '' : 'none';
+    });
+    document.querySelectorAll('.order-menu__item--visitor').forEach(el => {
+      el.style.display = isOwn ? 'none' : '';
+    });
+
+    // Hide Save button on your own order
+    const saveBtn = document.getElementById('save-btn');
+    if (isOwn) saveBtn.style.display = 'none';
+
+    /* ──────────────────────────────────────────────────────
+       Save toggle
+    ────────────────────────────────────────────────────── */
+
+    let saveCount = 74;
+    const saveCountEl = document.getElementById('save-count');
+    const saveLabel   = document.getElementById('save-label');
+    const saveIcon    = document.getElementById('save-icon');
+
+    saveBtn.addEventListener('click', () => {
+      const saved = saveBtn.classList.contains('order-save-btn--saved');
+      saveBtn.classList.toggle('order-save-btn--saved');
+      saveBtn.setAttribute('aria-pressed', String(!saved));
+
+      if (!saved) {
+        saveCount++;
+        saveLabel.textContent = 'Saved';
+        saveIcon.setAttribute('fill', 'currentColor');
+      } else {
+        saveCount--;
+        saveLabel.textContent = 'Save';
+        saveIcon.setAttribute('fill', 'none');
+      }
+
+      saveCountEl.textContent = `${saveCount} saves`;
+    });
+
+    /* ──────────────────────────────────────────────────────
+       Share — copy link to clipboard with brief feedback
+    ────────────────────────────────────────────────────── */
+
+    const shareBtn = document.getElementById('share-btn');
+
+    shareBtn.addEventListener('click', () => {
+      navigator.clipboard?.writeText(window.location.href);
+      const shareSVG = shareBtn.innerHTML;
+      shareBtn.textContent = 'Copied!';
+      setTimeout(() => { shareBtn.innerHTML = shareSVG; }, 1500);
+    });
+
+    /* ──────────────────────────────────────────────────────
+       ••• Menu
+    ────────────────────────────────────────────────────── */
+
+    const menuBtn      = document.getElementById('order-menu-btn');
+    const menuDropdown = document.getElementById('order-menu-dropdown');
+
+    menuBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = menuDropdown.classList.toggle('order-menu__dropdown--open');
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+
+    document.addEventListener('click', () => {
+      menuDropdown.classList.remove('order-menu__dropdown--open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        menuDropdown.classList.remove('order-menu__dropdown--open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    /* ──────────────────────────────────────────────────────
+       Comments — count helpers
     ────────────────────────────────────────────────────── */
 
     function getCommentCount() {
@@ -927,56 +1038,13 @@
     }
 
     function updateCommentCount() {
-      const n = getCommentCount();
+      const n    = getCommentCount();
       const text = `${n} comment${n !== 1 ? 's' : ''}`;
-      document.getElementById('comment-count-display').textContent = text;
-      document.getElementById('comments-count-label').textContent  = text;
+      document.getElementById('comments-count-label').textContent = text;
     }
 
     /* ──────────────────────────────────────────────────────
-       Like toggle
-    ────────────────────────────────────────────────────── */
-
-    const likeBtn = document.querySelector('.pd-like-btn');
-
-    likeBtn.addEventListener('click', () => {
-      const liked   = likeBtn.classList.contains('pd-like-btn--liked');
-      const countEl = likeBtn.querySelector('.pd-like-count');
-      const current = parseInt(countEl.textContent.replace(/,/g, ''), 10);
-
-      likeBtn.classList.toggle('pd-like-btn--liked');
-      likeBtn.setAttribute('aria-pressed', String(!liked));
-      likeBtn.setAttribute('aria-label',   liked ? 'Like' : 'Unlike');
-      countEl.textContent = (liked ? current - 1 : current + 1).toLocaleString();
-    });
-
-    /* ──────────────────────────────────────────────────────
-       ••• Menu
-    ────────────────────────────────────────────────────── */
-
-    const menuBtn      = document.getElementById('post-menu-btn');
-    const menuDropdown = document.getElementById('post-menu-dropdown');
-
-    menuBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      const open = menuDropdown.classList.toggle('post-menu__dropdown--open');
-      menuBtn.setAttribute('aria-expanded', String(open));
-    });
-
-    document.addEventListener('click', () => {
-      menuDropdown.classList.remove('post-menu__dropdown--open');
-      menuBtn.setAttribute('aria-expanded', 'false');
-    });
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        menuDropdown.classList.remove('post-menu__dropdown--open');
-        menuBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    /* ──────────────────────────────────────────────────────
-       Delete own comment — collapse animation then remove
+       Delete own comment
     ────────────────────────────────────────────────────── */
 
     function wireDeleteBtn(btn) {
@@ -996,22 +1064,29 @@
        Comment input — show submit on typing, post on submit
     ────────────────────────────────────────────────────── */
 
-    const field      = document.getElementById('comment-field');
-    const submitBtn  = document.getElementById('comment-submit');
-    const list       = document.getElementById('comments-list');
+    const field     = document.getElementById('comment-field');
+    const submitBtn = document.getElementById('comment-submit');
+    const list      = document.getElementById('comments-list');
 
     field.addEventListener('input', () => {
       const hasText = field.value.trim().length > 0;
       submitBtn.classList.toggle('comment-input-bar__submit--active', hasText);
     });
 
+    function escapeHTML(str) {
+      return str
+        .replace(/&/g,  '&amp;')
+        .replace(/</g,  '&lt;')
+        .replace(/>/g,  '&gt;')
+        .replace(/"/g,  '&quot;');
+    }
+
     function postComment() {
       const text = field.value.trim();
       if (!text) return;
 
-      /* Build new comment element */
       const div = document.createElement('div');
-      div.className  = 'comment';
+      div.className   = 'comment';
       div.dataset.own = 'true';
       div.innerHTML = `
         <img class="comment__avatar"
@@ -1026,20 +1101,13 @@
         </div>
         <button class="comment__delete" aria-label="Delete comment" title="Delete">×</button>`;
 
-      /* Prepend so new comments appear at the top */
-      list.insertBefore(div, list.firstChild);
-
-      /* Wire up the delete button on the new comment */
       wireDeleteBtn(div.querySelector('.comment__delete'));
 
-      /* Reset field */
+      list.appendChild(div);
       field.value = '';
       submitBtn.classList.remove('comment-input-bar__submit--active');
-
       updateCommentCount();
-
-      /* Scroll panel to top so the new comment is visible */
-      document.getElementById('scroll-area').scrollTo({ top: 0, behavior: 'smooth' });
+      div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     submitBtn.addEventListener('click', postComment);
@@ -1051,17 +1119,6 @@
       }
     });
 
-    /* Sanitise user input before injecting into the DOM */
-    function escapeHTML(str) {
-      return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
   </script>
-
 </body>
 </html>

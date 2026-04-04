@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>We Eat — Eat Together. Cook Together. Share Everything.</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <style>
+
+    /* ════════════════════════════════════════════════════════
+       LANDING NAV
+    ════════════════════════════════════════════════════════ */
+
+    .lp-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: var(--z-header);
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-inline: var(--page-padding);
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .lp-nav--scrolled {
+      background-color: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .lp-nav__logo {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+      color: var(--color-white);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .lp-nav--scrolled .lp-nav__logo {
+      color: var(--color-black);
+    }
+
+    .lp-nav__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .lp-nav__login {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: color 0.3s;
+      padding: var(--space-2) var(--space-4);
+    }
+
+    .lp-nav__login:hover { color: var(--color-white); }
+
+    .lp-nav--scrolled .lp-nav__login {
+      color: var(--color-text-secondary);
+    }
+
+    .lp-nav--scrolled .lp-nav__login:hover {
+      color: var(--color-text-primary);
+    }
+
+    .lp-nav__cta {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      background-color: var(--color-white);
+      color: var(--color-black);
+      padding: var(--space-2) var(--space-5);
+      text-decoration: none;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .lp-nav--scrolled .lp-nav__cta {
+      background-color: var(--color-black);
+      color: var(--color-white);
+    }
+
+    .lp-nav__cta:hover {
+      background-color: var(--color-accent);
+      color: var(--color-black);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       HERO
+    ════════════════════════════════════════════════════════ */
+
+    .hero {
+      min-height: 100vh;
+      background-color: var(--color-black);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: var(--space-20);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative grid lines */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+    }
+
+    /* Accent glow */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 60vw;
+      height: 60vw;
+      background: radial-gradient(ellipse at center, rgba(242,196,56,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero__inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero__eyebrow {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: var(--space-6);
+    }
+
+    .hero__title {
+      font-size: clamp(3.5rem, 9vw, var(--font-size-display));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 0.95;
+      color: var(--color-white);
+      margin-bottom: var(--space-8);
+      max-width: 900px;
+    }
+
+    .hero__title em {
+      font-style: normal;
+      color: var(--color-accent);
+    }
+
+    .hero__sub {
+      font-size: clamp(var(--font-size-base), 2vw, var(--font-size-md));
+      font-weight: var(--font-weight-regular);
+      color: rgba(255,255,255,0.55);
+      line-height: var(--line-height-relaxed);
+      max-width: 520px;
+      margin-bottom: var(--space-10);
+    }
+
+    .hero__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .hero__btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      background-color: var(--color-accent);
+      color: var(--color-black);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      padding: var(--space-4) var(--space-8);
+      text-decoration: none;
+      transition: background-color var(--transition-fast);
+    }
+
+    .hero__btn-primary:hover {
+      background-color: var(--color-accent-hover);
+    }
+
+    .hero__btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .hero__btn-secondary:hover {
+      color: var(--color-white);
+      border-color: rgba(255,255,255,0.6);
+    }
+
+    .hero__scroll {
+      position: absolute;
+      bottom: var(--space-8);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      color: rgba(255,255,255,0.3);
+      font-size: 10px;
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      font-weight: var(--font-weight-semibold);
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       STATS BAR
+    ════════════════════════════════════════════════════════ */
+
+    .stats-bar {
+      background-color: var(--color-accent);
+      padding-block: var(--space-6);
+    }
+
+    .stats-bar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .stat {
+      flex: 1;
+      text-align: center;
+      padding: var(--space-4) var(--space-6);
+      border-right: 1px solid rgba(0,0,0,0.1);
+      max-width: 260px;
+    }
+
+    .stat:last-child {
+      border-right: none;
+    }
+
+    .stat__number {
+      font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-2xl));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      color: var(--color-black);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat__label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.55);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FEATURES — 3 COLUMN GRID
+    ════════════════════════════════════════════════════════ */
+
+    .features {
+      padding-block: var(--space-24) var(--space-20);
+      background-color: var(--color-white);
+    }
+
+    .features__header {
+      margin-bottom: var(--space-16);
+    }
+
+    .features__eyebrow {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-4);
+    }
+
+    .features__title {
+      font-size: clamp(2rem, 4vw, var(--font-size-2xl));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.0;
+      max-width: 600px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background-color: var(--color-border);
+      border: 1px solid var(--color-border);
+    }
+
+    .feature-card {
+      background-color: var(--color-white);
+      padding: var(--space-10) var(--space-8);
+      position: relative;
+      transition: background-color var(--transition-base);
+    }
+
+    .feature-card:hover {
+      background-color: var(--color-bg-subtle);
+    }
+
+    .feature-card__number {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-8);
+    }
+
+    .feature-card__icon {
+      width: 40px;
+      height: 40px;
+      background-color: var(--color-accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-6);
+    }
+
+    .feature-card__icon svg {
+      width: 20px;
+      height: 20px;
+      color: var(--color-black);
+    }
+
+    .feature-card__title {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: var(--space-4);
+    }
+
+    .feature-card__desc {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--line-height-relaxed);
+    }
+
+    @media (max-width: 860px) {
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       HOW IT WORKS — EDITORIAL DARK SECTION
+    ════════════════════════════════════════════════════════ */
+
+    .how {
+      background-color: var(--color-black);
+      color: var(--color-white);
+      padding-block: var(--space-24);
+    }
+
+    .how__header {
+      margin-bottom: var(--space-16);
+    }
+
+    .how__eyebrow {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: var(--space-4);
+    }
+
+    .how__title {
+      font-size: clamp(2rem, 4vw, var(--font-size-2xl));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.0;
+      color: var(--color-white);
+    }
+
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .how-step {
+      padding: var(--space-10) var(--space-8);
+      border-right: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+    }
+
+    .how-step:last-child { border-right: none; }
+
+    .how-step__num {
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1;
+      color: rgba(255,255,255,0.07);
+      margin-bottom: var(--space-6);
+    }
+
+    .how-step__title {
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: -0.015em;
+      color: var(--color-white);
+      margin-bottom: var(--space-3);
+    }
+
+    .how-step__desc {
+      font-size: var(--font-size-sm);
+      color: rgba(255,255,255,0.45);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .how-step__accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 40px;
+      background-color: var(--color-accent);
+    }
+
+    @media (max-width: 860px) {
+      .how-steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .how-step {
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .how-steps {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       SHOWCASE — APP PREVIEW MOCKUP
+    ════════════════════════════════════════════════════════ */
+
+    .showcase {
+      background-color: var(--color-bg-subtle);
+      padding-block: var(--space-24);
+      overflow: hidden;
+    }
+
+    .showcase__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+      align-items: center;
+    }
+
+    .showcase__copy {}
+
+    .showcase__eyebrow {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-4);
+    }
+
+    .showcase__title {
+      font-size: clamp(2rem, 3.5vw, var(--font-size-2xl));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.0;
+      margin-bottom: var(--space-6);
+    }
+
+    .showcase__body {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--line-height-relaxed);
+      margin-bottom: var(--space-8);
+      max-width: 400px;
+    }
+
+    .showcase__list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin-bottom: var(--space-10);
+    }
+
+    .showcase__list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-primary);
+    }
+
+    .showcase__list-item::before {
+      content: '';
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      background-color: var(--color-accent);
+      display: block;
+      margin-top: 2px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 10px;
+    }
+
+    /* Mockup */
+    .showcase__mockup {
+      position: relative;
+    }
+
+    .mockup-phone {
+      background-color: var(--color-black);
+      border-radius: 28px;
+      padding: 12px;
+      max-width: 300px;
+      margin: 0 auto;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.35);
+    }
+
+    .mockup-phone__screen {
+      background-color: var(--color-white);
+      border-radius: 20px;
+      overflow: hidden;
+      aspect-ratio: 9/19;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mockup-screen__bar {
+      background-color: var(--color-black);
+      height: 36px;
+      display: flex;
+      align-items: center;
+      padding-inline: var(--space-4);
+      gap: var(--space-2);
+      flex-shrink: 0;
+    }
+
+    .mockup-screen__logo {
+      font-size: 11px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: -0.04em;
+      color: var(--color-white);
+      text-transform: uppercase;
+    }
+
+    .mockup-screen__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--color-accent);
+      margin-left: auto;
+    }
+
+    .mockup-feed {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .mockup-post {
+      border-bottom: 1px solid var(--color-border);
+      padding: var(--space-3);
+    }
+
+    .mockup-post__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+
+    .mockup-post__avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background-color: var(--color-bg-subtle);
+      flex-shrink: 0;
+    }
+
+    .mockup-post__name {
+      font-size: 8px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+    }
+
+    .mockup-post__image {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background-color: var(--color-bg-subtle);
+      margin-bottom: var(--space-2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mockup-post__image-fill {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .mockup-post__caption {
+      font-size: 7px;
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+    }
+
+    .mockup-post__caption strong {
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .mockup-actions {
+      display: flex;
+      gap: var(--space-3);
+      margin-top: var(--space-2);
+    }
+
+    .mockup-action {
+      width: 14px;
+      height: 10px;
+      background-color: var(--color-bg-subtle);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 860px) {
+      .showcase__layout {
+        grid-template-columns: 1fr;
+      }
+      .mockup-phone {
+        max-width: 260px;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RANKS TEASER
+    ════════════════════════════════════════════════════════ */
+
+    .ranks {
+      padding-block: var(--space-24);
+      background-color: var(--color-white);
+    }
+
+    .ranks__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-20);
+      align-items: center;
+    }
+
+    .ranks__eyebrow {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-4);
+    }
+
+    .ranks__title {
+      font-size: clamp(2rem, 3.5vw, var(--font-size-2xl));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.0;
+      margin-bottom: var(--space-6);
+    }
+
+    .ranks__body {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--line-height-relaxed);
+      margin-bottom: var(--space-8);
+    }
+
+    .rank-tiers {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background-color: var(--color-border);
+      border: 1px solid var(--color-border);
+    }
+
+    .rank-tier {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-4) var(--space-5);
+      background-color: var(--color-white);
+      transition: background-color var(--transition-fast);
+    }
+
+    .rank-tier:hover { background-color: var(--color-bg-subtle); }
+
+    .rank-tier__badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .rank-tier__info { flex: 1; }
+
+    .rank-tier__name {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .rank-tier__req {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    .rank-tier__bar-wrap {
+      width: 80px;
+    }
+
+    .rank-tier__bar {
+      height: 3px;
+      background-color: var(--color-border);
+    }
+
+    .rank-tier__bar-fill {
+      height: 100%;
+      background-color: var(--color-accent);
+    }
+
+    @media (max-width: 860px) {
+      .ranks__layout { grid-template-columns: 1fr; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       QUOTE / SOCIAL PROOF
+    ════════════════════════════════════════════════════════ */
+
+    .proof {
+      background-color: var(--color-black);
+      color: var(--color-white);
+      padding-block: var(--space-24);
+    }
+
+    .proof__inner {
+      max-width: 860px;
+      margin-inline: auto;
+      text-align: center;
+    }
+
+    .proof__quote {
+      font-size: clamp(var(--font-size-lg), 3vw, var(--font-size-2xl));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: var(--color-white);
+      margin-bottom: var(--space-8);
+    }
+
+    .proof__quote em {
+      font-style: normal;
+      color: var(--color-accent);
+    }
+
+    .proof__source {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .proof__avatars {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-6);
+    }
+
+    .proof__avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--color-black);
+      background-color: var(--color-bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      margin-left: -10px;
+    }
+
+    .proof__avatar:first-child { margin-left: 0; }
+
+    .proof__count {
+      margin-left: var(--space-3);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FINAL CTA
+    ════════════════════════════════════════════════════════ */
+
+    .cta-final {
+      background-color: var(--color-accent);
+      padding-block: var(--space-24);
+    }
+
+    .cta-final__inner {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-12);
+    }
+
+    .cta-final__eyebrow {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.45);
+      margin-bottom: var(--space-4);
+    }
+
+    .cta-final__title {
+      font-size: clamp(2.5rem, 5vw, var(--font-size-3xl));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 0.95;
+      color: var(--color-black);
+    }
+
+    .cta-final__actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: var(--space-3);
+      flex-shrink: 0;
+    }
+
+    .cta-final__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      background-color: var(--color-black);
+      color: var(--color-white);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      padding: var(--space-4) var(--space-10);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background-color var(--transition-fast);
+    }
+
+    .cta-final__btn:hover { background-color: #333; }
+
+    .cta-final__note {
+      font-size: var(--font-size-xs);
+      color: rgba(0,0,0,0.5);
+      font-weight: var(--font-weight-medium);
+    }
+
+    @media (max-width: 768px) {
+      .cta-final__inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .cta-final__actions {
+        align-items: flex-start;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════════════════════ */
+
+    .lp-footer {
+      background-color: var(--color-black);
+      color: rgba(255,255,255,0.4);
+      padding-block: var(--space-10);
+    }
+
+    .lp-footer__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-6);
+    }
+
+    .lp-footer__brand {
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+      color: var(--color-white);
+    }
+
+    .lp-footer__links {
+      display: flex;
+      gap: var(--space-6);
+    }
+
+    .lp-footer__link {
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+
+    .lp-footer__link:hover { color: var(--color-white); }
+
+    .lp-footer__copy {
+      font-size: 10px;
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    @media (max-width: 640px) {
+      .lp-footer__inner {
+        flex-direction: column;
+        text-align: center;
+      }
+      .lp-footer__links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════
+       NAV
+  ══════════════════════════════════════════════════════ -->
+  <nav class="lp-nav" id="lp-nav">
+    <a href="index.html" class="lp-nav__logo">We Eat</a>
+    <div class="lp-nav__actions">
+      <a href="login.html" class="lp-nav__login">Log In</a>
+      <a href="signup.html" class="lp-nav__cta">Start for Free</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="page-container hero__inner">
+      <p class="hero__eyebrow">The Food Social Network</p>
+      <h1 class="hero__title">
+        Cook it.<br>
+        Share it.<br>
+        <em>Eat together.</em>
+      </h1>
+      <p class="hero__sub">
+        We Eat is where food lovers discover recipes, share their meals, plan their week, and build a kitchen culture worth following.
+      </p>
+      <div class="hero__actions">
+        <a href="signup.html" class="hero__btn-primary">
+          Get Started Free
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="app/explore.html" class="hero__btn-secondary">
+          Browse Recipes
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="hero__scroll">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      Scroll
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       STATS BAR
+  ══════════════════════════════════════════════════════ -->
+  <div class="stats-bar">
+    <div class="page-container stats-bar__inner">
+      <div class="stat">
+        <div class="stat__number">2.4M+</div>
+        <div class="stat__label">Recipes Shared</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">840K</div>
+        <div class="stat__label">Active Cooks</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">99</div>
+        <div class="stat__label">Cuisine Types</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       FEATURES
+  ══════════════════════════════════════════════════════ -->
+  <section class="features">
+    <div class="page-container">
+      <div class="features__header">
+        <p class="features__eyebrow">Why We Eat</p>
+        <h2 class="features__title">Everything you need around food — in one place.</h2>
+      </div>
+      <div class="feature-grid">
+
+        <div class="feature-card">
+          <p class="feature-card__number">01</p>
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <h3 class="feature-card__title">Discover What to Cook Tonight</h3>
+          <p class="feature-card__desc">Browse a living feed of real meals from real kitchens. Filter by cuisine, diet, prep time — or just let the algorithm surprise you.</p>
+        </div>
+
+        <div class="feature-card">
+          <p class="feature-card__number">02</p>
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="feature-card__title">Follow Cooks You Actually Trust</h3>
+          <p class="feature-card__desc">We Eat is built on community. Follow home cooks and chefs, like posts, save recipes to your cookbook, and build your own following.</p>
+        </div>
+
+        <div class="feature-card">
+          <p class="feature-card__number">03</p>
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="0" ry="0"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h3 class="feature-card__title">Plan Your Meals for the Week</h3>
+          <p class="feature-card__desc">Drop recipes into your weekly planner, auto-generate a shopping list, and never ask "what's for dinner?" again.</p>
+        </div>
+
+        <div class="feature-card">
+          <p class="feature-card__number">04</p>
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </div>
+          <h3 class="feature-card__title">Save Recipes in Your Cookbook</h3>
+          <p class="feature-card__desc">Every recipe you love lives in your personal cookbook. Organize by collection, tag by ingredient, and cook from it again and again.</p>
+        </div>
+
+        <div class="feature-card">
+          <p class="feature-card__number">05</p>
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h3 class="feature-card__title">Order Ingredients Directly</h3>
+          <p class="feature-card__desc">Turn any recipe into a grocery order in seconds. Add missing ingredients to your cart without ever leaving We Eat.</p>
+        </div>
+
+        <div class="feature-card">
+          <p class="feature-card__number">06</p>
+          <div class="feature-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3 class="feature-card__title">Earn Ranks as You Cook</h3>
+          <p class="feature-card__desc">Rise from Home Cook to Executive Chef. Every post, recipe, and interaction earns XP that levels up your rank on We Eat.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       HOW IT WORKS
+  ══════════════════════════════════════════════════════ -->
+  <section class="how">
+    <div class="page-container">
+      <div class="how__header">
+        <p class="how__eyebrow">Get Started in Minutes</p>
+        <h2 class="how__title">From zero to your first post.</h2>
+      </div>
+      <div class="how-steps">
+
+        <div class="how-step">
+          <div class="how-step__accent"></div>
+          <div class="how-step__num">01</div>
+          <h4 class="how-step__title">Create Your Profile</h4>
+          <p class="how-step__desc">Sign up for free. Tell us your favorite cuisines and dietary preferences so your feed feels personal from day one.</p>
+        </div>
+
+        <div class="how-step">
+          <div class="how-step__accent"></div>
+          <div class="how-step__num">02</div>
+          <h4 class="how-step__title">Explore the Feed</h4>
+          <p class="how-step__desc">Scroll through your curated feed. Follow cooks that inspire you and save recipes that make your mouth water.</p>
+        </div>
+
+        <div class="how-step">
+          <div class="how-step__accent"></div>
+          <div class="how-step__num">03</div>
+          <h4 class="how-step__title">Post Your First Meal</h4>
+          <p class="how-step__desc">Snap a photo, add a caption and tag the recipe. Your first post earns your first XP and puts you on the map.</p>
+        </div>
+
+        <div class="how-step">
+          <div class="how-step__accent"></div>
+          <div class="how-step__num">04</div>
+          <h4 class="how-step__title">Build Your Kitchen</h4>
+          <p class="how-step__desc">Grow your cookbook, plan your week, order ingredients, and level up your rank as your food life comes together.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       APP SHOWCASE
+  ══════════════════════════════════════════════════════ -->
+  <section class="showcase">
+    <div class="page-container">
+      <div class="showcase__layout">
+
+        <div class="showcase__copy">
+          <p class="showcase__eyebrow">Your Feed, Your Taste</p>
+          <h2 class="showcase__title">A feed that feeds you.</h2>
+          <p class="showcase__body">
+            We Eat's home feed adapts to what you cook, what you like, and who you follow. The more you interact, the more it gets you.
+          </p>
+          <ul class="showcase__list">
+            <li class="showcase__list-item">Curated by your taste profile and cooking habits</li>
+            <li class="showcase__list-item">Posts from people you follow, served first</li>
+            <li class="showcase__list-item">Full recipes embedded in-feed — no redirects</li>
+            <li class="showcase__list-item">Save anything with one tap to your cookbook</li>
+          </ul>
+          <a href="app/home.html" class="btn btn-primary btn-lg">See the Feed</a>
+        </div>
+
+        <!-- Phone mockup -->
+        <div class="showcase__mockup">
+          <div class="mockup-phone">
+            <div class="mockup-phone__screen">
+              <div class="mockup-screen__bar">
+                <span class="mockup-screen__logo">We Eat</span>
+                <span class="mockup-screen__dot"></span>
+              </div>
+              <div class="mockup-feed">
+
+                <div class="mockup-post">
+                  <div class="mockup-post__header">
+                    <div class="mockup-post__avatar" style="background:#f2c438;"></div>
+                    <span class="mockup-post__name">Maria C. &nbsp;·&nbsp; Chef III</span>
+                  </div>
+                  <div class="mockup-post__image">
+                    <div class="mockup-post__image-fill" style="background: linear-gradient(135deg,#fde68a,#f59e0b);">🍝</div>
+                  </div>
+                  <p class="mockup-post__caption"><strong>Lemon Butter Pasta</strong> — made this in 20 min, it's unreal</p>
+                  <div class="mockup-actions">
+                    <div class="mockup-action"></div>
+                    <div class="mockup-action"></div>
+                    <div class="mockup-action"></div>
+                  </div>
+                </div>
+
+                <div class="mockup-post">
+                  <div class="mockup-post__header">
+                    <div class="mockup-post__avatar" style="background:#a7f3d0;"></div>
+                    <span class="mockup-post__name">Dev K. &nbsp;·&nbsp; Home Cook</span>
+                  </div>
+                  <div class="mockup-post__image">
+                    <div class="mockup-post__image-fill" style="background: linear-gradient(135deg,#d1fae5,#34d399);">🥗</div>
+                  </div>
+                  <p class="mockup-post__caption"><strong>Summer Bowl</strong> — grains, roasted veg, tahini dressing</p>
+                  <div class="mockup-actions">
+                    <div class="mockup-action"></div>
+                    <div class="mockup-action"></div>
+                    <div class="mockup-action"></div>
+                  </div>
+                </div>
+
+                <div class="mockup-post">
+                  <div class="mockup-post__header">
+                    <div class="mockup-post__avatar" style="background:#fecaca;"></div>
+                    <span class="mockup-post__name">Jas T. &nbsp;·&nbsp; Sous Chef</span>
+                  </div>
+                  <div class="mockup-post__image">
+                    <div class="mockup-post__image-fill" style="background: linear-gradient(135deg,#fee2e2,#f87171);">🍕</div>
+                  </div>
+                  <p class="mockup-post__caption"><strong>Sourdough Margherita</strong> — 72hr ferment, worth it</p>
+                  <div class="mockup-actions">
+                    <div class="mockup-action"></div>
+                    <div class="mockup-action"></div>
+                    <div class="mockup-action"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       RANKS TEASER
+  ══════════════════════════════════════════════════════ -->
+  <section class="ranks">
+    <div class="page-container">
+      <div class="ranks__layout">
+
+        <div>
+          <p class="ranks__eyebrow">The Rank System</p>
+          <h2 class="ranks__title">Start as a Home Cook. Rise to Executive Chef.</h2>
+          <p class="ranks__body">
+            Every post, every saved recipe, every meal planned earns XP. Watch your kitchen credentials grow as you engage with the community.
+          </p>
+          <a href="app/ranks.html" class="btn btn-secondary btn-lg">View All Ranks</a>
+        </div>
+
+        <div class="rank-tiers">
+          <div class="rank-tier">
+            <div class="rank-tier__badge" style="background:#f4f4f4;">🥄</div>
+            <div class="rank-tier__info">
+              <div class="rank-tier__name">Home Cook</div>
+              <div class="rank-tier__req">0 – 499 XP · Starting rank</div>
+            </div>
+            <div class="rank-tier__bar-wrap">
+              <div class="rank-tier__bar"><div class="rank-tier__bar-fill" style="width:15%"></div></div>
+            </div>
+          </div>
+          <div class="rank-tier">
+            <div class="rank-tier__badge" style="background:#fef9c3;">🧑‍🍳</div>
+            <div class="rank-tier__info">
+              <div class="rank-tier__name">Prep Cook</div>
+              <div class="rank-tier__req">500 – 1,499 XP</div>
+            </div>
+            <div class="rank-tier__bar-wrap">
+              <div class="rank-tier__bar"><div class="rank-tier__bar-fill" style="width:30%"></div></div>
+            </div>
+          </div>
+          <div class="rank-tier">
+            <div class="rank-tier__badge" style="background:#dcfce7;">🍳</div>
+            <div class="rank-tier__info">
+              <div class="rank-tier__name">Line Cook</div>
+              <div class="rank-tier__req">1,500 – 3,999 XP</div>
+            </div>
+            <div class="rank-tier__bar-wrap">
+              <div class="rank-tier__bar"><div class="rank-tier__bar-fill" style="width:50%"></div></div>
+            </div>
+          </div>
+          <div class="rank-tier">
+            <div class="rank-tier__badge" style="background:#e0f2fe;">👨‍🍳</div>
+            <div class="rank-tier__info">
+              <div class="rank-tier__name">Sous Chef</div>
+              <div class="rank-tier__req">4,000 – 7,999 XP</div>
+            </div>
+            <div class="rank-tier__bar-wrap">
+              <div class="rank-tier__bar"><div class="rank-tier__bar-fill" style="width:68%"></div></div>
+            </div>
+          </div>
+          <div class="rank-tier">
+            <div class="rank-tier__badge" style="background:#fce7f3;">👑</div>
+            <div class="rank-tier__info">
+              <div class="rank-tier__name">Executive Chef</div>
+              <div class="rank-tier__req">8,000+ XP · Top tier</div>
+            </div>
+            <div class="rank-tier__bar-wrap">
+              <div class="rank-tier__bar"><div class="rank-tier__bar-fill" style="width:100%"></div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       SOCIAL PROOF
+  ══════════════════════════════════════════════════════ -->
+  <section class="proof">
+    <div class="page-container">
+      <div class="proof__inner">
+        <div class="proof__avatars">
+          <div class="proof__avatar">👩‍🍳</div>
+          <div class="proof__avatar">🧑‍🍳</div>
+          <div class="proof__avatar">👨‍🍳</div>
+          <div class="proof__avatar">🍴</div>
+          <div class="proof__avatar">🥘</div>
+          <span class="proof__count">+840,000 cooks</span>
+        </div>
+        <blockquote class="proof__quote">
+          "We Eat changed how I think about cooking. My feed is full of <em>real food</em> from real people — not just influencer content."
+        </blockquote>
+        <p class="proof__source">— Maria C., Executive Chef · We Eat community member</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       FINAL CTA
+  ══════════════════════════════════════════════════════ -->
+  <section class="cta-final">
+    <div class="page-container">
+      <div class="cta-final__inner">
+        <div>
+          <p class="cta-final__eyebrow">Free Forever to Start</p>
+          <h2 class="cta-final__title">Ready to<br>Eat Together?</h2>
+        </div>
+        <div class="cta-final__actions">
+          <a href="signup.html" class="cta-final__btn">
+            Create Free Account
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <p class="cta-final__note">No credit card required. Start posting in minutes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════ -->
+  <footer class="lp-footer">
+    <div class="page-container lp-footer__inner">
+      <span class="lp-footer__brand">We Eat</span>
+      <nav class="lp-footer__links">
+        <a href="#" class="lp-footer__link">About</a>
+        <a href="#" class="lp-footer__link">Careers</a>
+        <a href="#" class="lp-footer__link">Privacy</a>
+        <a href="#" class="lp-footer__link">Terms</a>
+        <a href="style-guide.html" class="lp-footer__link">Style Guide</a>
+      </nav>
+      <span class="lp-footer__copy">© 2026 We Eat</span>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky nav style on scroll
+    const nav = document.getElementById('lp-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('lp-nav--scrolled', window.scrollY > 40);
+    });
+  </script>
+
+</body>
+</html>
