@@ -304,20 +304,21 @@
       justify-content: center;
       gap: var(--space-3);
       padding: var(--space-4) var(--space-6);
-      background-color: var(--color-black);
-      color: var(--color-white);
+      background-color: var(--color-accent);
+      color: var(--color-accent-text);
       font-family: var(--font-primary);
       font-size: var(--font-size-xs);
       font-weight: var(--font-weight-bold);
       letter-spacing: var(--letter-spacing-wider);
       text-transform: uppercase;
       border: none;
+      border-radius: var(--btn-radius);
       cursor: pointer;
       transition: background-color var(--transition-fast);
       margin-bottom: var(--space-6);
     }
 
-    .auth-submit:hover { background-color: #333; }
+    .auth-submit:hover { background-color: var(--color-accent-hover); }
     .auth-submit svg { width: 14px; height: 14px; }
 
     /* Divider */
@@ -358,6 +359,7 @@
       gap: var(--space-2);
       padding: var(--space-3) var(--space-4);
       border: 1px solid var(--color-border-strong);
+      border-radius: var(--btn-radius);
       background-color: var(--color-white);
       font-family: var(--font-primary);
       font-size: var(--font-size-xs);

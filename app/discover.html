@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discover People — We Eat</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <style>
+
+    /* ════════════════════════════════════════════════════════
+       DISCOVER PAGE
+    ═════════��═══════════════════════════════════���══════════ */
+
+    .discover-page {
+      max-width: 900px;
+      margin-inline: auto;
+      padding-block: var(--space-8) var(--space-20);
+    }
+
+    /* ── Page header ───���──────────────────────���──────────── */
+
+    .discover-header {
+      margin-bottom: var(--space-10);
+    }
+
+    .discover-header__eyebrow {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-3);
+    }
+
+    .discover-header__title {
+      font-size: clamp(2rem, 4vw, var(--font-size-2xl));
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .discover-header__subtitle {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--line-height-relaxed);
+      max-width: 480px;
+    }
+
+    /* ── Filter chips ────────────────────────────────────── */
+
+    .discover-filters {
+      display: flex;
+      gap: var(--space-2);
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: var(--space-8);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--space-8);
+    }
+    .discover-filters::-webkit-scrollbar { display: none; }
+
+    .discover-filter {
+      font-family: inherit;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wide);
+      text-transform: uppercase;
+      padding: var(--space-2) var(--space-4);
+      border: 1px solid var(--color-border);
+      background: var(--color-white);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all var(--transition-fast);
+    }
+    .discover-filter:hover {
+      border-color: var(--color-border-strong);
+      color: var(--color-text-primary);
+    }
+    .discover-filter--active {
+      background: var(--color-black);
+      border-color: var(--color-black);
+      color: var(--color-white);
+    }
+
+    /* ── Section layout ────���──────────────────────────────�� */
+
+    .discover-section {
+      margin-bottom: var(--space-12);
+    }
+
+    .discover-section__head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+
+    .discover-section__eyebrow {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-1);
+    }
+
+    .discover-section__title {
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: var(--line-height-tight);
+    }
+
+    /* ── User card grid ──────────────────────────────────── */
+
+    .user-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+
+    @media (max-width: 700px) {
+      .user-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .user-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── User card ─────────���───────────────────────────��─── */
+
+    .user-card {
+      border: 1px solid var(--color-border);
+      padding: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: border-color var(--transition-fast);
+    }
+    .user-card:hover { border-color: var(--color-border-strong); }
+
+    .user-card__avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: var(--space-4);
+    }
+
+    .user-card__name {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+      text-decoration: none;
+      margin-bottom: 2px;
+      transition: opacity var(--transition-fast);
+    }
+    .user-card__name:hover { opacity: 0.7; }
+
+    .user-card__handle {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .user-card__rank {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: var(--color-accent-text);
+      background: var(--color-accent);
+      padding: 2px 8px;
+      margin-bottom: var(--space-4);
+    }
+
+    /* Activity stats */
+    .user-card__stats {
+      display: flex;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+      width: 100%;
+      justify-content: center;
+    }
+
+    .user-card__stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+    }
+
+    .user-card__stat-value {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+      line-height: 1;
+    }
+
+    .user-card__stat-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-medium);
+      letter-spacing: var(--letter-spacing-wide);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* Follow button */
+    .user-card__follow {
+      width: 100%;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      padding: var(--space-2) var(--space-4);
+      border: 1.5px solid var(--color-accent);
+      border-radius: var(--btn-radius);
+      background: var(--color-accent);
+      color: var(--color-accent-text);
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+    }
+    .user-card__follow:hover {
+      background: var(--color-accent-hover);
+      border-color: var(--color-accent-hover);
+    }
+    .user-card__follow--following {
+      background: transparent;
+      border-color: var(--color-accent);
+      color: var(--color-text-primary);
+    }
+    .user-card__follow--following:hover {
+      background: var(--color-accent-light);
+      border-color: var(--color-accent-hover);
+    }
+
+    /* ── Featured user row (top section) ─────────────────── */
+
+    .featured-users {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+
+    @media (max-width: 700px) {
+      .featured-users { grid-template-columns: 1fr; }
+    }
+
+    .featured-user {
+      border: 1px solid var(--color-border);
+      padding: var(--space-6) var(--space-5);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: border-color var(--transition-fast);
+    }
+    .featured-user:hover { border-color: var(--color-border-strong); }
+
+    .featured-user__badge {
+      position: absolute;
+      top: var(--space-3);
+      right: var(--space-3);
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: var(--color-black);
+      background: var(--color-accent);
+      padding: 2px 8px;
+    }
+
+    .featured-user__top {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+
+    .featured-user__avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .featured-user__info {
+      min-width: 0;
+    }
+
+    .featured-user__name {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+      text-decoration: none;
+      transition: opacity var(--transition-fast);
+    }
+    .featured-user__name:hover { opacity: 0.7; }
+
+    .featured-user__handle {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
+    .featured-user__bio {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      line-height: var(--line-height-relaxed);
+      margin-bottom: var(--space-4);
+      flex: 1;
+    }
+
+    .featured-user__stats {
+      display: flex;
+      gap: var(--space-5);
+      margin-bottom: var(--space-4);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .featured-user__stat {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .featured-user__stat-value {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      line-height: 1;
+    }
+
+    .featured-user__stat-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-medium);
+      letter-spacing: var(--letter-spacing-wide);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .featured-user__follow {
+      width: 100%;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      padding: var(--space-2) var(--space-4);
+      border: 1.5px solid var(--color-accent);
+      border-radius: var(--btn-radius);
+      background: var(--color-accent);
+      color: var(--color-accent-text);
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+    }
+    .featured-user__follow:hover {
+      background: var(--color-accent-hover);
+      border-color: var(--color-accent-hover);
+    }
+    .featured-user__follow--following {
+      background: transparent;
+      border-color: var(--color-accent);
+      color: var(--color-text-primary);
+    }
+    .featured-user__follow--following:hover {
+      background: var(--color-accent-light);
+      border-color: var(--color-accent-hover);
+    }
+
+    /* ── Responsive ──────────────────────────────────────── */
+
+    @media (max-width: 480px) {
+      .discover-page {
+        padding-inline: var(--space-4);
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP HEADER
+  ═��═════════════════════════════════════════════════════ -->
+  <header class="app-header">
+    <a href="home.html" class="app-header__logo"><img src="../assets/logo.svg" alt="We Eat"></a>
+
+    <nav class="app-nav">
+      <a href="home.html"    class="app-nav__link">Home</a>
+      <a href="explore.html" class="app-nav__link">Explore</a>
+      <a href="plan.html"    class="app-nav__link">Plan</a>
+
+      <div class="app-nav__create-wrap">
+        <button class="app-nav__create" aria-label="Create" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+        </button>
+        <div class="create-menu" role="menu">
+          <span class="create-menu__label">Create</span>
+          <a href="post-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            Post
+          </a>
+          <a href="recipe-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            Recipe
+          </a>
+          <a href="cookbook-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            Cookbook
+          </a>
+          <div class="create-menu__divider"></div>
+          <a href="order-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Order
+          </a>
+        </div>
+      </div>
+
+      <div class="app-header__icon-wrap">
+        <a href="notifications.html" class="btn-icon app-nav__icon" aria-label="Notifications">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+        </a>
+        <span class="app-header__badge"></span>
+      </div>
+
+      <a href="profile.html" class="btn-icon app-nav__icon" aria-label="Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+        </svg>
+      </a>
+    </nav>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP BODY
+  ════════════════════════���══════════════════════════════ -->
+  <div class="app-body">
+    <div class="page-container">
+      <div class="discover-page">
+
+        <!-- Page header -->
+        <div class="discover-header">
+          <p class="discover-header__eyebrow">Discover</p>
+          <h1 class="discover-header__title">People to Follow</h1>
+          <p class="discover-header__subtitle">Based on activity across recipes, orders, and posts — here are the creators making the most noise on We Eat right now.</p>
+        </div>
+
+        <!-- Filter chips -->
+        <div class="discover-filters">
+          <button class="discover-filter discover-filter--active" data-filter="all">All</button>
+          <button class="discover-filter" data-filter="recipes">Top Recipes</button>
+          <button class="discover-filter" data-filter="orders">Most Orders</button>
+          <button class="discover-filter" data-filter="posts">Most Posts</button>
+          <button class="discover-filter" data-filter="rising">Rising Stars</button>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════════
+             FEATURED — TOP 3 MOST ACTIVE
+        ═══════════════════════════════════════════════════ -->
+        <div class="discover-section">
+          <div class="discover-section__head">
+            <div>
+              <p class="discover-section__eyebrow">This Week</p>
+              <h2 class="discover-section__title">Most Active Creators</h2>
+            </div>
+          </div>
+
+          <div class="featured-users">
+
+            <!-- 1 -->
+            <div class="featured-user">
+              <span class="featured-user__badge">#1</span>
+              <div class="featured-user__top">
+                <img class="featured-user__avatar" src="https://i.pravatar.cc/120?img=3" alt="Yuki S." width="52" height="52">
+                <div class="featured-user__info">
+                  <a href="user.html" class="featured-user__name">Yuki S.</a>
+                  <div class="featured-user__handle">@yukicooks</div>
+                </div>
+              </div>
+              <p class="featured-user__bio">Japanese home cooking with seasonal ingredients. Miso everything.</p>
+              <div class="featured-user__stats">
+                <div class="featured-user__stat">
+                  <span class="featured-user__stat-value">89</span>
+                  <span class="featured-user__stat-label">Recipes</span>
+                </div>
+                <div class="featured-user__stat">
+                  <span class="featured-user__stat-value">234</span>
+                  <span class="featured-user__stat-label">Orders</span>
+                </div>
+                <div class="featured-user__stat">
+                  <span class="featured-user__stat-value">312</span>
+                  <span class="featured-user__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="featured-user__follow" data-follow>Follow</button>
+            </div>
+
+            <!-- 2 -->
+            <div class="featured-user">
+              <span class="featured-user__badge">#2</span>
+              <div class="featured-user__top">
+                <img class="featured-user__avatar" src="https://i.pravatar.cc/120?img=22" alt="Clara M." width="52" height="52">
+                <div class="featured-user__info">
+                  <a href="user.html" class="featured-user__name">Clara M.</a>
+                  <div class="featured-user__handle">@claramaestro</div>
+                </div>
+              </div>
+              <p class="featured-user__bio">Mediterranean soul food. Everything I cook, I learned from my nonna.</p>
+              <div class="featured-user__stats">
+                <div class="featured-user__stat">
+                  <span class="featured-user__stat-value">104</span>
+                  <span class="featured-user__stat-label">Recipes</span>
+                </div>
+                <div class="featured-user__stat">
+                  <span class="featured-user__stat-value">189</span>
+                  <span class="featured-user__stat-label">Orders</span>
+                </div>
+                <div class="featured-user__stat">
+                  <span class="featured-user__stat-value">276</span>
+                  <span class="featured-user__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="featured-user__follow" data-follow>Follow</button>
+            </div>
+
+            <!-- 3 -->
+            <div class="featured-user">
+              <span class="featured-user__badge">#3</span>
+              <div class="featured-user__top">
+                <img class="featured-user__avatar" src="https://i.pravatar.cc/120?img=12" alt="Marcus T." width="52" height="52">
+                <div class="featured-user__info">
+                  <a href="user.html" class="featured-user__name">Marcus T.</a>
+                  <div class="featured-user__handle">@chefmarcus</div>
+                </div>
+              </div>
+              <p class="featured-user__bio">Line cook by day, BBQ obsessive by night. Low and slow is the way.</p>
+              <div class="featured-user__stats">
+                <div class="featured-user__stat">
+                  <span class="featured-user__stat-value">47</span>
+                  <span class="featured-user__stat-label">Recipes</span>
+                </div>
+                <div class="featured-user__stat">
+                  <span class="featured-user__stat-value">156</span>
+                  <span class="featured-user__stat-label">Orders</span>
+                </div>
+                <div class="featured-user__stat">
+                  <span class="featured-user__stat-value">298</span>
+                  <span class="featured-user__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="featured-user__follow" data-follow>Follow</button>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════════
+             RISING STARS
+        ═══════════���════════════════════════════════���══════ -->
+        <div class="discover-section">
+          <div class="discover-section__head">
+            <div>
+              <p class="discover-section__eyebrow">New &amp; Trending</p>
+              <h2 class="discover-section__title">Rising Stars</h2>
+            </div>
+          </div>
+
+          <div class="user-grid">
+
+            <div class="user-card">
+              <img class="user-card__avatar" src="https://i.pravatar.cc/120?img=47" alt="Nia W." width="64" height="64">
+              <a href="user.html" class="user-card__name">Nia W.</a>
+              <div class="user-card__handle">@niabakes</div>
+              <span class="user-card__rank">Home Cook</span>
+              <div class="user-card__stats">
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">14</span>
+                  <span class="user-card__stat-label">Recipes</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">38</span>
+                  <span class="user-card__stat-label">Orders</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">52</span>
+                  <span class="user-card__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="user-card__follow" data-follow>Follow</button>
+            </div>
+
+            <div class="user-card">
+              <img class="user-card__avatar" src="https://i.pravatar.cc/120?img=33" alt="Ravi K." width="64" height="64">
+              <a href="user.html" class="user-card__name">Ravi K.</a>
+              <div class="user-card__handle">@ravispice</div>
+              <span class="user-card__rank">Prep Cook</span>
+              <div class="user-card__stats">
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">9</span>
+                  <span class="user-card__stat-label">Recipes</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">27</span>
+                  <span class="user-card__stat-label">Orders</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">41</span>
+                  <span class="user-card__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="user-card__follow" data-follow>Follow</button>
+            </div>
+
+            <div class="user-card">
+              <img class="user-card__avatar" src="https://i.pravatar.cc/120?img=16" alt="Elise D." width="64" height="64">
+              <a href="user.html" class="user-card__name">Elise D.</a>
+              <div class="user-card__handle">@elisedesserts</div>
+              <span class="user-card__rank">Home Cook</span>
+              <div class="user-card__stats">
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">18</span>
+                  <span class="user-card__stat-label">Recipes</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">45</span>
+                  <span class="user-card__stat-label">Orders</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">33</span>
+                  <span class="user-card__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="user-card__follow" data-follow>Follow</button>
+            </div>
+
+            <div class="user-card">
+              <img class="user-card__avatar" src="https://i.pravatar.cc/120?img=51" alt="Sam L." width="64" height="64">
+              <a href="user.html" class="user-card__name">Sam L.</a>
+              <div class="user-card__handle">@samgrills</div>
+              <span class="user-card__rank">Prep Cook</span>
+              <div class="user-card__stats">
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">7</span>
+                  <span class="user-card__stat-label">Recipes</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">19</span>
+                  <span class="user-card__stat-label">Orders</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">64</span>
+                  <span class="user-card__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="user-card__follow" data-follow>Follow</button>
+            </div>
+
+            <div class="user-card">
+              <img class="user-card__avatar" src="https://i.pravatar.cc/120?img=25" alt="Mei L." width="64" height="64">
+              <a href="user.html" class="user-card__name">Mei L.</a>
+              <div class="user-card__handle">@meidumplings</div>
+              <span class="user-card__rank">Line Cook</span>
+              <div class="user-card__stats">
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">22</span>
+                  <span class="user-card__stat-label">Recipes</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">58</span>
+                  <span class="user-card__stat-label">Orders</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">47</span>
+                  <span class="user-card__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="user-card__follow" data-follow>Follow</button>
+            </div>
+
+            <div class="user-card">
+              <img class="user-card__avatar" src="https://i.pravatar.cc/120?img=41" alt="Oscar F." width="64" height="64">
+              <a href="user.html" class="user-card__name">Oscar F.</a>
+              <div class="user-card__handle">@oscarfuego</div>
+              <span class="user-card__rank">Home Cook</span>
+              <div class="user-card__stats">
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">11</span>
+                  <span class="user-card__stat-label">Recipes</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">32</span>
+                  <span class="user-card__stat-label">Orders</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">29</span>
+                  <span class="user-card__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="user-card__follow" data-follow>Follow</button>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════════
+             POPULAR IN YOUR CUISINES
+        ═════════════════���══════════════════════════════���══ -->
+        <div class="discover-section">
+          <div class="discover-section__head">
+            <div>
+              <p class="discover-section__eyebrow">Based on Your Taste</p>
+              <h2 class="discover-section__title">Popular in Your Cuisines</h2>
+            </div>
+          </div>
+
+          <div class="user-grid">
+
+            <div class="user-card">
+              <img class="user-card__avatar" src="https://i.pravatar.cc/120?img=60" alt="Nina V." width="64" height="64">
+              <a href="user.html" class="user-card__name">Nina V.</a>
+              <div class="user-card__handle">@ninavegan</div>
+              <span class="user-card__rank">Head Chef</span>
+              <div class="user-card__stats">
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">55</span>
+                  <span class="user-card__stat-label">Recipes</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">112</span>
+                  <span class="user-card__stat-label">Orders</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">198</span>
+                  <span class="user-card__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="user-card__follow" data-follow>Follow</button>
+            </div>
+
+            <div class="user-card">
+              <img class="user-card__avatar" src="https://i.pravatar.cc/120?img=5" alt="Jordan B." width="64" height="64">
+              <a href="user.html" class="user-card__name">Jordan B.</a>
+              <div class="user-card__handle">@jordanbeats</div>
+              <span class="user-card__rank">Sous Chef</span>
+              <div class="user-card__stats">
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">31</span>
+                  <span class="user-card__stat-label">Recipes</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">87</span>
+                  <span class="user-card__stat-label">Orders</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">143</span>
+                  <span class="user-card__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="user-card__follow" data-follow>Follow</button>
+            </div>
+
+            <div class="user-card">
+              <img class="user-card__avatar" src="https://i.pravatar.cc/120?img=19" alt="Lena C." width="64" height="64">
+              <a href="user.html" class="user-card__name">Lena C.</a>
+              <div class="user-card__handle">@lenacooks</div>
+              <span class="user-card__rank">Line Cook</span>
+              <div class="user-card__stats">
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">8</span>
+                  <span class="user-card__stat-label">Recipes</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">44</span>
+                  <span class="user-card__stat-label">Orders</span>
+                </div>
+                <div class="user-card__stat">
+                  <span class="user-card__stat-value">67</span>
+                  <span class="user-card__stat-label">Posts</span>
+                </div>
+              </div>
+              <button class="user-card__follow" data-follow>Follow</button>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div><!-- /discover-page -->
+    </div><!-- /page-container -->
+  </div><!-- /app-body -->
+
+
+  <!-- ═══════════════════════════��═══════════════════════════
+       BOTTOM NAV (mobile)
+  ═══���════════════════════════���══════════════════════════ -->
+  <nav class="app-bottom-nav" aria-label="Main navigation">
+    <a href="home.html"          class="app-bottom-nav__item" aria-label="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    </a>
+    <a href="explore.html"       class="app-bottom-nav__item" aria-label="Explore">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z"/></svg>
+    </a>
+    <a href="plan.html"          class="app-bottom-nav__item" aria-label="Plan">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+    </a>
+    <a href="notifications.html" class="app-bottom-nav__item" aria-label="Notifications">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+    </a>
+    <a href="profile.html"       class="app-bottom-nav__item" aria-label="Profile">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+    </a>
+  </nav>
+
+
+  <script src="../js/app.js"></script>
+  <script>
+
+    /* ── Filter chip toggle ────────────────────────────────── */
+    document.querySelectorAll('.discover-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.discover-filter').forEach(b => b.classList.remove('discover-filter--active'));
+        btn.classList.add('discover-filter--active');
+      });
+    });
+
+    /* ── Follow toggle (cards + featured) ──────────────────── */
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-follow]');
+      if (!btn) return;
+      const isFollowing = btn.classList.toggle('user-card__follow--following') ||
+                          btn.classList.toggle('featured-user__follow--following');
+      btn.textContent = btn.classList.contains('user-card__follow--following') ||
+                        btn.classList.contains('featured-user__follow--following')
+                        ? 'Following' : 'Follow';
+    });
+
+  </script>
+</body>
+</html>

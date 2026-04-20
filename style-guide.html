@@ -894,6 +894,242 @@
 
     .demo-tier-row svg { width: 16px; height: 16px; flex-shrink: 0; }
 
+    /* ── Back button ────────────────────────────────────── */
+
+    .demo-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+    .demo-back-btn:hover { color: var(--color-text-primary); }
+    .demo-back-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ── Search input ────────────────────────────────────── */
+
+    .demo-search-wrap {
+      position: relative;
+      max-width: 400px;
+    }
+    .demo-search-icon {
+      position: absolute;
+      left: var(--space-3);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: var(--color-text-muted);
+      pointer-events: none;
+    }
+    .demo-search-input {
+      width: 100%;
+      padding: var(--space-3) var(--space-3) var(--space-3) calc(var(--space-3) + 16px + var(--space-2));
+      border: 1px solid var(--color-border);
+      background: var(--color-bg-subtle);
+      font-family: var(--font-primary);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-primary);
+      outline: none;
+      box-sizing: border-box;
+    }
+    .demo-search-input::placeholder { color: var(--color-text-muted); }
+
+    /* ── User row ─────────────────────────────────────────── */
+
+    .demo-user-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .demo-user-row:last-child { border-bottom: none; }
+    .demo-user-row__avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .demo-user-row__body { flex: 1; min-width: 0; }
+    .demo-user-row__name {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      display: block;
+      color: var(--color-text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .demo-user-row__handle {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+    .demo-user-row__meta {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-top: 3px;
+    }
+
+    /* ── Follow button ───────────────────────────────────── */
+
+    .demo-follow-btn {
+      font-family: var(--font-primary);
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      padding: var(--space-2) var(--space-4);
+      border: 1.5px solid var(--color-black);
+      background: var(--color-black);
+      color: var(--color-white);
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .demo-follow-btn--following {
+      background: var(--color-white);
+      color: var(--color-text-primary);
+    }
+
+    /* ── Filter / sort bar ────────────────────────────────── */
+
+    .demo-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
+      padding-block: var(--space-3);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .demo-filter-chips {
+      display: flex;
+      gap: var(--space-2);
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex: 1;
+    }
+    .demo-filter-chips::-webkit-scrollbar { display: none; }
+    .demo-sort-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      flex-shrink: 0;
+      border-left: 1px solid var(--color-border);
+      padding-left: var(--space-5);
+    }
+    .demo-sort-group__label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-right: var(--space-2);
+      white-space: nowrap;
+    }
+    .demo-sort-btn {
+      font-family: var(--font-primary);
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wide);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: var(--space-1) var(--space-2) 2px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .demo-sort-btn--active {
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-bold);
+      border-bottom-color: var(--color-black);
+    }
+
+    /* ── Recipe card ─────────────────────────────────────── */
+
+    .demo-recipe-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      max-width: 220px;
+    }
+    .demo-recipe-card__img-wrap {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: var(--color-bg-subtle);
+      margin-bottom: var(--space-3);
+    }
+    .demo-recipe-card__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .demo-recipe-card__save {
+      position: absolute;
+      top: var(--space-3);
+      right: var(--space-3);
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.88);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-muted);
+      cursor: pointer;
+    }
+    .demo-recipe-card__save svg { width: 15px; height: 15px; }
+    .demo-recipe-card__rank {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--color-black);
+      color: var(--color-white);
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      padding: var(--space-1) var(--space-3);
+    }
+    .demo-recipe-card__title {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.35;
+      color: var(--color-text-primary);
+      margin-bottom: var(--space-2);
+    }
+    .demo-recipe-card__author {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+    .demo-recipe-card__author-avatar {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .demo-recipe-card__stats {
+      display: flex;
+      gap: var(--space-3);
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
   </style>
 </head>
 <body>
@@ -927,6 +1163,9 @@
           <a href="#tabs"         class="sg-nav-link">Tabs</a>
           <a href="#navigation"   class="sg-nav-link">Navigation</a>
           <a href="#create-menu"  class="sg-nav-link">Create Menu</a>
+          <a href="#back-button"  class="sg-nav-link">Back Button</a>
+          <a href="#search-input" class="sg-nav-link">Search Input</a>
+          <a href="#follow-btn"   class="sg-nav-link">Follow Button</a>
         </div>
 
         <div class="sg-nav-group">
@@ -938,6 +1177,9 @@
           <a href="#recipe"       class="sg-nav-link">Recipe</a>
           <a href="#ranks"         class="sg-nav-link">Ranks</a>
           <a href="#notifications" class="sg-nav-link">Notifications</a>
+          <a href="#people-list"   class="sg-nav-link">People List</a>
+          <a href="#filter-bar"    class="sg-nav-link">Filter Bar</a>
+          <a href="#recipe-card"   class="sg-nav-link">Recipe Card</a>
         </div>
 
       </nav>
@@ -996,6 +1238,18 @@
               <div style="display:flex; align-items:center; gap:var(--space-4);">
                 <a href="app/recipe-new.html" style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); text-decoration:underline;">recipe-new.html</a>
                 <span style="font-size:var(--font-size-sm); color:var(--color-text-muted);">Create / edit recipe form — dynamic ingredient groups, tools, direction sets</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:var(--space-4);">
+                <a href="app/followers.html" style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); text-decoration:underline;">followers.html</a>
+                <span style="font-size:var(--font-size-sm); color:var(--color-text-muted);">Followers / Following tabs — people list, search, follow buttons, mutual badge</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:var(--space-4);">
+                <a href="app/recipes.html" style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); text-decoration:underline;">recipes.html</a>
+                <span style="font-size:var(--font-size-sm); color:var(--color-text-muted);">Popular recipes listing — filter chips, sort bar, recipe grid cards with rank badges</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:var(--space-4);">
+                <a href="app/cookbook.html" style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); text-decoration:underline;">cookbook.html</a>
+                <span style="font-size:var(--font-size-sm); color:var(--color-text-muted);">Cookbook detail — book cover, action bar with back button, recipe grid</span>
               </div>
             </div>
           </div>
@@ -1546,7 +1800,7 @@
     &lt;a href="recipe-new.html"   class="create-menu__item create-menu__item--active" role="menuitem"&gt;...Recipe&lt;/a&gt;
     &lt;a href="cookbook-new.html" class="create-menu__item" role="menuitem"&gt;...Cookbook&lt;/a&gt;
     &lt;div class="create-menu__divider"&gt;&lt;/div&gt;
-    &lt;a href="profile.html?action=new-order" class="create-menu__item" role="menuitem"&gt;...Order&lt;/a&gt;
+    &lt;a href="app/order-new.html" class="create-menu__item" role="menuitem"&gt;...Order&lt;/a&gt;
   &lt;/div&gt;
 &lt;/div&gt;</pre>
           <p class="sg-note">Toggle class <code>create-menu--open</code> on the menu to show/hide. <code>js/app.js</code> handles click, outside-click, and Escape globally via <code>document.addEventListener('DOMContentLoaded', initCreateMenu)</code>. The <code>--active</code> item class is set manually in the HTML of each creation page — no JS needed.</p>
@@ -2272,6 +2526,321 @@
           <pre class="sg-code">&lt;div class="ingredient-group__name"&gt;For the Sauce&lt;/div&gt;
 &lt;div class="direction-set__name"&gt;Prep&lt;/div&gt;</pre>
           <p class="sg-note">10px uppercase wider tracking in <code>--color-text-secondary</code>. Lighter than section labels — these are sub-groupings within a section, not top-level anchors.</p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           BACK BUTTON
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="back-button">
+        <div class="sg-section__title">Back Button</div>
+        <p class="sg-section__desc">A lightweight breadcrumb / navigation link used at the top of sub-pages (Followers, Recipes, Cookbook). It replaces a traditional breadcrumb — one level up, always. No multi-step breadcrumb trail.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Default &amp; Hover</div>
+          <div class="sg-demo" style="display:flex; gap:var(--space-8); align-items:center;">
+            <a href="#" class="demo-back-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+              Back
+            </a>
+            <a href="#" class="demo-back-btn" style="color:var(--color-text-primary);">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+              Back (hover state)
+            </a>
+          </div>
+          <pre class="sg-code">&lt;a href="profile.html" class="page-back"&gt;
+  &lt;svg ...&gt;&lt;!-- chevron-left 14×14 --&gt;&lt;/svg&gt;
+  Back
+&lt;/a&gt;</pre>
+          <p class="sg-note">
+            10px bold uppercase, <code>letter-spacing-widest</code>. Default color: <code>--color-text-muted</code>. Hover: <code>--color-text-primary</code>.<br>
+            The chevron SVG is <strong>14×14</strong>, stroke-width 2.5. Placed above the page heading, margin-bottom <code>--space-5</code>.<br>
+            Used in: <code>followers.html</code>, <code>recipes.html</code>, <code>cookbook.html</code>.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           SEARCH INPUT
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="search-input">
+        <div class="sg-section__title">Search Input</div>
+        <p class="sg-section__desc">A full-width search field with an inset left icon. Used in the Followers page to filter the people list. Different from the underline form inputs used in auth pages — this one has a visible box with a subtle fill.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Default</div>
+          <div class="sg-demo">
+            <div class="demo-search-wrap">
+              <svg class="demo-search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z"/></svg>
+              <input class="demo-search-input" type="search" placeholder="Search followers…">
+            </div>
+          </div>
+          <pre class="sg-code">&lt;div class="search-field"&gt;
+  &lt;svg class="search-field__icon" ...&gt;&lt;/svg&gt;
+  &lt;input class="search-field__input" type="search" placeholder="Search followers…"&gt;
+&lt;/div&gt;</pre>
+          <p class="sg-note">
+            Border: <code>1px solid --color-border</code>. Background: <code>--color-bg-subtle</code>. Focus: border switches to <code>--color-black</code>.<br>
+            Left padding accounts for the 16px icon + gaps: <code>calc(--space-3 + 16px + --space-2)</code>.<br>
+            The icon is absolutely positioned and pointer-events: none so it doesn't block click on the input.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           FOLLOW BUTTON
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="follow-btn">
+        <div class="sg-section__title">Follow Button</div>
+        <p class="sg-section__desc">A compact inline button for following / unfollowing users. Distinct from <code>.btn</code> — it uses a 1.5px border and is styled inline within people list rows. Two states: Follow (filled black) and Following (outline).</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">States</div>
+          <div class="sg-demo sg-row">
+            <button class="demo-follow-btn">Follow</button>
+            <button class="demo-follow-btn demo-follow-btn--following">Following</button>
+          </div>
+          <pre class="sg-code">&lt;!-- Unfollow state --&gt;
+&lt;button class="follow-btn"&gt;Follow&lt;/button&gt;
+
+&lt;!-- Following state --&gt;
+&lt;button class="follow-btn follow-btn--following"&gt;Following&lt;/button&gt;</pre>
+          <p class="sg-note">
+            <strong>Follow</strong> — black fill, white text. Hover darkens to <code>--color-text-secondary</code>.<br>
+            <strong>Following</strong> — white background, black border and text. Hover shifts to <code>--color-bg-subtle</code> background with <code>--color-border-strong</code> border — a subtle "about to unfollow" cue.<br>
+            Font: 10px bold uppercase, <code>letter-spacing-wider</code>. Padding: <code>--space-2</code> vertical, <code>--space-4</code> horizontal.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           PEOPLE LIST
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="people-list">
+        <div class="sg-section__title">People List</div>
+        <p class="sg-section__desc">A list of user rows used on the Followers page. Each row shows an avatar, name, handle, optional mutual or meta text, and a follow action. Supports both Followers and Following tabs through a sticky tab bar.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">User Row Variants</div>
+          <div class="sg-demo" style="padding:var(--space-4) var(--space-6);">
+
+            <!-- Not following back -->
+            <div class="demo-user-row">
+              <div class="demo-user-row__avatar" data-hue="amber" style="border-radius:50%;"></div>
+              <div class="demo-user-row__body">
+                <div style="display:flex; align-items:center; gap:var(--space-2); margin-bottom:2px;">
+                  <span class="demo-user-row__name" style="display:inline;">Alex Foodie</span>
+                </div>
+                <span class="demo-user-row__handle">@alexfoodie</span>
+                <div class="demo-user-row__meta">1.2k followers</div>
+              </div>
+              <button class="demo-follow-btn">Follow</button>
+            </div>
+
+            <!-- Mutual follow -->
+            <div class="demo-user-row">
+              <div class="demo-user-row__avatar" data-hue="green" style="border-radius:50%;"></div>
+              <div class="demo-user-row__body">
+                <div style="display:flex; align-items:center; gap:var(--space-2); margin-bottom:2px;">
+                  <span class="demo-user-row__name" style="display:inline;">Priya Kitchen</span>
+                  <span style="display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--color-text-muted);">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                    Mutual
+                  </span>
+                </div>
+                <span class="demo-user-row__handle">@priyakitchen</span>
+                <div class="demo-user-row__meta">384 followers</div>
+              </div>
+              <button class="demo-follow-btn demo-follow-btn--following">Following</button>
+            </div>
+
+            <!-- Following tab — someone you follow who doesn't follow back -->
+            <div class="demo-user-row" style="border-bottom:none;">
+              <div class="demo-user-row__avatar" data-hue="plum" style="border-radius:50%;"></div>
+              <div class="demo-user-row__body">
+                <span class="demo-user-row__name">Sara Bakes</span>
+                <span class="demo-user-row__handle">@sarahbakes</span>
+                <div class="demo-user-row__meta">8.4k followers</div>
+              </div>
+              <button class="demo-follow-btn demo-follow-btn--following">Following</button>
+            </div>
+
+          </div>
+          <pre class="sg-code">&lt;div class="user-row"&gt;
+  &lt;img class="user-row__avatar" src="..." alt=""&gt;
+  &lt;div class="user-row__body"&gt;
+    &lt;div class="user-row__name-row"&gt;
+      &lt;a class="user-row__name" href="user.html"&gt;Alex Foodie&lt;/a&gt;
+      &lt;!-- optional mutual badge --&gt;
+      &lt;span class="user-row__mutual"&gt;
+        &lt;svg ...&gt;&lt;/svg&gt; Mutual
+      &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="user-row__handle"&gt;@alexfoodie&lt;/span&gt;
+    &lt;div class="user-row__meta"&gt;1.2k followers&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="user-row__action"&gt;
+    &lt;button class="follow-btn"&gt;Follow&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+          <p class="sg-note">
+            Avatar: 48×48 circle. Row padding: <code>--space-4</code> block, 0 inline. Separated by <code>1px --color-border</code> bottom.<br>
+            <strong>Mutual badge</strong> — arrows-right-left icon, 11×11, muted uppercase tracking. Only shown in the Followers tab when the person also follows you.<br>
+            <strong>Meta line</strong> — follower count shown as a third line in muted xs text.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           FILTER BAR
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="filter-bar">
+        <div class="sg-section__title">Filter / Sort Bar</div>
+        <p class="sg-section__desc">A sticky bar below the app header used on listing pages (Recipes). Left side: horizontally scrollable cuisine/category chips. Right side: sort options separated by a 1px border rule. The bar is <code>position: sticky; top: var(--nav-height)</code> so it stays visible while scrolling the list.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Filter + Sort</div>
+          <div class="sg-demo" style="padding:0;">
+            <div class="demo-filter-bar" style="padding-inline:var(--space-6);">
+              <div class="demo-filter-chips">
+                <span class="chip chip--active">All</span>
+                <span class="chip">Italian</span>
+                <span class="chip">Asian</span>
+                <span class="chip">Mexican</span>
+                <span class="chip">Mediterranean</span>
+                <span class="chip">American</span>
+              </div>
+              <div class="demo-sort-group">
+                <span class="demo-sort-group__label">Sort</span>
+                <button class="demo-sort-btn demo-sort-btn--active">Popular</button>
+                <button class="demo-sort-btn">Newest</button>
+                <button class="demo-sort-btn">Saves</button>
+              </div>
+            </div>
+          </div>
+          <pre class="sg-code">&lt;div class="recipes-bar"&gt;
+  &lt;div class="recipes-bar__inner"&gt;
+    &lt;div class="recipes-filter-chips"&gt;
+      &lt;span class="chip chip--active"&gt;All&lt;/span&gt;
+      &lt;span class="chip"&gt;Italian&lt;/span&gt;
+      ...
+    &lt;/div&gt;
+    &lt;div class="recipes-sort"&gt;
+      &lt;span class="recipes-sort__label"&gt;Sort&lt;/span&gt;
+      &lt;button class="sort-btn sort-btn--active"&gt;Popular&lt;/button&gt;
+      &lt;button class="sort-btn"&gt;Newest&lt;/button&gt;
+      &lt;button class="sort-btn"&gt;Saves&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+          <p class="sg-note">
+            Filter chips use the shared <code>.chip</code> / <code>.chip--active</code> classes. The chip strip is <code>overflow-x: auto; scrollbar-width: none</code> — scrollable on mobile without a visible scrollbar.<br>
+            Sort buttons use underline-only active state (2px bottom border, <code>--color-black</code>). No background fill — the pattern is lighter than a full chip.<br>
+            The divider between chips and sort is <code>border-left: 1px solid --color-border</code> on the sort container, hidden on mobile (≤ 600px).
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════
+           RECIPE CARD
+      ═════════════════════════════════════════════════ -->
+      <section class="sg-section" id="recipe-card">
+        <div class="sg-section__title">Recipe Card</div>
+        <p class="sg-section__desc">A grid card used in listing pages (Popular Recipes, Cookbook). Different from the Recipe Row — the card layout leads with a 4:3 image and is used in a multi-column grid. Includes an overlaid save button and optional rank badge.</p>
+
+        <div class="sg-sub">
+          <div class="sg-sub__title">Card Variants</div>
+          <div class="sg-demo">
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-6);">
+
+              <!-- Standard card -->
+              <a href="#" class="demo-recipe-card">
+                <div class="demo-recipe-card__img-wrap" data-hue="amber">
+                  <button class="demo-recipe-card__save">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                  </button>
+                </div>
+                <div class="demo-recipe-card__title">Weekly Meal Prep Formula</div>
+                <div class="demo-recipe-card__author">
+                  <div class="demo-recipe-card__author-avatar" data-hue="amber-lt"></div>
+                  @sofiak
+                </div>
+                <div class="demo-recipe-card__stats">
+                  <span>90 min</span>
+                  <span>203 saves</span>
+                </div>
+              </a>
+
+              <!-- With rank badge -->
+              <a href="#" class="demo-recipe-card">
+                <div class="demo-recipe-card__img-wrap" data-hue="green">
+                  <span class="demo-recipe-card__rank">#1</span>
+                  <button class="demo-recipe-card__save" style="color:var(--color-text-primary);">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                  </button>
+                </div>
+                <div class="demo-recipe-card__title">Butter Chicken</div>
+                <div class="demo-recipe-card__author">
+                  <div class="demo-recipe-card__author-avatar" data-hue="green-lt"></div>
+                  @priyakitchen
+                </div>
+                <div class="demo-recipe-card__stats">
+                  <span>50 min</span>
+                  <span>1.4k saves</span>
+                </div>
+              </a>
+
+              <!-- Hue placeholder -->
+              <a href="#" class="demo-recipe-card">
+                <div class="demo-recipe-card__img-wrap" data-hue="rose">
+                  <button class="demo-recipe-card__save">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                  </button>
+                </div>
+                <div class="demo-recipe-card__title">Roasted Veggie Bowl</div>
+                <div class="demo-recipe-card__author">
+                  <div class="demo-recipe-card__author-avatar" data-hue="rose-lt"></div>
+                  @plant.plates
+                </div>
+                <div class="demo-recipe-card__stats">
+                  <span>35 min</span>
+                  <span>89 saves</span>
+                </div>
+              </a>
+
+            </div>
+          </div>
+          <pre class="sg-code">&lt;a href="recipe.html" class="recipe-card"&gt;
+  &lt;div class="recipe-card__img-wrap"&gt;
+    &lt;!-- optional rank badge --&gt;
+    &lt;span class="recipe-card__rank"&gt;#1&lt;/span&gt;
+    &lt;img class="recipe-card__img" src="..." alt=""&gt;
+    &lt;button class="recipe-card__save"&gt;&lt;!-- bookmark svg --&gt;&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="recipe-card__body"&gt;
+    &lt;div class="recipe-card__title"&gt;Butter Chicken&lt;/div&gt;
+    &lt;div class="recipe-card__author"&gt;
+      &lt;img class="recipe-card__author-avatar" src="..." alt=""&gt;
+      @priyakitchen
+    &lt;/div&gt;
+    &lt;div class="recipe-card__stats"&gt;
+      &lt;span&gt;50 min&lt;/span&gt;
+      &lt;span&gt;1.4k saves&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/a&gt;</pre>
+          <p class="sg-note">
+            Image: 4:3 aspect ratio, <code>object-fit: cover</code>. Hover: image scales to 103% (<code>transition: transform 400ms</code>) — a subtle zoom on the card itself.<br>
+            <strong>Save button</strong> — 32×32 frosted white circle overlay (top-right corner). Filled bookmark = already saved, outline = unsaved.<br>
+            <strong>Rank badge</strong> — solid black tab flush to the top-left corner. 10px bold uppercase widest tracking. Only shown for ranked entries (e.g., #1–#10 on the Popular Recipes page).<br>
+            Grid layout: 3 columns on desktop (<code>repeat(3, 1fr)</code>), 2 on tablet, 1 on mobile. Gap: <code>--space-8</code> vertical, <code>--space-6</code> horizontal.
+          </p>
         </div>
       </section>
 

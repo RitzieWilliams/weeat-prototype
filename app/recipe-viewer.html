@@ -19,7 +19,7 @@
       padding-block: var(--space-8) var(--space-20);
     }
 
-    /* ── Top action bar (back + edit) ───────────────────── */
+    /* ── Top action bar (back + viewer actions) ─────────── */
 
     .recipe-action-bar {
       display: flex;
@@ -48,13 +48,6 @@
       align-items: center;
       gap: var(--space-3);
     }
-
-    .recipe-edit-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-2);
-    }
-    .recipe-edit-btn svg { width: 14px; height: 14px; }
 
     /* ── Share popover ──────────────────────────────────── */
 
@@ -97,6 +90,18 @@
     .share-popover__item:last-child { border-bottom: none; }
     .share-popover__item:hover { background: var(--color-bg-subtle); }
     .share-popover__item svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--color-text-muted); }
+
+    /* ── Save button — toggle ───────────────────────────── */
+
+    .recipe-save-btn .icon-saved   { display: none; }
+
+    .recipe-save-btn.is-saved {
+      background-color: var(--color-accent);
+      border-color:     var(--color-accent);
+      color:            var(--color-accent-text);
+    }
+    .recipe-save-btn.is-saved .icon-saved   { display: block; }
+    .recipe-save-btn.is-saved .icon-unsaved { display: none; }
 
     /* ── Intro: image left, details right ──────────────── */
 
@@ -143,6 +148,11 @@
       align-items: center;
       gap: var(--space-3);
       margin-bottom: var(--space-6);
+      text-decoration: none;
+      color: inherit;
+    }
+    .recipe-author:hover .recipe-author__name {
+      text-decoration: underline;
     }
     .recipe-author__avatar {
       width: 32px;
@@ -401,8 +411,6 @@
 
   <!-- ═══════════════════════════════════════════════════════
        APP HEADER
-       NAV: copy this block unchanged to every page.
-       Swap --active class on the correct link/icon per page.
   ═══════════════════════════════════════════════════════ -->
   <header class="app-header">
     <a href="home.html" class="app-header__logo"><img src="../assets/logo.svg" alt="We Eat"></a>
@@ -464,9 +472,9 @@
   <div class="app-body">
     <div class="page-container recipe-page">
 
-      <!-- Action bar: back + share + edit -->
+      <!-- Action bar: back + share + save -->
       <div class="recipe-action-bar">
-        <a href="profile.html" class="recipe-back">
+        <a href="user.html" class="recipe-back">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
@@ -493,13 +501,18 @@
             </div>
           </div>
 
-          <!-- Edit -->
-          <a href="recipe-new.html" class="btn btn-secondary btn-sm recipe-edit-btn" aria-label="Edit this recipe">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+          <!-- Save / Unsave toggle -->
+          <button class="btn btn-secondary btn-sm recipe-save-btn" id="save-btn" aria-label="Save recipe" aria-pressed="false">
+            <!-- Unsaved: outline bookmark -->
+            <svg class="icon-unsaved" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
             </svg>
-            Edit Recipe
-          </a>
+            <!-- Saved: filled bookmark -->
+            <svg class="icon-saved" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;">
+              <path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/>
+            </svg>
+            <span class="save-label">Save</span>
+          </button>
 
         </div>
       </div>
@@ -517,13 +530,14 @@
 
           <h1 class="recipe-title">Weekly Meal Prep Formula</h1>
 
-          <div class="recipe-author">
+          <!-- Author links to their profile -->
+          <a href="user.html" class="recipe-author">
             <img class="recipe-author__avatar"
                  src="https://i.pravatar.cc/200?img=47"
                  alt="Sofia K.">
             <span class="recipe-author__name">Sofia K.</span>
             <span class="recipe-author__handle">@sofiak</span>
-          </div>
+          </a>
 
           <p class="recipe-description">
             A flexible, repeatable framework for 4–5 days of lunches. The base is always rice and protein — the sauce
@@ -783,8 +797,6 @@
 
   <!-- ═══════════════════════════════════════════════════════
        BOTTOM NAV (mobile only — hidden on desktop)
-       NAV: copy this block unchanged to every page.
-       Swap --active on the correct item per page.
   ═══════════════════════════════════════════════════════ -->
   <nav class="app-bottom-nav" aria-label="Main navigation">
 
@@ -821,11 +833,11 @@
   <script src="../js/app.js"></script>
   <script>
     // ── Share popover ──────────────────────────────────────────
-    const shareWrap    = document.getElementById('share-wrap');
-    const shareBtn     = document.getElementById('share-btn');
-    const sharePopover = document.getElementById('share-popover');
-    const copyLinkBtn  = document.getElementById('copy-link-btn');
-    const copyLinkLabel= document.getElementById('copy-link-label');
+    const shareWrap     = document.getElementById('share-wrap');
+    const shareBtn      = document.getElementById('share-btn');
+    const sharePopover  = document.getElementById('share-popover');
+    const copyLinkBtn   = document.getElementById('copy-link-btn');
+    const copyLinkLabel = document.getElementById('copy-link-label');
 
     shareBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -845,6 +857,17 @@
       navigator.clipboard.writeText(window.location.href).catch(() => {});
       copyLinkLabel.textContent = 'Copied!';
       setTimeout(() => { copyLinkLabel.textContent = 'Copy Link'; }, 2000);
+    });
+
+    // ── Save / Unsave toggle ───────────────────────────────────
+    const saveBtn   = document.getElementById('save-btn');
+    const saveLabel = saveBtn.querySelector('.save-label');
+
+    saveBtn.addEventListener('click', () => {
+      const saving = !saveBtn.classList.contains('is-saved');
+      saveBtn.classList.toggle('is-saved', saving);
+      saveBtn.setAttribute('aria-pressed', String(saving));
+      saveLabel.textContent = saving ? 'Saved' : 'Save';
     });
   </script>
 </body>

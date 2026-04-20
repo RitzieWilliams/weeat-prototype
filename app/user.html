@@ -114,7 +114,11 @@
       flex-direction: column;
       gap: 3px;
       cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: opacity var(--transition-fast);
     }
+    a.profile-stat:hover { opacity: 0.7; }
 
     .profile-stat__value {
       font-size: var(--font-size-xl);
@@ -472,7 +476,7 @@
             Cookbook
           </a>
           <div class="create-menu__divider"></div>
-          <a href="profile.html?action=new-order" class="create-menu__item" role="menuitem">
+          <a href="order-new.html" class="create-menu__item" role="menuitem">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
             Order
           </a>
@@ -535,14 +539,14 @@
               <span class="profile-stat__value">63</span>
               <span class="profile-stat__label">Recipes</span>
             </div>
-            <div class="profile-stat">
+            <a href="followers.html" class="profile-stat">
               <span class="profile-stat__value">3.1k</span>
               <span class="profile-stat__label">Followers</span>
-            </div>
-            <div class="profile-stat">
+            </a>
+            <a href="followers.html?tab=following" class="profile-stat">
               <span class="profile-stat__value">412</span>
               <span class="profile-stat__label">Following</span>
-            </div>
+            </a>
           </div>
 
           <!-- Rank badge — page's single accent usage -->

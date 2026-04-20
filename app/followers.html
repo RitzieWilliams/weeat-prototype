@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Followers — We Eat</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <style>
+
+    /* ════════════════════════════════════════════════════════
+       FOLLOWERS PAGE
+    ════════════════════════════════════════════════════════ */
+
+    .followers-page {
+      max-width: 600px;
+      margin-inline: auto;
+      padding-block: var(--space-8) var(--space-20);
+    }
+
+    /* ── Page header ─────────────────────────────────────── */
+
+    .followers-page__back {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      margin-bottom: var(--space-5);
+      transition: color var(--transition-fast);
+    }
+    .followers-page__back:hover { color: var(--color-text-primary); }
+    .followers-page__back svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .followers-page__heading {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1;
+      margin-bottom: var(--space-1);
+    }
+
+    .followers-page__subhead {
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-6);
+    }
+
+    /* ── Tab bar ─────────────────────────────────────────── */
+
+    .followers-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--space-2);
+      position: sticky;
+      top: var(--nav-height);
+      background: var(--color-white);
+      z-index: var(--z-card);
+    }
+
+    .followers-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: var(--space-4) var(--space-3);
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      border: none;
+      border-bottom: 3px solid transparent;
+      background: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color var(--transition-fast), border-color var(--transition-fast);
+      margin-bottom: -1px;
+    }
+
+    .followers-tab:hover { color: var(--color-text-primary); }
+
+    .followers-tab--active {
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-bold);
+      border-bottom-color: var(--color-black);
+    }
+
+    .followers-tab__count {
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-muted);
+      background: var(--color-bg-subtle);
+      padding: 2px 6px;
+      letter-spacing: var(--letter-spacing-normal);
+    }
+    .followers-tab--active .followers-tab__count {
+      color: var(--color-text-primary);
+    }
+
+    /* ── Tab panels ──────────────────────────────────────── */
+
+    .followers-panel { display: none; }
+    .followers-panel--active { display: block; }
+
+    /* ── Search ──────────────────────────────────────────── */
+
+    .followers-search {
+      position: relative;
+      margin: var(--space-5) 0 var(--space-4);
+    }
+
+    .followers-search__icon {
+      position: absolute;
+      left: var(--space-3);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: var(--color-text-muted);
+      pointer-events: none;
+    }
+
+    .followers-search__input {
+      width: 100%;
+      padding: var(--space-3) var(--space-3) var(--space-3) calc(var(--space-3) + 16px + var(--space-2));
+      border: 1px solid var(--color-border);
+      background: var(--color-bg-subtle);
+      font-family: inherit;
+      font-size: var(--font-size-sm);
+      color: var(--color-text-primary);
+      outline: none;
+      transition: border-color var(--transition-fast);
+      box-sizing: border-box;
+    }
+    .followers-search__input::placeholder { color: var(--color-text-muted); }
+    .followers-search__input:focus { border-color: var(--color-black); }
+
+    /* ── User row ────────────────────────────────────────── */
+
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .user-row:last-child { border-bottom: none; }
+
+    .user-row__avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .user-row__avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: block;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    /* ── User body ───────────────────────────────────────── */
+
+    .user-row__body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .user-row__name-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: 2px;
+    }
+
+    .user-row__name {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: opacity var(--transition-fast);
+    }
+    .user-row__name:hover { opacity: 0.7; }
+
+    .user-row__handle {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-row__meta {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* "Follows you back" badge */
+    .user-row__mutual {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wide);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+    }
+    .user-row__mutual svg { width: 11px; height: 11px; }
+
+    /* ── Follow button ───────────────────────────────────── */
+
+    .user-row__action { flex-shrink: 0; }
+
+    .follow-btn {
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      padding: var(--space-2) var(--space-4);
+      border: 1.5px solid var(--color-accent);
+      border-radius: var(--btn-radius);
+      background: var(--color-accent);
+      color: var(--color-accent-text);
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .follow-btn:hover {
+      background: var(--color-accent-hover);
+      border-color: var(--color-accent-hover);
+    }
+
+    .follow-btn--following {
+      background: transparent;
+      border-color: var(--color-accent);
+      color: var(--color-text-primary);
+    }
+
+    .follow-btn--following:hover {
+      background: var(--color-accent-light);
+      border-color: var(--color-accent-hover);
+    }
+
+    /* ── Section label (e.g., "Suggested") ──────────────── */
+
+    .followers-section-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      padding: var(--space-5) 0 var(--space-3);
+      border-top: 1px solid var(--color-border);
+      margin-top: var(--space-4);
+    }
+
+    .followers-section-label:first-child {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    /* ── Empty state ─────────────────────────────────────── */
+
+    .followers-empty {
+      text-align: center;
+      padding-block: var(--space-20);
+    }
+
+    .followers-empty__icon {
+      width: 40px;
+      height: 40px;
+      color: var(--color-text-muted);
+      margin: 0 auto var(--space-4);
+    }
+
+    .followers-empty__title {
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      margin-bottom: var(--space-2);
+    }
+
+    .followers-empty__sub {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+      line-height: var(--line-height-relaxed);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP HEADER
+  ═══════════════════════════════════════════════════════ -->
+  <header class="app-header">
+    <a href="home.html" class="app-header__logo"><img src="../assets/logo.svg" alt="We Eat"></a>
+
+    <nav class="app-nav">
+      <a href="home.html"    class="app-nav__link">Home</a>
+      <a href="explore.html" class="app-nav__link">Explore</a>
+      <a href="plan.html"    class="app-nav__link">Plan</a>
+
+      <div class="app-nav__create-wrap">
+        <button class="app-nav__create" aria-label="Create" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+        </button>
+        <div class="create-menu" role="menu">
+          <span class="create-menu__label">Create</span>
+          <a href="post-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            Post
+          </a>
+          <a href="recipe-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            Recipe
+          </a>
+          <a href="cookbook-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            Cookbook
+          </a>
+          <div class="create-menu__divider"></div>
+          <a href="order-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Order
+          </a>
+        </div>
+      </div>
+
+      <div class="app-header__icon-wrap">
+        <a href="notifications.html" class="btn-icon app-nav__icon" aria-label="Notifications">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+        </a>
+        <span class="app-header__badge"></span>
+      </div>
+
+      <a href="profile.html" class="btn-icon app-nav__icon" aria-label="Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+        </svg>
+      </a>
+    </nav>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP BODY
+  ═══════════════════════════════════════════════════════ -->
+  <div class="app-body">
+    <div class="page-container">
+      <div class="followers-page">
+
+        <!-- Back link -->
+        <a href="javascript:history.back()" class="followers-page__back">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          Back
+        </a>
+
+        <!-- Page heading — JS fills in the name from ?user= param -->
+        <h1 class="followers-page__heading" id="page-heading">Sofia K.</h1>
+        <p class="followers-page__subhead" id="page-subhead">@sofiak</p>
+
+        <!-- ── Tab bar ───────────────────────────────────────── -->
+        <div class="followers-tabs" role="tablist">
+          <button class="followers-tab followers-tab--active"
+                  id="tab-btn-followers"
+                  data-panel="panel-followers"
+                  role="tab"
+                  aria-selected="true">
+            Followers
+            <span class="followers-tab__count" id="followers-count">1.2k</span>
+          </button>
+          <button class="followers-tab"
+                  id="tab-btn-following"
+                  data-panel="panel-following"
+                  role="tab"
+                  aria-selected="false">
+            Following
+            <span class="followers-tab__count" id="following-count">384</span>
+          </button>
+        </div>
+
+
+        <!-- ════════════════════════════════════════════════════
+             FOLLOWERS PANEL
+        ════════════════════════════════════════════════════ -->
+        <div class="followers-panel followers-panel--active" id="panel-followers" role="tabpanel">
+
+          <!-- Search -->
+          <div class="followers-search">
+            <svg class="followers-search__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"/>
+            </svg>
+            <input class="followers-search__input" type="search" placeholder="Search followers…" aria-label="Search followers">
+          </div>
+
+          <!-- List -->
+          <div class="followers-list">
+
+            <!-- Row: mutual follower -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=12" alt="Marcus T." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Marcus T.</a>
+                  <span class="user-row__mutual">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>
+                    Follows you
+                  </span>
+                </div>
+                <div class="user-row__handle">@chefmarcus</div>
+                <div class="user-row__meta">47 recipes · Master Chef</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn follow-btn--following" data-follow>Following</button>
+              </div>
+            </div>
+
+            <!-- Row: not following back -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=32" alt="Aiko N." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Aiko N.</a>
+                </div>
+                <div class="user-row__handle">@aikoN</div>
+                <div class="user-row__meta">12 recipes · Home Cook</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn" data-follow>Follow</button>
+              </div>
+            </div>
+
+            <!-- Row: mutual -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=5" alt="Jordan B." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Jordan B.</a>
+                  <span class="user-row__mutual">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>
+                    Follows you
+                  </span>
+                </div>
+                <div class="user-row__handle">@jordanbeats</div>
+                <div class="user-row__meta">31 recipes · Sous Chef</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn follow-btn--following" data-follow>Following</button>
+              </div>
+            </div>
+
+            <!-- Row -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=19" alt="Lena C." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Lena C.</a>
+                </div>
+                <div class="user-row__handle">@lenacooks</div>
+                <div class="user-row__meta">8 recipes · Line Cook</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn" data-follow>Follow</button>
+              </div>
+            </div>
+
+            <!-- Row -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=44" alt="Tariq O." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Tariq O.</a>
+                  <span class="user-row__mutual">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>
+                    Follows you
+                  </span>
+                </div>
+                <div class="user-row__handle">@tariqeats</div>
+                <div class="user-row__meta">22 recipes · Prep Cook</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn follow-btn--following" data-follow>Following</button>
+              </div>
+            </div>
+
+            <!-- Row -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=60" alt="Nina V." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Nina V.</a>
+                </div>
+                <div class="user-row__handle">@ninavegan</div>
+                <div class="user-row__meta">55 recipes · Head Chef</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn" data-follow>Follow</button>
+              </div>
+            </div>
+
+            <!-- Row -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=27" alt="Dev P." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Dev P.</a>
+                  <span class="user-row__mutual">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>
+                    Follows you
+                  </span>
+                </div>
+                <div class="user-row__handle">@devpatel_food</div>
+                <div class="user-row__meta">18 recipes · Prep Cook</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn follow-btn--following" data-follow>Following</button>
+              </div>
+            </div>
+
+          </div><!-- /followers-list -->
+        </div><!-- /panel-followers -->
+
+
+        <!-- ════════════════════════════════════════════════════
+             FOLLOWING PANEL
+        ════════════════════════════════════════════════════ -->
+        <div class="followers-panel" id="panel-following" role="tabpanel">
+
+          <!-- Search -->
+          <div class="followers-search">
+            <svg class="followers-search__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"/>
+            </svg>
+            <input class="followers-search__input" type="search" placeholder="Search following…" aria-label="Search following">
+          </div>
+
+          <!-- List -->
+          <div class="followers-list">
+
+            <!-- Row: mutual -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=12" alt="Marcus T." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Marcus T.</a>
+                  <span class="user-row__mutual">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>
+                    Follows you
+                  </span>
+                </div>
+                <div class="user-row__handle">@chefmarcus</div>
+                <div class="user-row__meta">47 recipes · Master Chef</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn follow-btn--following" data-follow>Following</button>
+              </div>
+            </div>
+
+            <!-- Row -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=5" alt="Jordan B." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Jordan B.</a>
+                  <span class="user-row__mutual">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>
+                    Follows you
+                  </span>
+                </div>
+                <div class="user-row__handle">@jordanbeats</div>
+                <div class="user-row__meta">31 recipes · Sous Chef</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn follow-btn--following" data-follow>Following</button>
+              </div>
+            </div>
+
+            <!-- Row: following someone who doesn't follow back -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=3" alt="Yuki S." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Yuki S.</a>
+                </div>
+                <div class="user-row__handle">@yukicooks</div>
+                <div class="user-row__meta">89 recipes · Executive Chef</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn follow-btn--following" data-follow>Following</button>
+              </div>
+            </div>
+
+            <!-- Row -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=44" alt="Tariq O." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Tariq O.</a>
+                  <span class="user-row__mutual">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>
+                    Follows you
+                  </span>
+                </div>
+                <div class="user-row__handle">@tariqeats</div>
+                <div class="user-row__meta">22 recipes · Prep Cook</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn follow-btn--following" data-follow>Following</button>
+              </div>
+            </div>
+
+            <!-- Row -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=27" alt="Dev P." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Dev P.</a>
+                  <span class="user-row__mutual">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>
+                    Follows you
+                  </span>
+                </div>
+                <div class="user-row__handle">@devpatel_food</div>
+                <div class="user-row__meta">18 recipes · Prep Cook</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn follow-btn--following" data-follow>Following</button>
+              </div>
+            </div>
+
+            <!-- Row -->
+            <div class="user-row">
+              <a href="user.html">
+                <img class="user-row__avatar" src="https://i.pravatar.cc/100?img=22" alt="Clara M." width="48" height="48">
+              </a>
+              <div class="user-row__body">
+                <div class="user-row__name-row">
+                  <a href="user.html" class="user-row__name">Clara M.</a>
+                </div>
+                <div class="user-row__handle">@claramaestro</div>
+                <div class="user-row__meta">104 recipes · Executive Chef</div>
+              </div>
+              <div class="user-row__action">
+                <button class="follow-btn follow-btn--following" data-follow>Following</button>
+              </div>
+            </div>
+
+          </div><!-- /following-list -->
+        </div><!-- /panel-following -->
+
+
+      </div><!-- /followers-page -->
+    </div><!-- /page-container -->
+  </div><!-- /app-body -->
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       BOTTOM NAV (mobile)
+  ═══════════════════════════════════════════════════════ -->
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <a href="home.html"          class="bottom-nav__item" aria-label="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    </a>
+    <a href="explore.html"       class="bottom-nav__item" aria-label="Explore">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z"/></svg>
+    </a>
+    <a href="plan.html"          class="bottom-nav__item" aria-label="Plan">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+    </a>
+    <a href="notifications.html" class="bottom-nav__item" aria-label="Notifications">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+    </a>
+    <a href="profile.html"       class="bottom-nav__item bottom-nav__item--active" aria-label="Profile">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+    </a>
+  </nav>
+
+
+  <script src="../js/app.js"></script>
+  <script>
+
+    /* ── Tab switching ─────────────────────────────────────── */
+
+    const tabBtns  = document.querySelectorAll('.followers-tab');
+    const panels   = document.querySelectorAll('.followers-panel');
+
+    function activateTab(btn) {
+      tabBtns.forEach(t => {
+        t.classList.remove('followers-tab--active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(p => p.classList.remove('followers-panel--active'));
+
+      btn.classList.add('followers-tab--active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(btn.dataset.panel).classList.add('followers-panel--active');
+    }
+
+    tabBtns.forEach(btn => btn.addEventListener('click', () => activateTab(btn)));
+
+    /* ── Deep-link via ?tab=following ─────────────────────── */
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('tab') === 'following') {
+      activateTab(document.getElementById('tab-btn-following'));
+    }
+
+    /* ── Follow toggle ─────────────────────────────────────── */
+
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-follow]');
+      if (!btn) return;
+      const isFollowing = btn.classList.toggle('follow-btn--following');
+      btn.textContent = isFollowing ? 'Following' : 'Follow';
+    });
+
+  </script>
+</body>
+</html>

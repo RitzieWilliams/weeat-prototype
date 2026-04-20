@@ -79,21 +79,22 @@
       font-weight: var(--font-weight-semibold);
       letter-spacing: var(--letter-spacing-wider);
       text-transform: uppercase;
-      background-color: var(--color-white);
-      color: var(--color-black);
+      background-color: var(--color-accent);
+      color: var(--color-accent-text);
       padding: var(--space-2) var(--space-5);
+      border-radius: var(--btn-radius);
       text-decoration: none;
       transition: background-color 0.2s, color 0.2s;
     }
 
     .lp-nav--scrolled .lp-nav__cta {
-      background-color: var(--color-black);
-      color: var(--color-white);
+      background-color: var(--color-accent);
+      color: var(--color-accent-text);
     }
 
     .lp-nav__cta:hover {
-      background-color: var(--color-accent);
-      color: var(--color-black);
+      background-color: var(--color-accent-hover);
+      color: var(--color-accent-text);
     }
 
     /* ════════════════════════════════════════════════════════
@@ -191,6 +192,7 @@
       letter-spacing: var(--letter-spacing-wider);
       text-transform: uppercase;
       padding: var(--space-4) var(--space-8);
+      border-radius: var(--btn-radius);
       text-decoration: none;
       transition: background-color var(--transition-fast);
     }
@@ -896,19 +898,20 @@
       display: inline-flex;
       align-items: center;
       gap: var(--space-3);
-      background-color: var(--color-black);
-      color: var(--color-white);
+      background-color: var(--color-accent);
+      color: var(--color-accent-text);
       font-size: var(--font-size-xs);
       font-weight: var(--font-weight-bold);
       letter-spacing: var(--letter-spacing-wider);
       text-transform: uppercase;
       padding: var(--space-4) var(--space-10);
+      border-radius: var(--btn-radius);
       text-decoration: none;
       white-space: nowrap;
       transition: background-color var(--transition-fast);
     }
 
-    .cta-final__btn:hover { background-color: #333; }
+    .cta-final__btn:hover { background-color: var(--color-accent-hover); }
 
     .cta-final__note {
       font-size: var(--font-size-xs);

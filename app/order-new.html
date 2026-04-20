@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Order — We Eat</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <style>
+
+    /* ════════════════════════════════════════════════════════
+       PAGE
+    ════════════════════════════════════════════════════════ */
+
+    .order-form-page {
+      padding-block: var(--space-8) var(--space-20);
+    }
+
+    /* ── Page header row ────────────────────────────────── */
+
+    .form-page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-8);
+    }
+
+    .form-page-title {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .form-page-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       INTRO: IMAGE (left) + RESTAURANT / CAPTION (right)
+    ════════════════════════════════════════════════════════ */
+
+    .form-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+      align-items: start;
+      margin-bottom: var(--space-12);
+    }
+
+    @media (max-width: 900px) {
+      .form-intro { grid-template-columns: 1fr; gap: var(--space-8); }
+    }
+
+    /* ── Upload phases ──────────────────────────────────── */
+
+    /* Outer square — maintains 1:1 for all phases */
+    .upload-square {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: var(--color-bg-subtle);
+      overflow: hidden;
+    }
+
+    /* Phase: upload placeholder */
+    .upload-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-3);
+      border: 2px dashed var(--color-border-strong);
+      cursor: pointer;
+      transition: border-color var(--transition-fast), background var(--transition-fast);
+    }
+    .upload-placeholder:hover {
+      border-color: var(--color-black);
+      background: var(--color-bg-subtle);
+    }
+    .upload-placeholder svg {
+      width: 28px;
+      height: 28px;
+      color: var(--color-text-muted);
+    }
+    .upload-placeholder__label {
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    #image-input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Phase: crop */
+    .crop-phase { position: relative; }
+
+    .crop-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #000;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    #source-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    .crop-overlay { position: absolute; inset: 0; pointer-events: none; }
+
+    .crop-shade {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.55);
+      pointer-events: none;
+    }
+
+    .crop-box {
+      position: absolute;
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      cursor: move;
+      pointer-events: all;
+      box-sizing: border-box;
+    }
+
+    .crop-rule { position: absolute; background: rgba(255,255,255,0.2); pointer-events: none; }
+    .crop-rule--v1 { left: 33.33%; top: 0; bottom: 0; width: 1px; }
+    .crop-rule--v2 { left: 66.66%; top: 0; bottom: 0; width: 1px; }
+    .crop-rule--h1 { top: 33.33%; left: 0; right: 0; height: 1px; }
+    .crop-rule--h2 { top: 66.66%; left: 0; right: 0; height: 1px; }
+
+    .crop-handle {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.25);
+      pointer-events: all;
+    }
+    .crop-handle--tl { top: -7px;    left: -7px;  cursor: nwse-resize; }
+    .crop-handle--tr { top: -7px;    right: -7px; cursor: nesw-resize; }
+    .crop-handle--bl { bottom: -7px; left: -7px;  cursor: nesw-resize; }
+    .crop-handle--br { bottom: -7px; right: -7px; cursor: nwse-resize; }
+
+    .crop-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) 0 0;
+    }
+
+    .crop-aspect-tag {
+      flex: 1;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* Phase: result */
+    .result-phase { position: relative; }
+
+    .result-canvas-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
+
+    #crop-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .recrop-btn {
+      position: absolute;
+      bottom: var(--space-3);
+      right: var(--space-3);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-primary);
+      transition: background var(--transition-fast);
+    }
+    .recrop-btn:hover { background: rgba(0, 0, 0, 0.85); }
+    .recrop-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+    /* ════════════════════════════════════════════════════════
+       RESTAURANT SEARCH
+    ════════════════════════════════════════════════════════ */
+
+    .restaurant-input-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .restaurant-search-icon {
+      position: absolute;
+      left: 0;
+      width: 14px;
+      height: 14px;
+      color: var(--color-text-muted);
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+
+    #restaurant-search {
+      padding-left: 22px;
+    }
+
+    .restaurant-dropdown-wrap {
+      position: relative;
+    }
+
+    .restaurant-dropdown {
+      position: absolute;
+      top: calc(100% + 2px);
+      left: 0;
+      right: 0;
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-elevated);
+      max-height: 240px;
+      overflow-y: auto;
+      z-index: 50;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border) transparent;
+    }
+
+    .restaurant-option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: var(--space-3) var(--space-4);
+      font-family: var(--font-primary);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-primary);
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: background var(--transition-fast);
+    }
+    .restaurant-option:last-child { border-bottom: none; }
+    .restaurant-option:hover { background: var(--color-bg-subtle); }
+    .restaurant-option mark {
+      background: var(--color-accent-light);
+      color: inherit;
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .restaurant-empty-msg {
+      padding: var(--space-4);
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      text-align: center;
+    }
+
+    .restaurant-selected-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) 0;
+      border-bottom: 2px solid var(--color-black);
+    }
+
+    .restaurant-selected-name {
+      flex: 1;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-tight);
+      color: var(--color-text-primary);
+    }
+
+    .restaurant-change-btn {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      font-family: var(--font-primary);
+      transition: color var(--transition-fast);
+    }
+    .restaurant-change-btn:hover { color: var(--color-text-primary); }
+
+    /* ════════════════════════════════════════════════════════
+       SHARED FORM STYLES (mirrors recipe-new.html)
+    ════════════════════════════════════════════════════════ */
+
+    .form-basics {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .form-field { margin-bottom: var(--space-5); }
+
+    .form-label {
+      display: block;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .form-input {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      padding: var(--space-2) 0;
+      font-family: var(--font-primary);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-regular);
+      color: var(--color-text-primary);
+      background: transparent;
+      outline: none;
+      transition: border-color var(--transition-fast);
+    }
+    .form-input:focus { border-bottom-color: var(--color-black); }
+    .form-input::placeholder { color: var(--color-text-muted); }
+
+    .form-textarea {
+      resize: none;
+      min-height: 80px;
+      line-height: var(--line-height-relaxed);
+    }
+
+    .form-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 var(--space-6);
+      margin-top: auto;
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .form-meta-grid .form-field { margin-bottom: var(--space-4); }
+
+    /* ════════════════════════════════════════════════════════
+       ORDER BUILDER
+    ════════════════════════════════════════════════════════ */
+
+    .order-builder { margin-top: var(--space-4); }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      padding-bottom: var(--space-4);
+      border-bottom: 2px solid var(--color-black);
+      margin-bottom: var(--space-6);
+    }
+
+    /* Remove button */
+    .remove-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      color: var(--color-text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color var(--transition-fast);
+    }
+    .remove-btn:hover { color: var(--color-error); }
+    .remove-btn svg { width: 14px; height: 14px; }
+
+    /* Add inline button */
+    .add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: var(--space-3) 0;
+      font-family: var(--font-primary);
+      transition: color var(--transition-fast);
+    }
+    .add-btn:hover { color: var(--color-text-primary); }
+    .add-btn svg { width: 12px; height: 12px; }
+
+    /* Add block button (full width, dashed) */
+    .add-block-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: var(--space-4);
+      border: 1px dashed var(--color-border-strong);
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wider);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: none;
+      cursor: pointer;
+      font-family: var(--font-primary);
+      transition: border-color var(--transition-fast), color var(--transition-fast);
+      margin-top: var(--space-2);
+    }
+    .add-block-btn:hover { border-color: var(--color-black); color: var(--color-text-primary); }
+    .add-block-btn svg { width: 12px; height: 12px; }
+
+    /* ── Item block ─────────────────────────────────────── */
+
+    .order-item-block {
+      border: 1px solid var(--color-border);
+      margin-bottom: var(--space-4);
+    }
+
+    /* Edit mode */
+    .item-edit {
+      padding: var(--space-5);
+    }
+
+    .item-edit-header {
+      display: grid;
+      grid-template-columns: 1fr 112px 28px;
+      gap: var(--space-3);
+      align-items: end;
+      margin-bottom: var(--space-6);
+    }
+
+    .item-edit-header .form-field { margin: 0; }
+
+    .item-mods-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-3);
+    }
+
+    /* Mod row */
+    .mod-row {
+      display: grid;
+      grid-template-columns: auto 1fr 96px 28px;
+      gap: var(--space-3);
+      align-items: end;
+      margin-bottom: var(--space-3);
+    }
+
+    .mod-row .form-field { margin: 0; }
+
+    /* Type toggle — 3-state segmented control */
+    .mod-type-toggle {
+      display: flex;
+      border: 1px solid var(--color-border);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .mod-type-btn {
+      padding: 6px 9px;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-wide);
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      border-right: 1px solid var(--color-border);
+      cursor: pointer;
+      color: var(--color-text-muted);
+      font-family: var(--font-primary);
+      transition: background var(--transition-fast), color var(--transition-fast);
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .mod-type-btn:last-child { border-right: none; }
+    .mod-type-btn:hover:not(.is-active) { background: var(--color-bg-subtle); color: var(--color-text-secondary); }
+
+    .mod-type-btn.is-active[data-type="none"]   { background: var(--color-black);   color: #fff; }
+    .mod-type-btn.is-active[data-type="add"]    { background: var(--color-success); color: #fff; }
+    .mod-type-btn.is-active[data-type="remove"] { background: var(--color-error);   color: #fff; }
+
+    .mod-price-cell { transition: opacity var(--transition-fast); }
+    .mod-price-cell.is-hidden { opacity: 0; pointer-events: none; }
+
+    /* Item edit footer */
+    .item-edit-footer {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--color-border);
+    }
+
+    /* View mode */
+    .item-view { display: none; padding: var(--space-4) var(--space-5); }
+
+    .order-item-block.is-saved .item-edit { display: none; }
+    .order-item-block.is-saved .item-view { display: block; }
+
+    .item-view-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-3);
+      margin-bottom: var(--space-2);
+    }
+
+    .item-view-name {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-tight);
+      color: var(--color-text-primary);
+    }
+
+    .item-view-price {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+      flex-shrink: 0;
+    }
+
+    .item-view-mods {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: var(--space-3);
+    }
+
+    .item-view-mod {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-2);
+      font-size: var(--font-size-xs);
+    }
+
+    .item-view-mod-sym {
+      font-size: 11px;
+      font-weight: var(--font-weight-bold);
+      flex-shrink: 0;
+      width: 12px;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .item-view-mod-sym--none   { color: var(--color-text-muted); }
+    .item-view-mod-sym--add    { color: var(--color-success); }
+    .item-view-mod-sym--remove { color: var(--color-error); }
+
+    .item-view-mod-text  { flex: 1; color: var(--color-text-secondary); }
+    .item-view-mod-price { font-size: var(--font-size-xs); color: var(--color-text-muted); flex-shrink: 0; }
+
+    .item-view-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding-top: var(--space-2);
+      border-top: 1px solid var(--color-border);
+      margin-top: var(--space-2);
+    }
+
+    .item-view-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      font-family: var(--font-primary);
+      transition: color var(--transition-fast);
+      color: var(--color-text-muted);
+    }
+    .item-view-btn svg { width: 12px; height: 12px; }
+    .item-view-btn:hover { color: var(--color-text-primary); }
+    .item-view-btn--danger:hover { color: var(--color-error); }
+
+    /* ── Order total preview ────────────────────────────── */
+
+    .order-total-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-3) 0;
+      border-top: 1px solid var(--color-border);
+      margin-top: var(--space-2);
+    }
+
+    .order-total-label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .order-total-amount {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* ── Form footer ────────────────────────────────────── */
+
+    .form-footer {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-top: var(--space-16);
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--color-border);
+    }
+
+  </style>
+</head>
+<body class="page-app">
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP HEADER
+  ═══════════════════════════════════════════════════════ -->
+  <header class="app-header">
+    <a href="home.html" class="app-header__logo"><img src="../assets/logo.svg" alt="We Eat"></a>
+
+    <nav class="app-nav">
+      <a href="home.html"    class="app-nav__link">Home</a>
+      <a href="explore.html" class="app-nav__link">Explore</a>
+      <a href="plan.html"    class="app-nav__link">Plan</a>
+
+      <div class="app-nav__create-wrap">
+        <button class="app-nav__create" aria-label="Create" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+        </button>
+        <div class="create-menu" role="menu">
+          <span class="create-menu__label">Create</span>
+          <a href="post-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            Post
+          </a>
+          <a href="recipe-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            Recipe
+          </a>
+          <a href="cookbook-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            Cookbook
+          </a>
+          <div class="create-menu__divider"></div>
+          <a href="order-new.html" class="create-menu__item create-menu__item--active" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Order
+          </a>
+        </div>
+      </div>
+
+      <div class="app-header__icon-wrap">
+        <a href="notifications.html" class="btn-icon app-nav__icon" aria-label="Notifications">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+        </a>
+        <span class="app-header__badge"></span>
+      </div>
+
+      <a href="profile.html" class="btn-icon app-nav__icon" aria-label="Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+        </svg>
+      </a>
+    </nav>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP BODY
+  ═══════════════════════════════════════════════════════ -->
+  <div class="app-body">
+    <div class="page-container order-form-page">
+      <form id="order-form" novalidate>
+
+        <!-- Page header -->
+        <div class="form-page-header">
+          <span class="form-page-title">New Order</span>
+          <div class="form-page-actions">
+            <a href="profile.html" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Post Order</button>
+          </div>
+        </div>
+
+
+        <!-- ══════════════════════════════════════════════
+             SECTION 1: IMAGE + RESTAURANT / CAPTION
+        ═══════════════════════════════════════════════ -->
+        <div class="form-intro">
+
+          <!-- Left: photo upload → crop → result -->
+          <div class="upload-col">
+
+            <!-- Phase A: empty placeholder -->
+            <div id="phase-upload">
+              <div class="upload-square">
+                <input type="file" id="image-input" accept="image/*" aria-label="Upload order photo">
+                <div class="upload-placeholder" id="upload-placeholder">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  <span class="upload-placeholder__label">Upload Photo</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase B: crop UI -->
+            <div id="phase-crop" hidden>
+              <div class="crop-phase">
+                <div class="crop-container" id="crop-container">
+                  <img id="source-img" alt="">
+                  <div class="crop-overlay">
+                    <div class="crop-shade" id="shade-top"></div>
+                    <div class="crop-shade" id="shade-bottom"></div>
+                    <div class="crop-shade" id="shade-left"></div>
+                    <div class="crop-shade" id="shade-right"></div>
+                    <div class="crop-box" id="crop-box">
+                      <div class="crop-rule crop-rule--v1"></div>
+                      <div class="crop-rule crop-rule--v2"></div>
+                      <div class="crop-rule crop-rule--h1"></div>
+                      <div class="crop-rule crop-rule--h2"></div>
+                      <div class="crop-handle crop-handle--tl" data-handle="tl"></div>
+                      <div class="crop-handle crop-handle--tr" data-handle="tr"></div>
+                      <div class="crop-handle crop-handle--bl" data-handle="bl"></div>
+                      <div class="crop-handle crop-handle--br" data-handle="br"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="crop-actions">
+                  <span class="crop-aspect-tag">1:1 Crop</span>
+                  <button type="button" class="btn btn-secondary" id="change-photo-btn">Change Photo</button>
+                  <button type="button" class="btn btn-primary" id="apply-crop-btn">Apply Crop</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase C: cropped result -->
+            <div id="phase-result" hidden>
+              <div class="result-phase">
+                <div class="result-canvas-wrap">
+                  <canvas id="crop-canvas"></canvas>
+                  <button type="button" class="recrop-btn" id="recrop-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                    </svg>
+                    Re-crop
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /upload-col -->
+
+
+          <!-- Right: restaurant search + caption + meta -->
+          <div class="form-basics">
+
+            <!-- Restaurant -->
+            <div class="form-field">
+              <label class="form-label">Restaurant</label>
+
+              <div id="restaurant-search-wrap">
+                <div class="restaurant-dropdown-wrap">
+                  <div class="restaurant-input-row">
+                    <svg class="restaurant-search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" class="form-input" id="restaurant-search" placeholder="Search restaurants…" autocomplete="off" spellcheck="false">
+                  </div>
+                  <div class="restaurant-dropdown" id="restaurant-dropdown" hidden></div>
+                </div>
+              </div>
+
+              <div id="restaurant-selected-wrap" hidden>
+                <div class="restaurant-selected-row">
+                  <span class="restaurant-selected-name" id="selected-restaurant-name"></span>
+                  <button type="button" class="restaurant-change-btn" id="change-restaurant-btn">Change</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Caption -->
+            <div class="form-field" style="flex:1; display:flex; flex-direction:column;">
+              <label class="form-label" for="order-caption">Caption</label>
+              <textarea id="order-caption" class="form-input form-textarea" placeholder="How was it? Share your thoughts on this order…" style="flex:1;"></textarea>
+            </div>
+
+            <!-- Date + Rating -->
+            <div class="form-meta-grid">
+              <div class="form-field">
+                <label class="form-label" for="order-date">Date</label>
+                <input id="order-date" class="form-input" type="date">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="order-rating">Rating</label>
+                <select id="order-rating" class="form-input">
+                  <option value="" disabled selected>Select</option>
+                  <option value="5">★★★★★ — Excellent</option>
+                  <option value="4">★★★★ — Great</option>
+                  <option value="3">★★★ — Good</option>
+                  <option value="2">★★ — Okay</option>
+                  <option value="1">★ — Poor</option>
+                </select>
+              </div>
+            </div>
+
+          </div><!-- /form-basics -->
+
+        </div><!-- /form-intro -->
+
+
+        <!-- ══════════════════════════════════════════════
+             SECTION 2: ORDER BUILDER
+        ═══════════════════════════════════════════════ -->
+        <div class="order-builder">
+
+          <div class="section-label">Build Your Order</div>
+
+          <div id="order-items-container"></div>
+
+          <div class="order-total-row" id="order-total-row" hidden>
+            <span class="order-total-label">Estimated Total</span>
+            <span class="order-total-amount" id="order-total-amount">$0.00</span>
+          </div>
+
+          <button type="button" class="add-block-btn" id="add-item-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+            </svg>
+            Add Menu Item
+          </button>
+
+        </div>
+
+
+        <!-- Form footer -->
+        <div class="form-footer">
+          <button type="submit" class="btn btn-primary">Post Order</button>
+          <a href="profile.html" class="btn btn-secondary">Cancel</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       BOTTOM NAV (mobile)
+  ═══════════════════════════════════════════════════════ -->
+  <nav class="app-bottom-nav" aria-label="Mobile navigation">
+    <a href="home.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+      </svg>
+      Home
+    </a>
+    <a href="explore.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      Explore
+    </a>
+    <a href="plan.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+      </svg>
+      Plan
+    </a>
+    <a href="profile.html" class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+      </svg>
+      Profile
+    </a>
+  </nav>
+
+
+  <script src="../js/app.js"></script>
+  <script>
+
+    /* ════════════════════════════════════════════════════════
+       SHARED ICON STRINGS
+    ════════════════════════════════════════════════════════ */
+    const ICON_REMOVE = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>`;
+    const ICON_PLUS   = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>`;
+    const ICON_PENCIL = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>`;
+
+
+    /* ════════════════════════════════════════════════════════
+       IMAGE UPLOAD + CROP
+    ════════════════════════════════════════════════════════ */
+    const imageInput     = document.getElementById('image-input');
+    const phaseUpload    = document.getElementById('phase-upload');
+    const phaseCrop      = document.getElementById('phase-crop');
+    const phaseResult    = document.getElementById('phase-result');
+    const sourceImg      = document.getElementById('source-img');
+    const cropContainer  = document.getElementById('crop-container');
+    const cropBox        = document.getElementById('crop-box');
+    const cropCanvas     = document.getElementById('crop-canvas');
+
+    // Crop position & size (pixels in container space)
+    let cX = 0, cY = 0, cS = 100;
+    const MIN_CROP_PX = 40;
+
+    function showPhase(phase) {
+      phaseUpload.hidden = true;
+      phaseCrop.hidden   = true;
+      phaseResult.hidden = true;
+      phase.hidden       = false;
+    }
+
+    // Trigger file input when clicking the placeholder
+    document.getElementById('upload-placeholder').addEventListener('click', () => imageInput.click());
+
+    imageInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      sourceImg.onload = () => {
+        showPhase(phaseCrop);
+        requestAnimationFrame(initCrop);
+      };
+      sourceImg.src = url;
+    });
+
+    // Set initial crop box to fill rendered image area (square)
+    function initCrop() {
+      const cw = cropContainer.offsetWidth;
+      const ch = cropContainer.offsetHeight;
+      const iw = sourceImg.naturalWidth;
+      const ih = sourceImg.naturalHeight;
+      const imgRatio  = iw / ih;
+      const contRatio = cw / ch;
+
+      let rw, rh, ox, oy;
+      if (imgRatio > contRatio) {
+        rw = cw; rh = cw / imgRatio;
+        ox = 0;  oy = (ch - rh) / 2;
+      } else {
+        rh = ch; rw = ch * imgRatio;
+        ox = (cw - rw) / 2; oy = 0;
+      }
+
+      cS = Math.min(rw, rh);
+      cX = ox + (rw - cS) / 2;
+      cY = oy + (rh - cS) / 2;
+      redrawCrop();
+    }
+
+    function redrawCrop() {
+      const cw = cropContainer.offsetWidth;
+      const ch = cropContainer.offsetHeight;
+
+      // Clamp within container
+      cS = Math.max(MIN_CROP_PX, cS);
+      cX = Math.max(0, Math.min(cw - cS, cX));
+      cY = Math.max(0, Math.min(ch - cS, cY));
+
+      cropBox.style.left   = cX + 'px';
+      cropBox.style.top    = cY + 'px';
+      cropBox.style.width  = cS + 'px';
+      cropBox.style.height = cS + 'px';
+
+      // Shade: top, bottom, left, right
+      const st = document.getElementById('shade-top');
+      const sb = document.getElementById('shade-bottom');
+      const sl = document.getElementById('shade-left');
+      const sr = document.getElementById('shade-right');
+
+      st.style.cssText = `top:0; left:0; right:0; height:${cY}px;`;
+      sb.style.cssText = `top:${cY + cS}px; left:0; right:0; bottom:0;`;
+      sl.style.cssText = `top:${cY}px; left:0; width:${cX}px; height:${cS}px;`;
+      sr.style.cssText = `top:${cY}px; left:${cX + cS}px; right:0; height:${cS}px;`;
+    }
+
+    // ── Drag handling ──────────────────────────────────────
+    let drag = null;
+
+    function pointerPos(e) {
+      const rect = cropContainer.getBoundingClientRect();
+      const src  = e.touches ? e.touches[0] : e;
+      return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+    }
+
+    // Move: drag crop box from its interior
+    cropBox.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('crop-handle')) return;
+      e.preventDefault();
+      const p = pointerPos(e);
+      drag = { type: 'move', sx: p.x, sy: p.y, scX: cX, scY: cY };
+    });
+
+    // Resize: corner handles (1:1 constrained)
+    cropBox.querySelectorAll('.crop-handle').forEach(h => {
+      h.addEventListener('mousedown', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        const p = pointerPos(e);
+        drag = { type: 'resize', handle: h.dataset.handle, sx: p.x, sy: p.y, scX: cX, scY: cY, scS: cS };
+      });
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!drag) return;
+      const p  = pointerPos(e);
+      const cw = cropContainer.offsetWidth;
+      const ch = cropContainer.offsetHeight;
+
+      if (drag.type === 'move') {
+        cX = drag.scX + (p.x - drag.sx);
+        cY = drag.scY + (p.y - drag.sy);
+
+      } else {
+        // Fixed opposite corner stays put; dragged corner moves
+        const { handle, scX, scY, scS } = drag;
+        const brX = scX + scS, brY = scY + scS; // bottom-right
+        const trX = scX + scS, trY = scY;        // top-right
+        const blX = scX,       blY = scY + scS;  // bottom-left
+
+        if (handle === 'br') {
+          const ns = Math.max(MIN_CROP_PX, Math.min(p.x - scX, p.y - scY, cw - scX, ch - scY));
+          cS = ns; cX = scX; cY = scY;
+
+        } else if (handle === 'tl') {
+          const ns = Math.max(MIN_CROP_PX, Math.min(brX - p.x, brY - p.y, brX, brY));
+          cS = ns; cX = brX - ns; cY = brY - ns;
+
+        } else if (handle === 'tr') {
+          const ns = Math.max(MIN_CROP_PX, Math.min(p.x - blX, blY - p.y, cw - blX, blY));
+          cS = ns; cX = blX; cY = blY - ns;
+
+        } else if (handle === 'bl') {
+          const ns = Math.max(MIN_CROP_PX, Math.min(trX - p.x, p.y - trY, trX, ch - trY));
+          cS = ns; cX = trX - ns; cY = trY;
+        }
+      }
+      redrawCrop();
+    });
+
+    document.addEventListener('mouseup', () => { drag = null; });
+
+    // ── Apply crop ─────────────────────────────────────────
+    document.getElementById('apply-crop-btn').addEventListener('click', () => {
+      const cw = cropContainer.offsetWidth;
+      const ch = cropContainer.offsetHeight;
+      const iw = sourceImg.naturalWidth;
+      const ih = sourceImg.naturalHeight;
+      const imgRatio  = iw / ih;
+      const contRatio = cw / ch;
+
+      let rw, rh, ox, oy;
+      if (imgRatio > contRatio) {
+        rw = cw; rh = cw / imgRatio;
+        ox = 0;  oy = (ch - rh) / 2;
+      } else {
+        rh = ch; rw = ch * imgRatio;
+        ox = (cw - rw) / 2; oy = 0;
+      }
+
+      // Map crop box → source image coordinates
+      const sx = ((cX - ox) / rw) * iw;
+      const sy = ((cY - oy) / rh) * ih;
+      const sw = (cS / rw) * iw;
+      const sh = (cS / rh) * ih;
+
+      const OUT = 800;
+      cropCanvas.width  = OUT;
+      cropCanvas.height = OUT;
+      cropCanvas.getContext('2d').drawImage(sourceImg, sx, sy, sw, sh, 0, 0, OUT, OUT);
+
+      showPhase(phaseResult);
+    });
+
+    // Re-crop → back to crop UI
+    document.getElementById('recrop-btn').addEventListener('click', () => showPhase(phaseCrop));
+
+    // Change photo → back to upload placeholder, reset input
+    document.getElementById('change-photo-btn').addEventListener('click', () => {
+      imageInput.value = '';
+      showPhase(phaseUpload);
+    });
+
+
+    /* ════════════════════════════════════════════════════════
+       RESTAURANT SEARCH
+    ════════════════════════════════════════════════════════ */
+    const RESTAURANTS = [
+      "Applebee's", "Arby's", "Baskin-Robbins", "Benihana", "Blaze Pizza",
+      "Bob Evans", "Bonefish Grill", "Boston Market", "Buca di Beppo",
+      "Burger King", "California Pizza Kitchen", "Capital Grille",
+      "Carrabba's Italian Grill", "CAVA", "Cheesecake Factory", "Chick-fil-A",
+      "Chili's", "Chipotle Mexican Grill", "Cold Stone Creamery",
+      "Cracker Barrel", "Culver's", "Dairy Queen", "Del Taco", "Denny's",
+      "Din Tai Fung", "Domino's Pizza", "Dunkin'", "Einstein Bros. Bagels",
+      "Eleven Madison Park", "Firehouse Subs", "Five Guys", "Golden Corral",
+      "The Halal Guys", "Hardee's", "IHOP", "In-N-Out Burger",
+      "Jack in the Box", "Jamba", "Jason's Deli", "Jersey Mike's",
+      "Jimmy John's", "Joe's Crab Shack", "Jollibee", "KFC",
+      "Le Bernardin", "Legal Sea Foods", "Little Caesars",
+      "Longhorn Steakhouse", "Maggiano's Little Italy", "McDonald's",
+      "Moe's Southwest Grill", "Morton's The Steakhouse", "Nobu",
+      "Noodles & Company", "Olive Garden", "Outback Steakhouse",
+      "P.F. Chang's", "Panda Express", "Panera Bread", "Papa John's",
+      "Per Se", "Pizza Hut", "Popeyes", "Potbelly Sandwich Works",
+      "Qdoba Mexican Eats", "Raising Cane's", "Red Lobster", "Red Robin",
+      "Ruth's Chris Steak House", "Shake Shack", "Sonic Drive-In",
+      "Starbucks", "Subway", "Taco Bell", "Texas Roadhouse", "TGI Fridays",
+      "Waffle House", "Wendy's", "Whataburger", "White Castle",
+      "Wingstop", "Yard House", "Zaxby's", "Zoe's Kitchen"
+    ].sort();
+
+    const searchInput    = document.getElementById('restaurant-search');
+    const dropdown       = document.getElementById('restaurant-dropdown');
+    const searchWrap     = document.getElementById('restaurant-search-wrap');
+    const selectedWrap   = document.getElementById('restaurant-selected-wrap');
+    const selectedName   = document.getElementById('selected-restaurant-name');
+    const changeRestBtn  = document.getElementById('change-restaurant-btn');
+
+    function renderRestaurantDropdown(query) {
+      const q = query.trim().toLowerCase();
+      const matches = q
+        ? RESTAURANTS.filter(r => r.toLowerCase().includes(q)).slice(0, 8)
+        : RESTAURANTS.slice(0, 8);
+
+      if (!matches.length) {
+        dropdown.innerHTML = `<div class="restaurant-empty-msg">No restaurants found</div>`;
+      } else {
+        dropdown.innerHTML = matches.map(r => {
+          let label = escapeHtml(r);
+          if (q) {
+            const i = r.toLowerCase().indexOf(q);
+            if (i >= 0) {
+              label = escapeHtml(r.slice(0, i))
+                + '<mark>' + escapeHtml(r.slice(i, i + q.length)) + '</mark>'
+                + escapeHtml(r.slice(i + q.length));
+            }
+          }
+          return `<button type="button" class="restaurant-option" data-name="${escapeAttr(r)}">${label}</button>`;
+        }).join('');
+
+        dropdown.querySelectorAll('.restaurant-option').forEach(btn => {
+          btn.addEventListener('click', () => selectRestaurant(btn.dataset.name));
+        });
+      }
+      dropdown.hidden = false;
+    }
+
+    function selectRestaurant(name) {
+      searchWrap.hidden   = true;
+      selectedWrap.hidden = false;
+      selectedName.textContent = name;
+    }
+
+    function clearRestaurantSelection() {
+      searchWrap.hidden   = false;
+      selectedWrap.hidden = true;
+      searchInput.value   = '';
+      dropdown.hidden     = true;
+      requestAnimationFrame(() => searchInput.focus());
+    }
+
+    searchInput.addEventListener('input',  () => renderRestaurantDropdown(searchInput.value));
+    searchInput.addEventListener('focus',  () => renderRestaurantDropdown(searchInput.value));
+    changeRestBtn.addEventListener('click', clearRestaurantSelection);
+
+    document.addEventListener('click', e => {
+      if (!searchWrap.contains(e.target)) dropdown.hidden = true;
+    });
+
+    function escapeHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function escapeAttr(s) {
+      return s.replace(/"/g,'&quot;');
+    }
+
+
+    /* ════════════════════════════════════════════════════════
+       ORDER ITEMS BUILDER
+    ════════════════════════════════════════════════════════ */
+    let itemCounter = 0;
+
+    document.getElementById('add-item-btn').addEventListener('click', addItem);
+
+    function addItem() {
+      itemCounter++;
+      const block = document.createElement('div');
+      block.className = 'order-item-block';
+      block.id = `item-${itemCounter}`;
+
+      block.innerHTML = `
+        <!-- Edit mode -->
+        <div class="item-edit">
+
+          <div class="item-edit-header">
+            <div class="form-field">
+              <label class="form-label">Item Name</label>
+              <input type="text" class="form-input item-name-input" placeholder="e.g. Burrito Bowl" autocomplete="off">
+            </div>
+            <div class="form-field">
+              <label class="form-label">Price</label>
+              <input type="text" class="form-input item-price-input" placeholder="$0.00" style="text-align:right">
+            </div>
+            <button type="button" class="remove-btn item-remove-btn" title="Remove item">${ICON_REMOVE}</button>
+          </div>
+
+          <div class="item-mods-label">Modifications</div>
+          <div class="item-mods-list"></div>
+
+          <button type="button" class="add-btn add-mod-btn">
+            ${ICON_PLUS} Add Modification
+          </button>
+
+          <div class="item-edit-footer">
+            <button type="button" class="btn btn-primary item-done-btn">Done</button>
+          </div>
+
+        </div>
+
+        <!-- View mode -->
+        <div class="item-view">
+          <div class="item-view-header">
+            <span class="item-view-name"></span>
+            <span class="item-view-price"></span>
+          </div>
+          <div class="item-view-mods"></div>
+          <div class="item-view-actions">
+            <button type="button" class="item-view-btn item-edit-btn">
+              ${ICON_PENCIL} Edit
+            </button>
+            <button type="button" class="item-view-btn item-view-btn--danger item-delete-btn">
+              ${ICON_REMOVE} Remove
+            </button>
+          </div>
+        </div>
+      `;
+
+      wireItemBlock(block);
+      document.getElementById('order-items-container').appendChild(block);
+      block.querySelector('.item-name-input').focus();
+    }
+
+    function wireItemBlock(block) {
+      // Edit mode: remove whole item
+      block.querySelector('.item-remove-btn').addEventListener('click', () => {
+        block.remove();
+        recalcTotal();
+      });
+
+      // Add modification row
+      block.querySelector('.add-mod-btn').addEventListener('click', () => {
+        addModRow(block.querySelector('.item-mods-list'));
+      });
+
+      // Done → save to view mode
+      block.querySelector('.item-done-btn').addEventListener('click', () => {
+        commitItemToView(block);
+        recalcTotal();
+      });
+
+      // View mode: Edit button → back to edit
+      block.querySelector('.item-edit-btn').addEventListener('click', () => {
+        block.classList.remove('is-saved');
+      });
+
+      // View mode: Remove button
+      block.querySelector('.item-delete-btn').addEventListener('click', () => {
+        block.remove();
+        recalcTotal();
+      });
+    }
+
+    function addModRow(container) {
+      const row = document.createElement('div');
+      row.className = 'mod-row';
+      row.innerHTML = `
+        <div class="mod-type-toggle">
+          <button type="button" class="mod-type-btn is-active" data-type="none">None</button>
+          <button type="button" class="mod-type-btn" data-type="add">+ Add</button>
+          <button type="button" class="mod-type-btn" data-type="remove">− Rmv</button>
+        </div>
+        <div class="form-field">
+          <input type="text" class="form-input mod-name-input" placeholder="Modification name" autocomplete="off">
+        </div>
+        <div class="form-field mod-price-cell">
+          <input type="text" class="form-input mod-price-input" placeholder="+$0.00" style="text-align:right">
+        </div>
+        <button type="button" class="remove-btn mod-remove-btn" title="Remove modification">${ICON_REMOVE}</button>
+      `;
+
+      // Type toggle buttons
+      const typeBtns  = row.querySelectorAll('.mod-type-btn');
+      const priceCell = row.querySelector('.mod-price-cell');
+
+      typeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          typeBtns.forEach(b => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          priceCell.classList.toggle('is-hidden', btn.dataset.type === 'remove');
+        });
+      });
+
+      row.querySelector('.mod-remove-btn').addEventListener('click', () => row.remove());
+      container.appendChild(row);
+      row.querySelector('.mod-name-input').focus();
+    }
+
+    function commitItemToView(block) {
+      const rawName  = block.querySelector('.item-name-input').value.trim();
+      const rawPrice = block.querySelector('.item-price-input').value.trim();
+
+      const displayName  = rawName  || 'Unnamed Item';
+      const displayPrice = formatPrice(rawPrice);
+
+      block.querySelector('.item-view-name').textContent  = displayName;
+      block.querySelector('.item-view-price').textContent = displayPrice;
+
+      // Build mod list HTML
+      const modsEl = block.querySelector('.item-view-mods');
+      modsEl.innerHTML = '';
+
+      block.querySelectorAll('.mod-row').forEach(row => {
+        const activeBtn = row.querySelector('.mod-type-btn.is-active');
+        const type      = activeBtn ? activeBtn.dataset.type : 'none';
+        const modName   = row.querySelector('.mod-name-input').value.trim();
+        if (!modName) return;
+
+        const modPrice  = row.querySelector('.mod-price-input').value.trim();
+        const sym       = type === 'add' ? '+' : type === 'remove' ? '−' : '·';
+        const symClass  = `item-view-mod-sym--${type}`;
+        const showPrice = type !== 'remove' && modPrice;
+        const priceStr  = showPrice
+          ? (modPrice.startsWith('+') || modPrice.startsWith('-') ? modPrice : '+' + modPrice)
+          : '';
+
+        modsEl.innerHTML += `
+          <div class="item-view-mod">
+            <span class="item-view-mod-sym ${symClass}">${sym}</span>
+            <span class="item-view-mod-text">${escapeHtml(modName)}</span>
+            ${showPrice ? `<span class="item-view-mod-price">${escapeHtml(priceStr)}</span>` : ''}
+          </div>
+        `;
+      });
+
+      block.classList.add('is-saved');
+    }
+
+    function formatPrice(raw) {
+      if (!raw) return '—';
+      const n = parseFloat(raw.replace(/[^0-9.]/g, ''));
+      if (isNaN(n)) return raw;
+      return '$' + n.toFixed(2);
+    }
+
+    function recalcTotal() {
+      const blocks = document.querySelectorAll('.order-item-block');
+      const totalRow = document.getElementById('order-total-row');
+
+      if (!blocks.length) { totalRow.hidden = true; return; }
+
+      let total = 0;
+      blocks.forEach(block => {
+        const ip = parseFloat(block.querySelector('.item-price-input').value.replace(/[^0-9.]/g, '')) || 0;
+        total += ip;
+        block.querySelectorAll('.mod-row').forEach(row => {
+          const activeBtn = row.querySelector('.mod-type-btn.is-active');
+          const type = activeBtn ? activeBtn.dataset.type : 'none';
+          if (type !== 'remove') {
+            const mp = parseFloat(row.querySelector('.mod-price-input').value.replace(/[^0-9.]/g, '')) || 0;
+            total += mp;
+          }
+        });
+      });
+
+      totalRow.hidden = false;
+      document.getElementById('order-total-amount').textContent = '$' + total.toFixed(2);
+    }
+
+  </script>
+</body>
+</html>

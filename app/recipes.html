@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popular Recipes — We Eat</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <style>
+
+    /* ════════════════════════════════════════════════════════
+       PLACEHOLDER COLORS — shared across cards
+    ════════════════════════════════════════════════════════ */
+
+    [data-hue="amber"]      { background: #F5E9D3; }
+    [data-hue="amber-lt"]   { background: #FBF4E8; }
+    [data-hue="green"]      { background: #D4EAD9; }
+    [data-hue="green-lt"]   { background: #E8F5EB; }
+    [data-hue="rose"]       { background: #EDD4D4; }
+    [data-hue="rose-lt"]    { background: #F7EAEA; }
+    [data-hue="blue"]       { background: #D4DCE8; }
+    [data-hue="blue-lt"]    { background: #E8EDF5; }
+    [data-hue="plum"]       { background: #E0D4EA; }
+    [data-hue="plum-lt"]    { background: #EEE8F5; }
+    [data-hue="teal"]       { background: #D4E8E6; }
+    [data-hue="teal-lt"]    { background: #E8F4F3; }
+    [data-hue="coral"]      { background: #EDD9D4; }
+    [data-hue="wheat"]      { background: #EAE4D4; }
+    [data-hue="sage"]       { background: #D4E4D8; }
+    [data-hue="slate"]      { background: #DCDCE8; }
+    [data-hue="dark-green"] { background: #B8D4BE; }
+    [data-hue="dark-amber"] { background: #DEC89A; }
+
+    /* ════════════════════════════════════════════════════════
+       PAGE HEADER
+    ════════════════════════════════════════════════════════ */
+
+    .recipes-header {
+      padding: var(--space-8) 0 var(--space-7);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .recipes-back {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      margin-bottom: var(--space-5);
+      transition: color var(--transition-fast);
+    }
+    .recipes-back:hover { color: var(--color-text-primary); }
+    .recipes-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .recipes-header__inner {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .recipes-header__eyebrow {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .recipes-header__title {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: var(--line-height-tight);
+    }
+
+    .recipes-header__count {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      white-space: nowrap;
+      padding-bottom: 5px; /* align with title baseline */
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FILTER + SORT BAR — sticky below app header
+    ════════════════════════════════════════════════════════ */
+
+    .recipes-bar {
+      position: sticky;
+      top: var(--nav-height);
+      z-index: var(--z-card);
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .recipes-bar__inner {
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
+      padding-block: var(--space-3);
+    }
+
+    /* Cuisine chips — scrollable, takes all available space */
+    .recipes-filter-chips {
+      display: flex;
+      gap: var(--space-2);
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex: 1;
+      min-width: 0;
+    }
+    .recipes-filter-chips::-webkit-scrollbar { display: none; }
+
+    /* Sort section — always visible on the right */
+    .recipes-sort {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      flex-shrink: 0;
+      border-left: 1px solid var(--color-border);
+      padding-left: var(--space-5);
+    }
+
+    .recipes-sort__label {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-right: var(--space-2);
+      white-space: nowrap;
+    }
+
+    .sort-btn {
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wide);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: var(--space-1) var(--space-2) 2px;
+      cursor: pointer;
+      transition: color var(--transition-fast), border-color var(--transition-fast);
+      white-space: nowrap;
+    }
+    .sort-btn:hover { color: var(--color-text-primary); }
+    .sort-btn--active {
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-bold);
+      border-bottom-color: var(--color-black);
+    }
+
+    @media (max-width: 600px) {
+      .recipes-sort__label { display: none; }
+      .recipes-sort { border-left: none; padding-left: 0; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RECIPE GRID
+    ════════════════════════════════════════════════════════ */
+
+    .recipes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8) var(--space-6);
+      padding-block: var(--space-8) var(--space-12);
+    }
+
+    @media (max-width: 900px) {
+      .recipes-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      .recipes-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RECIPE CARD
+    ════════════════════════════════════════════════════════ */
+
+    .recipe-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Image zone */
+    .recipe-card__img-wrap {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: var(--color-bg-subtle);
+      margin-bottom: var(--space-3);
+    }
+
+    .recipe-card__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 400ms ease;
+    }
+    .recipe-card:hover .recipe-card__img { transform: scale(1.03); }
+
+    /* Save button — overlaid top-right */
+    .recipe-card__save {
+      position: absolute;
+      top: var(--space-3);
+      right: var(--space-3);
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.88);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-muted);
+      transition: color var(--transition-fast), background var(--transition-fast);
+    }
+    .recipe-card__save:hover { background: var(--color-white); color: var(--color-text-primary); }
+    .recipe-card__save--saved { color: var(--color-text-primary); }
+    .recipe-card__save svg { width: 15px; height: 15px; }
+
+    /* Rank badge — shown on top-left for top entries */
+    .recipe-card__rank {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--color-black);
+      color: var(--color-white);
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      padding: var(--space-1) var(--space-3);
+    }
+
+    /* Body */
+    .recipe-card__body { flex: 1; }
+
+    .recipe-card__title {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-tight);
+      line-height: 1.35;
+      color: var(--color-text-primary);
+      margin-bottom: var(--space-2);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .recipe-card__author {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+
+    .recipe-card__author-img {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .recipe-card__author-name {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
+    .recipe-card__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+
+    .recipe-card__time,
+    .recipe-card__saves {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+    .recipe-card__time svg,
+    .recipe-card__saves svg {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       LOAD MORE
+    ════════════════════════════════════════════════════════ */
+
+    .recipes-load-more {
+      text-align: center;
+      padding-block: var(--space-8) var(--space-20);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .recipes-load-more__count {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-5);
+    }
+
+    .recipes-load-more__count strong {
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    /* Progress bar */
+    .recipes-progress {
+      max-width: 240px;
+      margin: 0 auto var(--space-6);
+      height: 2px;
+      background: var(--color-border);
+    }
+
+    .recipes-progress__fill {
+      height: 100%;
+      width: 33%;
+      background: var(--color-black);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP HEADER
+  ═══════════════════════════════════════════════════════ -->
+  <header class="app-header">
+    <a href="home.html" class="app-header__logo"><img src="../assets/logo.svg" alt="We Eat"></a>
+
+    <nav class="app-nav">
+      <a href="home.html"    class="app-nav__link">Home</a>
+      <a href="explore.html" class="app-nav__link app-nav__link--active">Explore</a>
+      <a href="plan.html"    class="app-nav__link">Plan</a>
+
+      <div class="app-nav__create-wrap">
+        <button class="app-nav__create" aria-label="Create" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+        </button>
+        <div class="create-menu" role="menu">
+          <span class="create-menu__label">Create</span>
+          <a href="post-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            Post
+          </a>
+          <a href="recipe-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            Recipe
+          </a>
+          <a href="cookbook-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            Cookbook
+          </a>
+          <div class="create-menu__divider"></div>
+          <a href="order-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Order
+          </a>
+        </div>
+      </div>
+
+      <div class="app-header__icon-wrap">
+        <a href="notifications.html" class="btn-icon app-nav__icon" aria-label="Notifications">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+        </a>
+        <span class="app-header__badge"></span>
+      </div>
+
+      <a href="profile.html" class="btn-icon app-nav__icon" aria-label="Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+        </svg>
+      </a>
+    </nav>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP BODY
+  ═══════════════════════════════════════════════════════ -->
+  <div class="app-body">
+
+    <!-- ── Page header ──────────────────────────────────────── -->
+    <div class="recipes-header">
+      <div class="page-container">
+
+        <a href="explore.html" class="recipes-back">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          Explore
+        </a>
+
+        <div class="recipes-header__inner">
+          <div>
+            <p class="recipes-header__eyebrow">Most Saved</p>
+            <h1 class="recipes-header__title">Popular Recipes</h1>
+          </div>
+          <span class="recipes-header__count">248 recipes</span>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ── Filter + sort bar ────────────────────────────────── -->
+    <div class="recipes-bar">
+      <div class="page-container">
+        <div class="recipes-bar__inner">
+
+          <!-- Cuisine filter -->
+          <div class="recipes-filter-chips" role="tablist" aria-label="Filter by cuisine">
+            <button class="chip chip--active" data-filter="all"            role="tab" aria-selected="true">All</button>
+            <button class="chip"              data-filter="asian"          role="tab" aria-selected="false">Asian</button>
+            <button class="chip"              data-filter="italian"        role="tab" aria-selected="false">Italian</button>
+            <button class="chip"              data-filter="indian"         role="tab" aria-selected="false">Indian</button>
+            <button class="chip"              data-filter="mexican"        role="tab" aria-selected="false">Mexican</button>
+            <button class="chip"              data-filter="middle-eastern" role="tab" aria-selected="false">Middle Eastern</button>
+            <button class="chip"              data-filter="american"       role="tab" aria-selected="false">American</button>
+            <button class="chip"              data-filter="desserts"       role="tab" aria-selected="false">Desserts</button>
+          </div>
+
+          <!-- Sort -->
+          <div class="recipes-sort" role="group" aria-label="Sort recipes">
+            <span class="recipes-sort__label">Sort</span>
+            <button class="sort-btn sort-btn--active" data-sort="saves">Most Saved</button>
+            <button class="sort-btn"                  data-sort="newest">Newest</button>
+            <button class="sort-btn"                  data-sort="trending">Trending</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── Recipe grid ──────────────────────────────────────── -->
+    <div class="page-container">
+      <div class="recipes-grid" id="recipes-grid">
+
+
+        <!-- ── 1 ──────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="asian">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="teal" role="img" aria-label="Miso Glazed Salmon"></div>
+            <span class="recipe-card__rank">#1</span>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Miso Glazed Salmon with Sesame Rice</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="slate"></div>
+              <span class="recipe-card__author-name">@yumi.cooks</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                25 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                4.9k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 2 ──────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="asian">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="green" role="img" aria-label="Kimchi Fried Rice"></div>
+            <span class="recipe-card__rank">#2</span>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Kimchi Fried Rice</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="slate"></div>
+              <span class="recipe-card__author-name">@yumi.cooks</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                20 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                4.2k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 3 ──────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="middle-eastern">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="amber" role="img" aria-label="Shakshuka"></div>
+            <span class="recipe-card__rank">#3</span>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Shakshuka</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="rose"></div>
+              <span class="recipe-card__author-name">@sofia_k</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                30 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                3.8k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 4 ──────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="desserts">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="wheat" role="img" aria-label="Tiramisu"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Classic Tiramisu</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="amber"></div>
+              <span class="recipe-card__author-name">@the_baker</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                45 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                3.5k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 5 ──────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="indian">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="coral" role="img" aria-label="Butter Chicken"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Butter Chicken</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="coral"></div>
+              <span class="recipe-card__author-name">@priyakitchen</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                50 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                3.1k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 6 ──────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="italian">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="blue" role="img" aria-label="Pasta Cacio e Pepe"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Pasta Cacio e Pepe</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="sage"></div>
+              <span class="recipe-card__author-name">@marcoeats</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                20 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                2.9k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 7 ──────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="asian">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="sage" role="img" aria-label="Thai Basil Stir Fry"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Thai Basil Stir Fry</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="slate"></div>
+              <span class="recipe-card__author-name">@yumi.cooks</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                15 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                2.7k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 8 ──────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="desserts">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="rose" role="img" aria-label="Strawberry Pavlova"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Strawberry Pavlova</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="rose"></div>
+              <span class="recipe-card__author-name">@lena.eats</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                1h 30min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                2.4k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 9 ──────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="mexican">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="amber-lt" role="img" aria-label="Tacos al Pastor"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Tacos al Pastor</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="rose"></div>
+              <span class="recipe-card__author-name">@sofia_k</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                40 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                2.2k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 10 ─────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="asian">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="dark-amber" role="img" aria-label="Pad Thai"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Pad Thai</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="slate"></div>
+              <span class="recipe-card__author-name">@yumi.cooks</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                30 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                2.0k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 11 ─────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="indian">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="coral" role="img" aria-label="Chicken Tikka Masala"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Chicken Tikka Masala</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="coral"></div>
+              <span class="recipe-card__author-name">@priyakitchen</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                55 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                1.9k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 12 ─────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="italian">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="wheat" role="img" aria-label="Risotto alla Milanese"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Risotto alla Milanese</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="sage"></div>
+              <span class="recipe-card__author-name">@marcoeats</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                35 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                1.8k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 13 ─────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="middle-eastern">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="dark-green" role="img" aria-label="Falafel Wraps"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Falafel Wraps with Tahini</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="rose"></div>
+              <span class="recipe-card__author-name">@lena.eats</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                40 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                1.7k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 14 ─────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="american">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="dark-amber" role="img" aria-label="BBQ Pulled Pork"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Slow Cooker BBQ Pulled Pork</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="amber"></div>
+              <span class="recipe-card__author-name">@the_baker</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                3 hr
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                1.6k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 15 ─────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="desserts">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="sage" role="img" aria-label="Matcha Cheesecake"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">No-Bake Matcha Cheesecake</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="slate"></div>
+              <span class="recipe-card__author-name">@yumi.cooks</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                1 hr
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                1.5k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 16 ─────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="asian">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="blue-lt" role="img" aria-label="Pork Dumplings"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Pan-Fried Pork Dumplings (Jiaozi)</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="slate"></div>
+              <span class="recipe-card__author-name">@yumi.cooks</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                45 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                1.4k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 17 ─────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="indian">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="amber" role="img" aria-label="Dal Tadka"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">Dal Tadka</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="coral"></div>
+              <span class="recipe-card__author-name">@priyakitchen</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                35 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                1.3k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ── 18 ─────────────────────────────────────────── -->
+        <article class="recipe-card" data-cuisine="american">
+          <div class="recipe-card__img-wrap">
+            <div class="recipe-card__img" data-hue="slate" role="img" aria-label="New England Clam Chowder"></div>
+            <button class="recipe-card__save" aria-label="Save recipe" data-save>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="recipe-card__body">
+            <h2 class="recipe-card__title">New England Clam Chowder</h2>
+            <div class="recipe-card__author">
+              <div class="recipe-card__author-img" data-hue="sage"></div>
+              <span class="recipe-card__author-name">@marcoeats</span>
+            </div>
+            <div class="recipe-card__meta">
+              <span class="recipe-card__time">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                45 min
+              </span>
+              <span class="recipe-card__saves">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd"/></svg>
+                1.2k
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+      </div><!-- /recipes-grid -->
+
+      <!-- Load more -->
+      <div class="recipes-load-more">
+        <p class="recipes-load-more__count">Showing <strong>18</strong> of <strong>248</strong> recipes</p>
+        <div class="recipes-progress" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100">
+          <div class="recipes-progress__fill"></div>
+        </div>
+        <button class="btn btn-secondary" id="load-more-btn">Load More Recipes</button>
+      </div>
+
+    </div><!-- /page-container -->
+  </div><!-- /app-body -->
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       BOTTOM NAV (mobile)
+  ═══════════════════════════════════════════════════════ -->
+  <nav class="app-bottom-nav" aria-label="Main navigation">
+    <a href="home.html"          class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      Home
+    </a>
+    <a href="explore.html"       class="app-bottom-nav__item app-bottom-nav__item--active">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      Explore
+    </a>
+    <a href="plan.html"          class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Plan
+    </a>
+    <a href="profile.html"       class="app-bottom-nav__item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      Profile
+    </a>
+  </nav>
+
+
+  <script src="../js/app.js"></script>
+  <script>
+
+    /* ── Cuisine filter ────────────────────────────────────── */
+
+    const filterChips = document.querySelectorAll('.recipes-filter-chips .chip');
+    const cards       = document.querySelectorAll('.recipe-card');
+
+    filterChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        filterChips.forEach(c => {
+          c.classList.remove('chip--active');
+          c.setAttribute('aria-selected', 'false');
+        });
+        chip.classList.add('chip--active');
+        chip.setAttribute('aria-selected', 'true');
+
+        const filter = chip.dataset.filter;
+        cards.forEach(card => {
+          const show = filter === 'all' || card.dataset.cuisine === filter;
+          card.style.display = show ? '' : 'none';
+        });
+      });
+    });
+
+    /* ── Sort ──────────────────────────────────────────────── */
+
+    const sortBtns = document.querySelectorAll('.sort-btn');
+    sortBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        sortBtns.forEach(b => b.classList.remove('sort-btn--active'));
+        btn.classList.add('sort-btn--active');
+        /* Visual-only in prototype — order stays the same */
+      });
+    });
+
+    /* ── Save toggle ───────────────────────────────────────── */
+
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-save]');
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const saved = btn.classList.toggle('recipe-card__save--saved');
+      const svg   = btn.querySelector('svg');
+      if (saved) {
+        svg.setAttribute('fill', 'currentColor');
+        svg.removeAttribute('stroke');
+        btn.setAttribute('aria-label', 'Remove from saved');
+      } else {
+        svg.setAttribute('fill', 'none');
+        svg.setAttribute('stroke', 'currentColor');
+        btn.setAttribute('aria-label', 'Save recipe');
+      }
+    });
+
+    /* ── Load more (visual stub) ───────────────────────────── */
+
+    document.getElementById('load-more-btn').addEventListener('click', function () {
+      this.textContent = 'Loading…';
+      this.disabled = true;
+      setTimeout(() => {
+        this.textContent = 'No more recipes to load';
+      }, 800);
+    });
+
+  </script>
+</body>
+</html>
