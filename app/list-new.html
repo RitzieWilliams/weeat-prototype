@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Order — We Eat</title>
+  <title>New List — We Eat</title>
   <link rel="stylesheet" href="../css/tokens.css">
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/components.css">
@@ -43,7 +43,7 @@
     }
 
     /* ════════════════════════════════════════════════════════
-       INTRO: IMAGE (left) + RESTAURANT / CAPTION (right)
+       INTRO: IMAGE (left) + TITLE / DESCRIPTION (right)
     ════════════════════════════════════════════════════════ */
 
     .form-intro {
@@ -60,7 +60,6 @@
 
     /* ── Upload phases ──────────────────────────────────── */
 
-    /* Outer square — maintains 1:1 for all phases */
     .upload-square {
       position: relative;
       width: 100%;
@@ -69,7 +68,6 @@
       overflow: hidden;
     }
 
-    /* Phase: upload placeholder */
     .upload-placeholder {
       position: absolute;
       inset: 0;
@@ -219,111 +217,7 @@
     .recrop-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
 
     /* ════════════════════════════════════════════════════════
-       RESTAURANT SEARCH
-    ════════════════════════════════════════════════════════ */
-
-    .restaurant-input-row {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .restaurant-search-icon {
-      position: absolute;
-      left: 0;
-      width: 14px;
-      height: 14px;
-      color: var(--color-text-muted);
-      pointer-events: none;
-      flex-shrink: 0;
-    }
-
-    #restaurant-search {
-      padding-left: 22px;
-    }
-
-    .restaurant-dropdown-wrap {
-      position: relative;
-    }
-
-    .restaurant-dropdown {
-      position: absolute;
-      top: calc(100% + 2px);
-      left: 0;
-      right: 0;
-      background: var(--color-white);
-      border: 1px solid var(--color-border);
-      box-shadow: var(--shadow-elevated);
-      max-height: 240px;
-      overflow-y: auto;
-      z-index: 50;
-      scrollbar-width: thin;
-      scrollbar-color: var(--color-border) transparent;
-    }
-
-    .restaurant-option {
-      display: block;
-      width: 100%;
-      text-align: left;
-      padding: var(--space-3) var(--space-4);
-      font-family: var(--font-primary);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
-      color: var(--color-text-primary);
-      background: none;
-      border: none;
-      border-bottom: 1px solid var(--color-border);
-      cursor: pointer;
-      transition: background var(--transition-fast);
-    }
-    .restaurant-option:last-child { border-bottom: none; }
-    .restaurant-option:hover { background: var(--color-bg-subtle); }
-    .restaurant-option mark {
-      background: var(--color-accent-light);
-      color: inherit;
-      font-weight: var(--font-weight-semibold);
-    }
-
-    .restaurant-empty-msg {
-      padding: var(--space-4);
-      font-size: var(--font-size-xs);
-      color: var(--color-text-muted);
-      text-align: center;
-    }
-
-    .restaurant-selected-row {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      padding: var(--space-2) 0;
-      border-bottom: 2px solid var(--color-black);
-    }
-
-    .restaurant-selected-name {
-      flex: 1;
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      letter-spacing: var(--letter-spacing-tight);
-      color: var(--color-text-primary);
-    }
-
-    .restaurant-change-btn {
-      font-size: 10px;
-      font-weight: var(--font-weight-bold);
-      letter-spacing: var(--letter-spacing-widest);
-      text-transform: uppercase;
-      color: var(--color-text-muted);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      font-family: var(--font-primary);
-      transition: color var(--transition-fast);
-    }
-    .restaurant-change-btn:hover { color: var(--color-text-primary); }
-
-    /* ════════════════════════════════════════════════════════
-       SHARED FORM STYLES (mirrors recipe-new.html)
+       SHARED FORM STYLES
     ════════════════════════════════════════════════════════ */
 
     .form-basics {
@@ -366,22 +260,11 @@
       line-height: var(--line-height-relaxed);
     }
 
-    .form-meta-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 var(--space-6);
-      margin-top: auto;
-      padding-top: var(--space-8);
-      border-top: 1px solid var(--color-border);
-    }
-
-    .form-meta-grid .form-field { margin-bottom: var(--space-4); }
-
     /* ════════════════════════════════════════════════════════
-       ORDER BUILDER
+       ORDER LIST BUILDER
     ════════════════════════════════════════════════════════ */
 
-    .order-builder { margin-top: var(--space-4); }
+    .list-builder { margin-top: var(--space-4); }
 
     .section-label {
       font-size: 10px;
@@ -392,6 +275,190 @@
       padding-bottom: var(--space-4);
       border-bottom: 2px solid var(--color-black);
       margin-bottom: var(--space-6);
+    }
+
+    /* ── Order search ────────────────────────────────────── */
+
+    .order-search-wrap {
+      position: relative;
+      margin-bottom: var(--space-6);
+    }
+
+    .order-search-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .order-search-icon {
+      position: absolute;
+      left: 0;
+      width: 14px;
+      height: 14px;
+      color: var(--color-text-muted);
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+
+    #order-search {
+      padding-left: 22px;
+    }
+
+    .order-search-dropdown {
+      position: absolute;
+      top: calc(100% + 2px);
+      left: 0;
+      right: 0;
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-elevated);
+      max-height: 360px;
+      overflow-y: auto;
+      z-index: 50;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border) transparent;
+    }
+
+    .order-search-result {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      width: 100%;
+      text-align: left;
+      padding: var(--space-3) var(--space-4);
+      font-family: var(--font-primary);
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: background var(--transition-fast);
+    }
+    .order-search-result:last-child { border-bottom: none; }
+    .order-search-result:hover { background: var(--color-bg-subtle); }
+    .order-search-result.is-added {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .order-search-result__thumb {
+      width: 44px;
+      height: 44px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--color-bg-subtle);
+    }
+
+    .order-search-result__info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .order-search-result__restaurant {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-tight);
+      color: var(--color-text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .order-search-result__meta {
+      display: block;
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    .order-search-result__added-tag {
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-widest);
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+    }
+
+    .order-search-empty {
+      padding: var(--space-4);
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      text-align: center;
+    }
+
+    /* ── Added order cards ───────────────────────────────── */
+
+    .list-orders-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .list-order-card {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--color-border);
+      transition: border-color var(--transition-fast);
+      cursor: grab;
+    }
+    .list-order-card:hover {
+      border-color: var(--color-border-strong);
+    }
+
+    .list-order-card__drag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--color-text-muted);
+      cursor: grab;
+    }
+    .list-order-card__drag svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .list-order-card__thumb {
+      width: 52px;
+      height: 52px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--color-bg-subtle);
+    }
+
+    .list-order-card__info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .list-order-card__restaurant {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-tight);
+      color: var(--color-text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .list-order-card__meta {
+      display: block;
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    .list-order-card__number {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+      min-width: 20px;
+      text-align: center;
     }
 
     /* Remove button */
@@ -411,224 +478,29 @@
     .remove-btn:hover { color: var(--color-error); }
     .remove-btn svg { width: 14px; height: 14px; }
 
-    /* Add inline button */
-    .add-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-2);
-      font-size: 10px;
-      font-weight: var(--font-weight-semibold);
-      letter-spacing: var(--letter-spacing-wider);
-      text-transform: uppercase;
-      color: var(--color-text-muted);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: var(--space-3) 0;
-      font-family: var(--font-primary);
-      transition: color var(--transition-fast);
-    }
-    .add-btn:hover { color: var(--color-text-primary); }
-    .add-btn svg { width: 12px; height: 12px; }
+    /* ── Empty state ─────────────────────────────────────── */
 
-    /* Add block button (full width, dashed) */
-    .add-block-btn {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--space-2);
-      padding: var(--space-4);
-      border: 1px dashed var(--color-border-strong);
-      font-size: 10px;
-      font-weight: var(--font-weight-semibold);
-      letter-spacing: var(--letter-spacing-wider);
-      text-transform: uppercase;
-      color: var(--color-text-muted);
-      background: none;
-      cursor: pointer;
-      font-family: var(--font-primary);
-      transition: border-color var(--transition-fast), color var(--transition-fast);
-      margin-top: var(--space-2);
-    }
-    .add-block-btn:hover { border-color: var(--color-black); color: var(--color-text-primary); }
-    .add-block-btn svg { width: 12px; height: 12px; }
-
-    /* ── Item block ─────────────────────────────────────── */
-
-    .order-item-block {
-      border: 1px solid var(--color-border);
-      margin-bottom: var(--space-4);
-    }
-
-    /* Edit mode */
-    .item-edit {
-      padding: var(--space-5);
-    }
-
-    .item-edit-header {
-      display: grid;
-      grid-template-columns: 1fr 112px 28px;
-      gap: var(--space-3);
-      align-items: end;
-      margin-bottom: var(--space-6);
-    }
-
-    .item-edit-header .form-field { margin: 0; }
-
-    .item-mods-label {
-      font-size: 10px;
-      font-weight: var(--font-weight-bold);
-      letter-spacing: var(--letter-spacing-widest);
-      text-transform: uppercase;
-      color: var(--color-text-muted);
-      margin-bottom: var(--space-3);
-    }
-
-    /* Mod row */
-    .mod-row {
-      display: grid;
-      grid-template-columns: auto 1fr 96px 28px;
-      gap: var(--space-3);
-      align-items: end;
-      margin-bottom: var(--space-3);
-    }
-
-    .mod-row .form-field { margin: 0; }
-
-    /* Type toggle — 3-state segmented control */
-    .mod-type-toggle {
-      display: flex;
-      border: 1px solid var(--color-border);
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-
-    .mod-type-btn {
-      padding: 6px 9px;
-      font-size: 10px;
-      font-weight: var(--font-weight-bold);
-      letter-spacing: var(--letter-spacing-wide);
-      text-transform: uppercase;
-      background: none;
-      border: none;
-      border-right: 1px solid var(--color-border);
-      cursor: pointer;
-      color: var(--color-text-muted);
-      font-family: var(--font-primary);
-      transition: background var(--transition-fast), color var(--transition-fast);
-      white-space: nowrap;
-      line-height: 1;
-    }
-    .mod-type-btn:last-child { border-right: none; }
-    .mod-type-btn:hover:not(.is-active) { background: var(--color-bg-subtle); color: var(--color-text-secondary); }
-
-    .mod-type-btn.is-active[data-type="none"]   { background: var(--color-black);   color: #fff; }
-    .mod-type-btn.is-active[data-type="add"]    { background: var(--color-success); color: #fff; }
-    .mod-type-btn.is-active[data-type="remove"] { background: var(--color-error);   color: #fff; }
-
-    .mod-price-cell { transition: opacity var(--transition-fast); }
-    .mod-price-cell.is-hidden { opacity: 0; pointer-events: none; }
-
-    /* Item edit footer */
-    .item-edit-footer {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      margin-top: var(--space-5);
-      padding-top: var(--space-4);
-      border-top: 1px solid var(--color-border);
-    }
-
-    /* View mode */
-    .item-view { display: none; padding: var(--space-4) var(--space-5); }
-
-    .order-item-block.is-saved .item-edit { display: none; }
-    .order-item-block.is-saved .item-view { display: block; }
-
-    .item-view-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: var(--space-3);
-      margin-bottom: var(--space-2);
-    }
-
-    .item-view-name {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      letter-spacing: var(--letter-spacing-tight);
-      color: var(--color-text-primary);
-    }
-
-    .item-view-price {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-primary);
-      flex-shrink: 0;
-    }
-
-    .item-view-mods {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      margin-bottom: var(--space-3);
-    }
-
-    .item-view-mod {
-      display: flex;
-      align-items: baseline;
-      gap: var(--space-2);
-      font-size: var(--font-size-xs);
-    }
-
-    .item-view-mod-sym {
-      font-size: 11px;
-      font-weight: var(--font-weight-bold);
-      flex-shrink: 0;
-      width: 12px;
+    .list-empty-state {
       text-align: center;
-      line-height: 1.6;
-    }
-    .item-view-mod-sym--none   { color: var(--color-text-muted); }
-    .item-view-mod-sym--add    { color: var(--color-success); }
-    .item-view-mod-sym--remove { color: var(--color-error); }
-
-    .item-view-mod-text  { flex: 1; color: var(--color-text-secondary); }
-    .item-view-mod-price { font-size: var(--font-size-xs); color: var(--color-text-muted); flex-shrink: 0; }
-
-    .item-view-actions {
-      display: flex;
-      align-items: center;
-      gap: var(--space-4);
-      padding-top: var(--space-2);
-      border-top: 1px solid var(--color-border);
-      margin-top: var(--space-2);
-    }
-
-    .item-view-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-2);
-      font-size: 10px;
-      font-weight: var(--font-weight-bold);
-      letter-spacing: var(--letter-spacing-widest);
-      text-transform: uppercase;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      font-family: var(--font-primary);
-      transition: color var(--transition-fast);
+      padding: var(--space-10) var(--space-4);
       color: var(--color-text-muted);
     }
-    .item-view-btn svg { width: 12px; height: 12px; }
-    .item-view-btn:hover { color: var(--color-text-primary); }
-    .item-view-btn--danger:hover { color: var(--color-error); }
 
-    /* ── Order total preview ────────────────────────────── */
+    .list-empty-state svg {
+      width: 32px;
+      height: 32px;
+      margin-bottom: var(--space-3);
+      color: var(--color-border-strong);
+    }
 
-    .order-total-row {
+    .list-empty-state__text {
+      font-size: var(--font-size-xs);
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    /* ── Order count ─────────────────────────────────────── */
+
+    .list-count-row {
       display: flex;
       justify-content: flex-end;
       align-items: center;
@@ -638,7 +510,7 @@
       margin-top: var(--space-2);
     }
 
-    .order-total-label {
+    .list-count-label {
       font-size: 10px;
       font-weight: var(--font-weight-bold);
       letter-spacing: var(--letter-spacing-widest);
@@ -646,7 +518,7 @@
       color: var(--color-text-muted);
     }
 
-    .order-total-amount {
+    .list-count-value {
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-bold);
       color: var(--color-text-primary);
@@ -663,6 +535,20 @@
       margin-top: var(--space-16);
       padding-top: var(--space-8);
       border-top: 1px solid var(--color-border);
+    }
+
+    /* ── Drag-and-drop ───────────────────────────────────── */
+
+    .list-order-card.is-dragging {
+      opacity: 0.4;
+    }
+
+    .list-order-card.drag-over-above {
+      border-top: 2px solid var(--color-black);
+    }
+
+    .list-order-card.drag-over-below {
+      border-bottom: 2px solid var(--color-black);
     }
 
   </style>
@@ -701,11 +587,11 @@
             Cookbook
           </a>
           <div class="create-menu__divider"></div>
-          <a href="order-new.html" class="create-menu__item create-menu__item--active" role="menuitem">
+          <a href="order-new.html" class="create-menu__item" role="menuitem">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
             Order
           </a>
-          <a href="list-new.html" class="create-menu__item" role="menuitem">
+          <a href="list-new.html" class="create-menu__item create-menu__item--active" role="menuitem">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
             List
           </a>
@@ -735,35 +621,35 @@
   ═══════════════════════════════════════════════════════ -->
   <div class="app-body">
     <div class="page-container order-form-page">
-      <form id="order-form" novalidate>
+      <form id="list-form" novalidate>
 
         <!-- Page header -->
         <div class="form-page-header">
-          <span class="form-page-title">New Order</span>
+          <span class="form-page-title">New List</span>
           <div class="form-page-actions">
             <a href="profile.html" class="btn btn-secondary">Cancel</a>
-            <button type="submit" class="btn btn-primary">Post Order</button>
+            <button type="submit" class="btn btn-primary">Post List</button>
           </div>
         </div>
 
 
         <!-- ══════════════════════════════════════════════
-             SECTION 1: IMAGE + RESTAURANT / CAPTION
+             SECTION 1: COVER IMAGE + TITLE / DESCRIPTION
         ═══════════════════════════════════════════════ -->
         <div class="form-intro">
 
-          <!-- Left: photo upload → crop → result -->
+          <!-- Left: cover photo upload / crop / result -->
           <div class="upload-col">
 
             <!-- Phase A: empty placeholder -->
             <div id="phase-upload">
               <div class="upload-square">
-                <input type="file" id="image-input" accept="image/*" aria-label="Upload order photo">
+                <input type="file" id="image-input" accept="image/*" aria-label="Upload cover photo">
                 <div class="upload-placeholder" id="upload-placeholder">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                   </svg>
-                  <span class="upload-placeholder__label">Upload Photo</span>
+                  <span class="upload-placeholder__label">Cover Photo</span>
                 </div>
               </div>
             </div>
@@ -816,56 +702,19 @@
           </div><!-- /upload-col -->
 
 
-          <!-- Right: restaurant search + caption + meta -->
+          <!-- Right: title + description -->
           <div class="form-basics">
 
-            <!-- Restaurant -->
+            <!-- Title -->
             <div class="form-field">
-              <label class="form-label">Restaurant</label>
-
-              <div id="restaurant-search-wrap">
-                <div class="restaurant-dropdown-wrap">
-                  <div class="restaurant-input-row">
-                    <svg class="restaurant-search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                    <input type="text" class="form-input" id="restaurant-search" placeholder="Search restaurants…" autocomplete="off" spellcheck="false">
-                  </div>
-                  <div class="restaurant-dropdown" id="restaurant-dropdown" hidden></div>
-                </div>
-              </div>
-
-              <div id="restaurant-selected-wrap" hidden>
-                <div class="restaurant-selected-row">
-                  <span class="restaurant-selected-name" id="selected-restaurant-name"></span>
-                  <button type="button" class="restaurant-change-btn" id="change-restaurant-btn">Change</button>
-                </div>
-              </div>
+              <label class="form-label" for="list-title">Title</label>
+              <input id="list-title" class="form-input" type="text" placeholder="e.g. Best Sushi Spots, Date Night Picks…" autocomplete="off">
             </div>
 
-            <!-- Caption -->
+            <!-- Description -->
             <div class="form-field" style="flex:1; display:flex; flex-direction:column;">
-              <label class="form-label" for="order-caption">Caption</label>
-              <textarea id="order-caption" class="form-input form-textarea" placeholder="How was it? Share your thoughts on this order…" style="flex:1;"></textarea>
-            </div>
-
-            <!-- Date + Rating -->
-            <div class="form-meta-grid">
-              <div class="form-field">
-                <label class="form-label" for="order-date">Date</label>
-                <input id="order-date" class="form-input" type="date">
-              </div>
-              <div class="form-field">
-                <label class="form-label" for="order-rating">Rating</label>
-                <select id="order-rating" class="form-input">
-                  <option value="" disabled selected>Select</option>
-                  <option value="5">★★★★★ — Excellent</option>
-                  <option value="4">★★★★ — Great</option>
-                  <option value="3">★★★ — Good</option>
-                  <option value="2">★★ — Okay</option>
-                  <option value="1">★ — Poor</option>
-                </select>
-              </div>
+              <label class="form-label" for="list-description">Description</label>
+              <textarea id="list-description" class="form-input form-textarea" placeholder="What's this list about? Give it some context…" style="flex:1;"></textarea>
             </div>
 
           </div><!-- /form-basics -->
@@ -874,32 +723,46 @@
 
 
         <!-- ══════════════════════════════════════════════
-             SECTION 2: ORDER BUILDER
+             SECTION 2: ORDER LIST BUILDER
         ═══════════════════════════════════════════════ -->
-        <div class="order-builder">
+        <div class="list-builder">
 
-          <div class="section-label">Build Your Order</div>
+          <div class="section-label">Add Orders</div>
 
-          <div id="order-items-container"></div>
-
-          <div class="order-total-row" id="order-total-row" hidden>
-            <span class="order-total-label">Estimated Total</span>
-            <span class="order-total-amount" id="order-total-amount">$0.00</span>
+          <!-- Search bar -->
+          <div class="order-search-wrap">
+            <div class="order-search-row">
+              <svg class="order-search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <input type="text" class="form-input" id="order-search" placeholder="Search your orders by restaurant…" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="order-search-dropdown" id="order-dropdown" hidden></div>
           </div>
 
-          <button type="button" class="add-block-btn" id="add-item-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          <!-- Added orders -->
+          <div id="list-orders-container" class="list-orders-container"></div>
+
+          <!-- Empty state -->
+          <div id="list-empty-state" class="list-empty-state">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
             </svg>
-            Add Menu Item
-          </button>
+            <p class="list-empty-state__text">Search above to add orders to this list</p>
+          </div>
+
+          <!-- Count row -->
+          <div class="list-count-row" id="list-count-row" hidden>
+            <span class="list-count-label">Orders</span>
+            <span class="list-count-value" id="list-count-value">0</span>
+          </div>
 
         </div>
 
 
         <!-- Form footer -->
         <div class="form-footer">
-          <button type="submit" class="btn btn-primary">Post Order</button>
+          <button type="submit" class="btn btn-primary">Post List</button>
           <a href="profile.html" class="btn btn-secondary">Cancel</a>
         </div>
 
@@ -946,8 +809,7 @@
        SHARED ICON STRINGS
     ════════════════════════════════════════════════════════ */
     const ICON_REMOVE = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>`;
-    const ICON_PLUS   = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>`;
-    const ICON_PENCIL = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>`;
+    const ICON_DRAG   = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 6h.01M12 6h.01M8 12h.01M12 12h.01M8 18h.01M12 18h.01"/></svg>`;
 
 
     /* ════════════════════════════════════════════════════════
@@ -962,7 +824,6 @@
     const cropBox        = document.getElementById('crop-box');
     const cropCanvas     = document.getElementById('crop-canvas');
 
-    // Crop position & size (pixels in container space)
     let cX = 0, cY = 0, cS = 100;
     const MIN_CROP_PX = 40;
 
@@ -973,7 +834,6 @@
       phase.hidden       = false;
     }
 
-    // Trigger file input when clicking the placeholder
     document.getElementById('upload-placeholder').addEventListener('click', () => imageInput.click());
 
     imageInput.addEventListener('change', e => {
@@ -987,7 +847,6 @@
       sourceImg.src = url;
     });
 
-    // Set initial crop box to fill rendered image area (square)
     function initCrop() {
       const cw = cropContainer.offsetWidth;
       const ch = cropContainer.offsetHeight;
@@ -1015,7 +874,6 @@
       const cw = cropContainer.offsetWidth;
       const ch = cropContainer.offsetHeight;
 
-      // Clamp within container
       cS = Math.max(MIN_CROP_PX, cS);
       cX = Math.max(0, Math.min(cw - cS, cX));
       cY = Math.max(0, Math.min(ch - cS, cY));
@@ -1025,7 +883,6 @@
       cropBox.style.width  = cS + 'px';
       cropBox.style.height = cS + 'px';
 
-      // Shade: top, bottom, left, right
       const st = document.getElementById('shade-top');
       const sb = document.getElementById('shade-bottom');
       const sl = document.getElementById('shade-left');
@@ -1037,7 +894,6 @@
       sr.style.cssText = `top:${cY}px; left:${cX + cS}px; right:0; height:${cS}px;`;
     }
 
-    // ── Drag handling ──────────────────────────────────────
     let drag = null;
 
     function pointerPos(e) {
@@ -1046,7 +902,6 @@
       return { x: src.clientX - rect.left, y: src.clientY - rect.top };
     }
 
-    // Move: drag crop box from its interior
     cropBox.addEventListener('mousedown', e => {
       if (e.target.classList.contains('crop-handle')) return;
       e.preventDefault();
@@ -1054,7 +909,6 @@
       drag = { type: 'move', sx: p.x, sy: p.y, scX: cX, scY: cY };
     });
 
-    // Resize: corner handles (1:1 constrained)
     cropBox.querySelectorAll('.crop-handle').forEach(h => {
       h.addEventListener('mousedown', e => {
         e.preventDefault();
@@ -1073,26 +927,21 @@
       if (drag.type === 'move') {
         cX = drag.scX + (p.x - drag.sx);
         cY = drag.scY + (p.y - drag.sy);
-
       } else {
-        // Fixed opposite corner stays put; dragged corner moves
         const { handle, scX, scY, scS } = drag;
-        const brX = scX + scS, brY = scY + scS; // bottom-right
-        const trX = scX + scS, trY = scY;        // top-right
-        const blX = scX,       blY = scY + scS;  // bottom-left
+        const brX = scX + scS, brY = scY + scS;
+        const trX = scX + scS, trY = scY;
+        const blX = scX,       blY = scY + scS;
 
         if (handle === 'br') {
           const ns = Math.max(MIN_CROP_PX, Math.min(p.x - scX, p.y - scY, cw - scX, ch - scY));
           cS = ns; cX = scX; cY = scY;
-
         } else if (handle === 'tl') {
           const ns = Math.max(MIN_CROP_PX, Math.min(brX - p.x, brY - p.y, brX, brY));
           cS = ns; cX = brX - ns; cY = brY - ns;
-
         } else if (handle === 'tr') {
           const ns = Math.max(MIN_CROP_PX, Math.min(p.x - blX, blY - p.y, cw - blX, blY));
           cS = ns; cX = blX; cY = blY - ns;
-
         } else if (handle === 'bl') {
           const ns = Math.max(MIN_CROP_PX, Math.min(trX - p.x, p.y - trY, trX, ch - trY));
           cS = ns; cX = trX - ns; cY = trY;
@@ -1103,7 +952,6 @@
 
     document.addEventListener('mouseup', () => { drag = null; });
 
-    // ── Apply crop ─────────────────────────────────────────
     document.getElementById('apply-crop-btn').addEventListener('click', () => {
       const cw = cropContainer.offsetWidth;
       const ch = cropContainer.offsetHeight;
@@ -1121,7 +969,6 @@
         ox = (cw - rw) / 2; oy = 0;
       }
 
-      // Map crop box → source image coordinates
       const sx = ((cX - ox) / rw) * iw;
       const sy = ((cY - oy) / rh) * ih;
       const sw = (cS / rw) * iw;
@@ -1135,10 +982,8 @@
       showPhase(phaseResult);
     });
 
-    // Re-crop → back to crop UI
     document.getElementById('recrop-btn').addEventListener('click', () => showPhase(phaseCrop));
 
-    // Change photo → back to upload placeholder, reset input
     document.getElementById('change-photo-btn').addEventListener('click', () => {
       imageInput.value = '';
       showPhase(phaseUpload);
@@ -1146,298 +991,206 @@
 
 
     /* ════════════════════════════════════════════════════════
-       RESTAURANT SEARCH
+       DEMO ORDER DATA
     ════════════════════════════════════════════════════════ */
-    const RESTAURANTS = [
-      "Applebee's", "Arby's", "Baskin-Robbins", "Benihana", "Blaze Pizza",
-      "Bob Evans", "Bonefish Grill", "Boston Market", "Buca di Beppo",
-      "Burger King", "California Pizza Kitchen", "Capital Grille",
-      "Carrabba's Italian Grill", "CAVA", "Cheesecake Factory", "Chick-fil-A",
-      "Chili's", "Chipotle Mexican Grill", "Cold Stone Creamery",
-      "Cracker Barrel", "Culver's", "Dairy Queen", "Del Taco", "Denny's",
-      "Din Tai Fung", "Domino's Pizza", "Dunkin'", "Einstein Bros. Bagels",
-      "Eleven Madison Park", "Firehouse Subs", "Five Guys", "Golden Corral",
-      "The Halal Guys", "Hardee's", "IHOP", "In-N-Out Burger",
-      "Jack in the Box", "Jamba", "Jason's Deli", "Jersey Mike's",
-      "Jimmy John's", "Joe's Crab Shack", "Jollibee", "KFC",
-      "Le Bernardin", "Legal Sea Foods", "Little Caesars",
-      "Longhorn Steakhouse", "Maggiano's Little Italy", "McDonald's",
-      "Moe's Southwest Grill", "Morton's The Steakhouse", "Nobu",
-      "Noodles & Company", "Olive Garden", "Outback Steakhouse",
-      "P.F. Chang's", "Panda Express", "Panera Bread", "Papa John's",
-      "Per Se", "Pizza Hut", "Popeyes", "Potbelly Sandwich Works",
-      "Qdoba Mexican Eats", "Raising Cane's", "Red Lobster", "Red Robin",
-      "Ruth's Chris Steak House", "Shake Shack", "Sonic Drive-In",
-      "Starbucks", "Subway", "Taco Bell", "Texas Roadhouse", "TGI Fridays",
-      "Waffle House", "Wendy's", "Whataburger", "White Castle",
-      "Wingstop", "Yard House", "Zaxby's", "Zoe's Kitchen"
-    ].sort();
+    const DEMO_ORDERS = [
+      { id: 'o1',  restaurant: 'Nobu',                    date: 'Jun 24, 2026', rating: 5, items: 3, thumb: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=200&q=80' },
+      { id: 'o2',  restaurant: 'Din Tai Fung',            date: 'Jun 20, 2026', rating: 5, items: 4, thumb: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=200&q=80' },
+      { id: 'o3',  restaurant: 'Shake Shack',             date: 'Jun 18, 2026', rating: 4, items: 3, thumb: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=200&q=80' },
+      { id: 'o4',  restaurant: 'Chipotle Mexican Grill',  date: 'Jun 15, 2026', rating: 4, items: 2, thumb: 'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?auto=format&fit=crop&w=200&q=80' },
+      { id: 'o5',  restaurant: 'Cheesecake Factory',      date: 'Jun 12, 2026', rating: 3, items: 5, thumb: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=200&q=80' },
+      { id: 'o6',  restaurant: 'In-N-Out Burger',         date: 'Jun 10, 2026', rating: 5, items: 3, thumb: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=200&q=80' },
+      { id: 'o7',  restaurant: 'Olive Garden',            date: 'Jun 7, 2026',  rating: 3, items: 4, thumb: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?auto=format&fit=crop&w=200&q=80' },
+      { id: 'o8',  restaurant: 'Le Bernardin',            date: 'Jun 3, 2026',  rating: 5, items: 6, thumb: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=200&q=80' },
+      { id: 'o9',  restaurant: 'Raising Cane\'s',         date: 'May 28, 2026', rating: 4, items: 2, thumb: 'https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=200&q=80' },
+      { id: 'o10', restaurant: 'P.F. Chang\'s',           date: 'May 24, 2026', rating: 4, items: 5, thumb: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=200&q=80' },
+      { id: 'o11', restaurant: 'Eleven Madison Park',     date: 'May 20, 2026', rating: 5, items: 8, thumb: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=200&q=80' },
+      { id: 'o12', restaurant: 'Panda Express',           date: 'May 15, 2026', rating: 3, items: 3, thumb: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=200&q=80' },
+    ];
 
-    const searchInput    = document.getElementById('restaurant-search');
-    const dropdown       = document.getElementById('restaurant-dropdown');
-    const searchWrap     = document.getElementById('restaurant-search-wrap');
-    const selectedWrap   = document.getElementById('restaurant-selected-wrap');
-    const selectedName   = document.getElementById('selected-restaurant-name');
-    const changeRestBtn  = document.getElementById('change-restaurant-btn');
+    const addedOrderIds = new Set();
 
-    function renderRestaurantDropdown(query) {
-      const q = query.trim().toLowerCase();
-      const matches = q
-        ? RESTAURANTS.filter(r => r.toLowerCase().includes(q)).slice(0, 8)
-        : RESTAURANTS.slice(0, 8);
-
-      if (!matches.length) {
-        dropdown.innerHTML = `<div class="restaurant-empty-msg">No restaurants found</div>`;
-      } else {
-        dropdown.innerHTML = matches.map(r => {
-          let label = escapeHtml(r);
-          if (q) {
-            const i = r.toLowerCase().indexOf(q);
-            if (i >= 0) {
-              label = escapeHtml(r.slice(0, i))
-                + '<mark>' + escapeHtml(r.slice(i, i + q.length)) + '</mark>'
-                + escapeHtml(r.slice(i + q.length));
-            }
-          }
-          return `<button type="button" class="restaurant-option" data-name="${escapeAttr(r)}">${label}</button>`;
-        }).join('');
-
-        dropdown.querySelectorAll('.restaurant-option').forEach(btn => {
-          btn.addEventListener('click', () => selectRestaurant(btn.dataset.name));
-        });
-      }
-      dropdown.hidden = false;
-    }
-
-    function selectRestaurant(name) {
-      searchWrap.hidden   = true;
-      selectedWrap.hidden = false;
-      selectedName.textContent = name;
-    }
-
-    function clearRestaurantSelection() {
-      searchWrap.hidden   = false;
-      selectedWrap.hidden = true;
-      searchInput.value   = '';
-      dropdown.hidden     = true;
-      requestAnimationFrame(() => searchInput.focus());
-    }
-
-    searchInput.addEventListener('input',  () => renderRestaurantDropdown(searchInput.value));
-    searchInput.addEventListener('focus',  () => renderRestaurantDropdown(searchInput.value));
-    changeRestBtn.addEventListener('click', clearRestaurantSelection);
-
-    document.addEventListener('click', e => {
-      if (!searchWrap.contains(e.target)) dropdown.hidden = true;
-    });
-
-    function escapeHtml(s) {
-      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    }
-    function escapeAttr(s) {
-      return s.replace(/"/g,'&quot;');
+    function ratingStars(n) {
+      return '★'.repeat(n) + '☆'.repeat(5 - n);
     }
 
 
     /* ════════════════════════════════════════════════════════
-       ORDER ITEMS BUILDER
+       ORDER SEARCH
     ════════════════════════════════════════════════════════ */
-    let itemCounter = 0;
+    const orderSearchInput = document.getElementById('order-search');
+    const orderDropdown    = document.getElementById('order-dropdown');
 
-    document.getElementById('add-item-btn').addEventListener('click', addItem);
-
-    function addItem() {
-      itemCounter++;
-      const block = document.createElement('div');
-      block.className = 'order-item-block';
-      block.id = `item-${itemCounter}`;
-
-      block.innerHTML = `
-        <!-- Edit mode -->
-        <div class="item-edit">
-
-          <div class="item-edit-header">
-            <div class="form-field">
-              <label class="form-label">Item Name</label>
-              <input type="text" class="form-input item-name-input" placeholder="e.g. Burrito Bowl" autocomplete="off">
-            </div>
-            <div class="form-field">
-              <label class="form-label">Price</label>
-              <input type="text" class="form-input item-price-input" placeholder="$0.00" style="text-align:right">
-            </div>
-            <button type="button" class="remove-btn item-remove-btn" title="Remove item">${ICON_REMOVE}</button>
-          </div>
-
-          <div class="item-mods-label">Modifications</div>
-          <div class="item-mods-list"></div>
-
-          <button type="button" class="add-btn add-mod-btn">
-            ${ICON_PLUS} Add Modification
-          </button>
-
-          <div class="item-edit-footer">
-            <button type="button" class="btn btn-primary item-done-btn">Done</button>
-          </div>
-
-        </div>
-
-        <!-- View mode -->
-        <div class="item-view">
-          <div class="item-view-header">
-            <span class="item-view-name"></span>
-            <span class="item-view-price"></span>
-          </div>
-          <div class="item-view-mods"></div>
-          <div class="item-view-actions">
-            <button type="button" class="item-view-btn item-edit-btn">
-              ${ICON_PENCIL} Edit
-            </button>
-            <button type="button" class="item-view-btn item-view-btn--danger item-delete-btn">
-              ${ICON_REMOVE} Remove
-            </button>
-          </div>
-        </div>
-      `;
-
-      wireItemBlock(block);
-      document.getElementById('order-items-container').appendChild(block);
-      block.querySelector('.item-name-input').focus();
+    function escapeHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
 
-    function wireItemBlock(block) {
-      // Edit mode: remove whole item
-      block.querySelector('.item-remove-btn').addEventListener('click', () => {
-        block.remove();
-        recalcTotal();
-      });
+    function renderOrderDropdown(query) {
+      const q = query.trim().toLowerCase();
+      const matches = q
+        ? DEMO_ORDERS.filter(o => o.restaurant.toLowerCase().includes(q)).slice(0, 6)
+        : DEMO_ORDERS.slice(0, 6);
 
-      // Add modification row
-      block.querySelector('.add-mod-btn').addEventListener('click', () => {
-        addModRow(block.querySelector('.item-mods-list'));
-      });
-
-      // Done → save to view mode
-      block.querySelector('.item-done-btn').addEventListener('click', () => {
-        commitItemToView(block);
-        recalcTotal();
-      });
-
-      // View mode: Edit button → back to edit
-      block.querySelector('.item-edit-btn').addEventListener('click', () => {
-        block.classList.remove('is-saved');
-      });
-
-      // View mode: Remove button
-      block.querySelector('.item-delete-btn').addEventListener('click', () => {
-        block.remove();
-        recalcTotal();
-      });
-    }
-
-    function addModRow(container) {
-      const row = document.createElement('div');
-      row.className = 'mod-row';
-      row.innerHTML = `
-        <div class="mod-type-toggle">
-          <button type="button" class="mod-type-btn is-active" data-type="none">None</button>
-          <button type="button" class="mod-type-btn" data-type="add">+ Add</button>
-          <button type="button" class="mod-type-btn" data-type="remove">− Rmv</button>
-        </div>
-        <div class="form-field">
-          <input type="text" class="form-input mod-name-input" placeholder="Modification name" autocomplete="off">
-        </div>
-        <div class="form-field mod-price-cell">
-          <input type="text" class="form-input mod-price-input" placeholder="+$0.00" style="text-align:right">
-        </div>
-        <button type="button" class="remove-btn mod-remove-btn" title="Remove modification">${ICON_REMOVE}</button>
-      `;
-
-      // Type toggle buttons
-      const typeBtns  = row.querySelectorAll('.mod-type-btn');
-      const priceCell = row.querySelector('.mod-price-cell');
-
-      typeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          typeBtns.forEach(b => b.classList.remove('is-active'));
-          btn.classList.add('is-active');
-          priceCell.classList.toggle('is-hidden', btn.dataset.type === 'remove');
-        });
-      });
-
-      row.querySelector('.mod-remove-btn').addEventListener('click', () => row.remove());
-      container.appendChild(row);
-      row.querySelector('.mod-name-input').focus();
-    }
-
-    function commitItemToView(block) {
-      const rawName  = block.querySelector('.item-name-input').value.trim();
-      const rawPrice = block.querySelector('.item-price-input').value.trim();
-
-      const displayName  = rawName  || 'Unnamed Item';
-      const displayPrice = formatPrice(rawPrice);
-
-      block.querySelector('.item-view-name').textContent  = displayName;
-      block.querySelector('.item-view-price').textContent = displayPrice;
-
-      // Build mod list HTML
-      const modsEl = block.querySelector('.item-view-mods');
-      modsEl.innerHTML = '';
-
-      block.querySelectorAll('.mod-row').forEach(row => {
-        const activeBtn = row.querySelector('.mod-type-btn.is-active');
-        const type      = activeBtn ? activeBtn.dataset.type : 'none';
-        const modName   = row.querySelector('.mod-name-input').value.trim();
-        if (!modName) return;
-
-        const modPrice  = row.querySelector('.mod-price-input').value.trim();
-        const sym       = type === 'add' ? '+' : type === 'remove' ? '−' : '·';
-        const symClass  = `item-view-mod-sym--${type}`;
-        const showPrice = type !== 'remove' && modPrice;
-        const priceStr  = showPrice
-          ? (modPrice.startsWith('+') || modPrice.startsWith('-') ? modPrice : '+' + modPrice)
-          : '';
-
-        modsEl.innerHTML += `
-          <div class="item-view-mod">
-            <span class="item-view-mod-sym ${symClass}">${sym}</span>
-            <span class="item-view-mod-text">${escapeHtml(modName)}</span>
-            ${showPrice ? `<span class="item-view-mod-price">${escapeHtml(priceStr)}</span>` : ''}
-          </div>
-        `;
-      });
-
-      block.classList.add('is-saved');
-    }
-
-    function formatPrice(raw) {
-      if (!raw) return '—';
-      const n = parseFloat(raw.replace(/[^0-9.]/g, ''));
-      if (isNaN(n)) return raw;
-      return '$' + n.toFixed(2);
-    }
-
-    function recalcTotal() {
-      const blocks = document.querySelectorAll('.order-item-block');
-      const totalRow = document.getElementById('order-total-row');
-
-      if (!blocks.length) { totalRow.hidden = true; return; }
-
-      let total = 0;
-      blocks.forEach(block => {
-        const ip = parseFloat(block.querySelector('.item-price-input').value.replace(/[^0-9.]/g, '')) || 0;
-        total += ip;
-        block.querySelectorAll('.mod-row').forEach(row => {
-          const activeBtn = row.querySelector('.mod-type-btn.is-active');
-          const type = activeBtn ? activeBtn.dataset.type : 'none';
-          if (type !== 'remove') {
-            const mp = parseFloat(row.querySelector('.mod-price-input').value.replace(/[^0-9.]/g, '')) || 0;
-            total += mp;
+      if (!matches.length) {
+        orderDropdown.innerHTML = `<div class="order-search-empty">No orders found</div>`;
+      } else {
+        orderDropdown.innerHTML = matches.map(o => {
+          const isAdded = addedOrderIds.has(o.id);
+          let label = escapeHtml(o.restaurant);
+          if (q) {
+            const i = o.restaurant.toLowerCase().indexOf(q);
+            if (i >= 0) {
+              label = escapeHtml(o.restaurant.slice(0, i))
+                + '<mark>' + escapeHtml(o.restaurant.slice(i, i + q.length)) + '</mark>'
+                + escapeHtml(o.restaurant.slice(i + q.length));
+            }
           }
+          return `
+            <button type="button" class="order-search-result${isAdded ? ' is-added' : ''}" data-id="${o.id}">
+              <img class="order-search-result__thumb" src="${o.thumb}" alt="${escapeHtml(o.restaurant)}">
+              <div class="order-search-result__info">
+                <span class="order-search-result__restaurant">${label}</span>
+                <span class="order-search-result__meta">${o.date} &middot; ${ratingStars(o.rating)} &middot; ${o.items} items</span>
+              </div>
+              ${isAdded ? '<span class="order-search-result__added-tag">Added</span>' : ''}
+            </button>`;
+        }).join('');
+
+        orderDropdown.querySelectorAll('.order-search-result:not(.is-added)').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const order = DEMO_ORDERS.find(o => o.id === btn.dataset.id);
+            if (order) addOrder(order);
+          });
         });
+      }
+      orderDropdown.hidden = false;
+    }
+
+    orderSearchInput.addEventListener('input', () => renderOrderDropdown(orderSearchInput.value));
+    orderSearchInput.addEventListener('focus', () => renderOrderDropdown(orderSearchInput.value));
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.order-search-wrap')) orderDropdown.hidden = true;
+    });
+
+
+    /* ════════════════════════════════════════════════════════
+       ADD / REMOVE ORDERS
+    ════════════════════════════════════════════════════════ */
+    const listContainer = document.getElementById('list-orders-container');
+    const emptyState    = document.getElementById('list-empty-state');
+    const countRow      = document.getElementById('list-count-row');
+    const countValue    = document.getElementById('list-count-value');
+
+    function addOrder(order) {
+      addedOrderIds.add(order.id);
+
+      const card = document.createElement('div');
+      card.className = 'list-order-card';
+      card.dataset.id = order.id;
+      card.draggable = true;
+
+      card.innerHTML = `
+        <span class="list-order-card__number">${addedOrderIds.size}</span>
+        <div class="list-order-card__drag" aria-label="Drag to reorder">${ICON_DRAG}</div>
+        <img class="list-order-card__thumb" src="${order.thumb}" alt="${escapeHtml(order.restaurant)}">
+        <div class="list-order-card__info">
+          <span class="list-order-card__restaurant">${escapeHtml(order.restaurant)}</span>
+          <span class="list-order-card__meta">${order.date} &middot; ${ratingStars(order.rating)} &middot; ${order.items} items</span>
+        </div>
+        <button type="button" class="remove-btn" title="Remove order">${ICON_REMOVE}</button>
+      `;
+
+      card.querySelector('.remove-btn').addEventListener('click', () => removeOrder(card, order.id));
+      wireDrag(card);
+
+      listContainer.appendChild(card);
+      updateListState();
+
+      orderSearchInput.value = '';
+      orderDropdown.hidden = true;
+    }
+
+    function removeOrder(card, orderId) {
+      addedOrderIds.delete(orderId);
+      card.remove();
+      renumberCards();
+      updateListState();
+    }
+
+    function updateListState() {
+      const count = listContainer.children.length;
+      emptyState.hidden = count > 0;
+      countRow.hidden   = count === 0;
+      countValue.textContent = count;
+    }
+
+    function renumberCards() {
+      listContainer.querySelectorAll('.list-order-card').forEach((card, i) => {
+        card.querySelector('.list-order-card__number').textContent = i + 1;
+      });
+    }
+
+
+    /* ════════════════════════════════════════════════════════
+       DRAG & DROP REORDER
+    ════════════════════════════════════════════════════════ */
+    let dragCard = null;
+
+    function wireDrag(card) {
+      card.addEventListener('dragstart', e => {
+        dragCard = card;
+        card.classList.add('is-dragging');
+        e.dataTransfer.effectAllowed = 'move';
       });
 
-      totalRow.hidden = false;
-      document.getElementById('order-total-amount').textContent = '$' + total.toFixed(2);
+      card.addEventListener('dragend', () => {
+        card.classList.remove('is-dragging');
+        clearDragStyles();
+        dragCard = null;
+        renumberCards();
+      });
+
+      card.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (!dragCard || dragCard === card) return;
+
+        clearDragStyles();
+        const rect = card.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+        if (e.clientY < midY) {
+          card.classList.add('drag-over-above');
+        } else {
+          card.classList.add('drag-over-below');
+        }
+      });
+
+      card.addEventListener('dragleave', () => {
+        card.classList.remove('drag-over-above', 'drag-over-below');
+      });
+
+      card.addEventListener('drop', e => {
+        e.preventDefault();
+        if (!dragCard || dragCard === card) return;
+
+        const rect = card.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+        if (e.clientY < midY) {
+          listContainer.insertBefore(dragCard, card);
+        } else {
+          listContainer.insertBefore(dragCard, card.nextSibling);
+        }
+
+        clearDragStyles();
+        renumberCards();
+      });
+    }
+
+    function clearDragStyles() {
+      listContainer.querySelectorAll('.list-order-card').forEach(c => {
+        c.classList.remove('drag-over-above', 'drag-over-below');
+      });
     }
 
   </script>

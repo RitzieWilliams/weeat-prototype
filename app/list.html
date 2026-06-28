@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>marcoeats at Nobu — We Eat</title>
+  <title>Best Sushi Spots by sofia_k — We Eat</title>
   <link rel="stylesheet" href="../css/tokens.css">
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/components.css">
@@ -12,23 +12,23 @@
   <style>
 
     /* ════════════════════════════════════════════════════════
-       ORDER DETAIL — recipe-style intro, full-width items
+       LIST DETAIL — recipe-style intro, full-width order grid
     ════════════════════════════════════════════════════════ */
 
-    .order-page {
+    .list-page {
       padding-block: var(--space-8) var(--space-20);
     }
 
     /* ── Top action bar ───────────────────────────────────── */
 
-    .order-action-bar {
+    .list-action-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: var(--space-8);
     }
 
-    .order-back {
+    .list-back {
       display: inline-flex;
       align-items: center;
       gap: var(--space-2);
@@ -40,10 +40,10 @@
       text-decoration: none;
       transition: color var(--transition-fast);
     }
-    .order-back:hover { color: var(--color-text-primary); }
-    .order-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .list-back:hover { color: var(--color-text-primary); }
+    .list-back svg { width: 14px; height: 14px; flex-shrink: 0; }
 
-    .order-action-bar__right {
+    .list-action-bar__right {
       display: flex;
       align-items: center;
       gap: var(--space-3);
@@ -51,11 +51,11 @@
 
     /* ── Options menu ─────────────────────────────────────── */
 
-    .order-menu {
+    .list-menu {
       position: relative;
     }
 
-    .order-menu__dropdown {
+    .list-menu__dropdown {
       display: none;
       position: absolute;
       top: calc(100% + var(--space-2));
@@ -67,9 +67,9 @@
       z-index: 50;
     }
 
-    .order-menu__dropdown--open { display: block; }
+    .list-menu__dropdown--open { display: block; }
 
-    .order-menu__item {
+    .list-menu__item {
       display: block;
       width: 100%;
       text-align: left;
@@ -85,15 +85,15 @@
       transition: background var(--transition-fast);
     }
 
-    .order-menu__item:last-child { border-bottom: none; }
-    .order-menu__item:hover { background: var(--color-bg-subtle); }
-    .order-menu__item--danger { color: var(--color-error); }
+    .list-menu__item:last-child { border-bottom: none; }
+    .list-menu__item:hover { background: var(--color-bg-subtle); }
+    .list-menu__item--danger { color: var(--color-error); }
 
     /* ════════════════════════════════════════════════════════
        INTRO — image left, details right (mirrors recipe-intro)
     ════════════════════════════════════════════════════════ */
 
-    .order-intro {
+    .list-intro {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: var(--space-12);
@@ -102,13 +102,13 @@
     }
 
     @media (max-width: 900px) {
-      .order-intro {
+      .list-intro {
         grid-template-columns: 1fr;
         gap: var(--space-8);
       }
     }
 
-    .order-hero {
+    .list-hero {
       width: 100%;
       aspect-ratio: 1 / 1;
       object-fit: cover;
@@ -116,12 +116,12 @@
       background-color: var(--color-bg-subtle);
     }
 
-    .order-header {
+    .list-header {
       display: flex;
       flex-direction: column;
     }
 
-    .order-title {
+    .list-title {
       font-size: clamp(1.75rem, 3vw, var(--font-size-3xl));
       font-weight: var(--font-weight-bold);
       letter-spacing: -0.04em;
@@ -129,14 +129,14 @@
       margin-bottom: var(--space-5);
     }
 
-    .order-author {
+    .list-author {
       display: flex;
       align-items: center;
       gap: var(--space-3);
       margin-bottom: var(--space-6);
     }
 
-    .order-author__avatar {
+    .list-author__avatar {
       width: 32px;
       height: 32px;
       border-radius: 50%;
@@ -144,19 +144,19 @@
       flex-shrink: 0;
     }
 
-    .order-author__name {
+    .list-author__name {
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-semibold);
       color: var(--color-text-primary);
     }
 
-    .order-author__handle {
+    .list-author__handle {
       font-size: var(--font-size-xs);
       color: var(--color-text-muted);
       margin-left: var(--space-1);
     }
 
-    .order-description {
+    .list-description {
       font-size: var(--font-size-base);
       color: var(--color-text-secondary);
       line-height: var(--line-height-relaxed);
@@ -165,21 +165,21 @@
 
     /* ── Meta stats — anchored to bottom of right column ── */
 
-    .order-meta {
+    .list-meta {
       display: flex;
       border-top: 1px solid var(--color-border);
       margin-top: var(--space-8);
     }
 
-    .order-meta__item {
+    .list-meta__item {
       flex: 1;
       padding: var(--space-4) var(--space-4) 0;
       border-right: 1px solid var(--color-border);
     }
-    .order-meta__item:first-child { padding-left: 0; }
-    .order-meta__item:last-child { border-right: none; }
+    .list-meta__item:first-child { padding-left: 0; }
+    .list-meta__item:last-child { border-right: none; }
 
-    .order-meta__value {
+    .list-meta__value {
       font-size: var(--font-size-md);
       font-weight: var(--font-weight-bold);
       letter-spacing: var(--letter-spacing-tight);
@@ -187,7 +187,7 @@
       margin-bottom: 5px;
     }
 
-    .order-meta__label {
+    .list-meta__label {
       font-size: 10px;
       font-weight: var(--font-weight-semibold);
       letter-spacing: var(--letter-spacing-widest);
@@ -195,28 +195,15 @@
       color: var(--color-text-muted);
     }
 
-    @media (max-width: 600px) {
-      .order-meta { flex-wrap: wrap; }
-      .order-meta__item {
-        flex: 1 1 50%;
-        padding: var(--space-4);
-        border-bottom: 1px solid var(--color-border);
-      }
-      .order-meta__item:first-child { padding-left: var(--space-4); }
-      .order-meta__item:nth-child(even) { border-right: none; }
-      .order-meta__item:nth-last-child(-n+2) { border-bottom: none; }
-    }
+    /* ── Actions row — save + share ───────────────────────── */
 
-    /* ── Actions row — save ──────────────────────────────── */
-
-    .order-actions {
+    .list-actions {
       display: flex;
       align-items: center;
       gap: var(--space-4);
-      margin-top: var(--space-6);
     }
 
-    .order-save-btn {
+    .list-save-btn {
       display: inline-flex;
       align-items: center;
       gap: var(--space-2);
@@ -235,43 +222,43 @@
                   border-color var(--transition-fast);
     }
 
-    .order-save-btn:hover {
+    .list-save-btn:hover {
       background: var(--color-black);
       color: var(--color-white);
       border-color: var(--color-black);
     }
 
-    .order-save-btn--saved {
+    .list-save-btn--saved {
       background: var(--color-black);
       color: var(--color-white);
       border-color: var(--color-black);
     }
 
-    .order-save-btn svg { width: 14px; height: 14px; }
+    .list-save-btn svg { width: 14px; height: 14px; }
 
-    .order-save-count {
+    .list-save-count {
       font-size: var(--font-size-xs);
       color: var(--color-text-muted);
     }
 
     /* ════════════════════════════════════════════════════════
-       ITEMS — full-width section
+       ORDERS — ranked list with large images
     ════════════════════════════════════════════════════════ */
 
-    .order-items-section {
+    .list-orders {
       margin-bottom: var(--space-12);
     }
 
-    .order-items-header {
+    .list-orders__header {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
       padding-bottom: var(--space-4);
       border-bottom: 2px solid var(--color-black);
-      margin-bottom: var(--space-2);
+      margin-bottom: var(--space-6);
     }
 
-    .order-items-label {
+    .list-orders__label {
       font-size: 10px;
       font-weight: var(--font-weight-bold);
       letter-spacing: var(--letter-spacing-widest);
@@ -279,76 +266,115 @@
       color: var(--color-text-muted);
     }
 
-    .order-items-total-badge {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-bold);
-      color: var(--color-text-primary);
+    .list-orders__count {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
     }
 
-    .order-item {
-      padding: var(--space-5) 0;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .order-item:last-child { border-bottom: none; }
-
-    .order-item__header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: var(--space-3);
-      margin-bottom: var(--space-2);
-    }
-
-    .order-item__name {
-      font-size: var(--font-size-base);
-      font-weight: var(--font-weight-semibold);
-      letter-spacing: var(--letter-spacing-tight);
-      color: var(--color-text-primary);
-    }
-
-    .order-item__price {
-      font-size: var(--font-size-base);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-primary);
-      flex-shrink: 0;
-    }
-
-    .order-item__mods {
+    .list-orders__list {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: var(--space-8);
     }
 
-    .order-item__mod {
-      display: flex;
-      align-items: baseline;
-      gap: var(--space-2);
-      font-size: var(--font-size-sm);
+    /* ── Order card — horizontal: number | image | info ──── */
+
+    .list-order {
+      display: grid;
+      grid-template-columns: 52px 160px 1fr;
+      gap: var(--space-6);
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+      padding-bottom: var(--space-8);
+      border-bottom: 1px solid var(--color-border);
+      transition: opacity var(--transition-fast);
     }
 
-    .order-item__mod-symbol {
-      font-size: 12px;
+    .list-order:last-child {
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .list-order:hover { opacity: 0.85; }
+
+    .list-order__number {
+      font-size: var(--font-size-3xl);
       font-weight: var(--font-weight-bold);
-      flex-shrink: 0;
-      width: 14px;
+      color: var(--color-border-strong);
+      line-height: 1;
+      letter-spacing: var(--letter-spacing-tight);
       text-align: center;
-      line-height: 1.6;
     }
 
-    .order-item__mod-symbol--add    { color: var(--color-success); }
-    .order-item__mod-symbol--remove { color: var(--color-error); }
-    .order-item__mod-symbol--note   { color: var(--color-text-muted); }
-
-    .order-item__mod-text {
-      color: var(--color-text-secondary);
-      flex: 1;
+    .list-order__img-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 160px;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: var(--color-bg-subtle);
     }
 
-    .order-item__mod-price {
+    .list-order__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .list-order__info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .list-order__restaurant {
+      display: block;
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: var(--letter-spacing-tight);
+      color: var(--color-text-primary);
+      line-height: 1.2;
+    }
+
+    .list-order__meta {
+      display: block;
       font-size: var(--font-size-sm);
       color: var(--color-text-muted);
-      flex-shrink: 0;
+    }
+
+    @media (max-width: 700px) {
+      .list-order {
+        grid-template-columns: 36px 120px 1fr;
+        gap: var(--space-4);
+      }
+
+      .list-order__number {
+        font-size: var(--font-size-2xl);
+      }
+
+      .list-order__restaurant {
+        font-size: var(--font-size-base);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .list-order {
+        grid-template-columns: 36px 1fr;
+        gap: var(--space-4);
+      }
+
+      .list-order__img-wrap {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        aspect-ratio: 3 / 2;
+      }
+
+      .list-order__info {
+        grid-column: 2;
+        grid-row: 1;
+      }
     }
 
     /* ════════════════════════════════════════════════════════
@@ -578,40 +604,40 @@
 
 
   <!-- ═══════════════════════════════════════════════════════
-       ORDER DETAIL
+       LIST DETAIL
   ═══════════════════════════════════════════════════════ -->
   <div class="app-body">
-    <div class="page-container order-page" id="order-panel" data-own="false">
+    <div class="page-container list-page" id="list-panel" data-own="false">
 
 
       <!-- ── Action bar ──────────────────────────────────── -->
-      <div class="order-action-bar">
-        <a href="profile.html" class="order-back">
+      <div class="list-action-bar">
+        <a href="profile.html" class="list-back">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
           Back
         </a>
 
-        <div class="order-action-bar__right">
+        <div class="list-action-bar__right">
 
-          <button class="btn btn-secondary btn-sm order-share-btn" id="share-btn" aria-label="Share order">
+          <button class="btn btn-secondary btn-sm list-share-btn" id="share-btn" aria-label="Share list">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/>
             </svg>
             <span id="share-label">Share</span>
           </button>
 
-          <a href="order-new.html" class="btn btn-secondary btn-sm order-menu__item--owner" aria-label="Edit this order">
+          <a href="list-new.html" class="btn btn-secondary btn-sm list-menu__item--owner" aria-label="Edit this list">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
               <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
             </svg>
-            Edit Order
+            Edit List
           </a>
 
-          <div class="order-menu">
+          <div class="list-menu">
             <button class="btn-icon"
-                    id="order-menu-btn"
+                    id="list-menu-btn"
                     aria-label="More options"
                     aria-expanded="false">
               <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
@@ -620,9 +646,9 @@
                 <circle cx="19" cy="12" r="2"/>
               </svg>
             </button>
-            <div class="order-menu__dropdown" id="order-menu-dropdown" role="menu">
-              <button class="order-menu__item order-menu__item--danger order-menu__item--owner" role="menuitem">Delete Order</button>
-              <button class="order-menu__item order-menu__item--visitor" role="menuitem">Report</button>
+            <div class="list-menu__dropdown" id="list-menu-dropdown" role="menu">
+              <button class="list-menu__item list-menu__item--danger list-menu__item--owner" role="menuitem">Delete List</button>
+              <button class="list-menu__item list-menu__item--visitor" role="menuitem">Report</button>
             </div>
           </div>
 
@@ -631,53 +657,49 @@
 
 
       <!-- ── INTRO — image left, details right ───────────── -->
-      <div class="order-intro">
+      <div class="list-intro">
 
-        <img class="order-hero"
+        <img class="list-hero"
              src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=900&q=85"
-             alt="Nobu restaurant">
+             alt="Best Sushi Spots cover">
 
-        <div class="order-header">
+        <div class="list-header">
 
-          <h1 class="order-title">Nobu</h1>
+          <h1 class="list-title">Best Sushi Spots</h1>
 
-          <div class="order-author">
-            <img class="order-author__avatar"
-                 src="https://i.pravatar.cc/200?img=52"
-                 alt="Marco T.">
-            <span class="order-author__name">Marco T.</span>
-            <span class="order-author__handle">@marcoeats · 3d ago</span>
+          <div class="list-author">
+            <img class="list-author__avatar"
+                 src="https://i.pravatar.cc/200?img=47"
+                 alt="Sofia K.">
+            <span class="list-author__name">Sofia K.</span>
+            <span class="list-author__handle">@sofia_k</span>
           </div>
 
-          <p class="order-description">Japanese · Omakase · Tribeca, NY — My go-to omakase order. The black cod here is unreal and the yellowtail jalapeño is even better without the ponzu.</p>
+          <p class="list-description">My all-time favorite sushi restaurants in NYC and LA. Every spot on this list is worth a trip — from omakase splurges to no-frills neighborhood gems.</p>
 
-          <div class="order-meta">
-            <div class="order-meta__item">
-              <div class="order-meta__value">3</div>
-              <div class="order-meta__label">Items</div>
+          <div class="list-meta">
+            <div class="list-meta__item">
+              <div class="list-meta__value">5</div>
+              <div class="list-meta__label">Orders</div>
             </div>
-            <div class="order-meta__item">
-              <div class="order-meta__value">$86.50</div>
-              <div class="order-meta__label">Total</div>
+            <div class="list-meta__item">
+              <div class="list-meta__value">42</div>
+              <div class="list-meta__label">Saves</div>
             </div>
-            <div class="order-meta__item">
-              <div class="order-meta__value">74</div>
-              <div class="order-meta__label">Saves</div>
-            </div>
-            <div class="order-meta__item">
-              <div class="order-meta__value">3d ago</div>
-              <div class="order-meta__label">Posted</div>
+            <div class="list-meta__item">
+              <div class="list-meta__value">2d ago</div>
+              <div class="list-meta__label">Updated</div>
             </div>
           </div>
 
-          <div class="order-actions">
-            <button class="order-save-btn" id="save-btn" aria-pressed="false">
+          <div class="list-actions" style="margin-top: var(--space-6);">
+            <button class="list-save-btn" id="save-btn" aria-pressed="false">
               <svg id="save-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
               </svg>
               <span id="save-label">Save</span>
             </button>
-            <span class="order-save-count" id="save-count">74 saves</span>
+            <span class="list-save-count" id="save-count">42 saves</span>
           </div>
 
         </div>
@@ -685,75 +707,90 @@
       </div>
 
 
-      <!-- ── ITEMS — full-width section ──────────────────── -->
-      <div class="order-items-section">
+      <!-- ── ORDERS — full-width grid ────────────────────── -->
+      <div class="list-orders">
 
-        <div class="order-items-header">
-          <span class="order-items-label">Items</span>
-          <span class="order-items-total-badge">$86.50</span>
+        <div class="list-orders__header">
+          <span class="list-orders__label">Orders</span>
+          <span class="list-orders__count">5 orders</span>
         </div>
 
-        <!-- Item 1 -->
-        <div class="order-item">
-          <div class="order-item__header">
-            <span class="order-item__name">Black Cod Miso</span>
-            <span class="order-item__price">$38.00</span>
-          </div>
-          <div class="order-item__mods">
-            <div class="order-item__mod">
-              <span class="order-item__mod-symbol order-item__mod-symbol--add">+</span>
-              <span class="order-item__mod-text">extra miso glaze on the side</span>
-            </div>
-            <div class="order-item__mod">
-              <span class="order-item__mod-symbol order-item__mod-symbol--note">~</span>
-              <span class="order-item__mod-text">plate family style if possible</span>
-            </div>
-          </div>
-        </div>
+        <div class="list-orders__list">
 
-        <!-- Item 2 -->
-        <div class="order-item">
-          <div class="order-item__header">
-            <span class="order-item__name">Yellowtail Jalapeño</span>
-            <span class="order-item__price">$24.00</span>
-          </div>
-          <div class="order-item__mods">
-            <div class="order-item__mod">
-              <span class="order-item__mod-symbol order-item__mod-symbol--remove">−</span>
-              <span class="order-item__mod-text">ponzu</span>
+          <!-- Order 1 -->
+          <a class="list-order" href="order.html">
+            <span class="list-order__number">01</span>
+            <div class="list-order__img-wrap">
+              <img class="list-order__img"
+                   src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=600&q=80"
+                   alt="Nobu">
             </div>
-            <div class="order-item__mod">
-              <span class="order-item__mod-symbol order-item__mod-symbol--add">+</span>
-              <span class="order-item__mod-text">extra jalapeño</span>
+            <div class="list-order__info">
+              <span class="list-order__restaurant">Nobu</span>
+              <span class="list-order__meta">Jun 24 · ★★★★★ · 3 items · $86.50</span>
             </div>
-            <div class="order-item__mod">
-              <span class="order-item__mod-symbol order-item__mod-symbol--note">~</span>
-              <span class="order-item__mod-text">extra thin slices if possible</span>
-            </div>
-          </div>
-        </div>
+          </a>
 
-        <!-- Item 3 -->
-        <div class="order-item">
-          <div class="order-item__header">
-            <span class="order-item__name">Dragon Roll</span>
-            <span class="order-item__price">$22.00</span>
-          </div>
-          <div class="order-item__mods">
-            <div class="order-item__mod">
-              <span class="order-item__mod-symbol order-item__mod-symbol--add">+</span>
-              <span class="order-item__mod-text">extra avocado</span>
-              <span class="order-item__mod-price">+$2.50</span>
+          <!-- Order 2 -->
+          <a class="list-order" href="order.html">
+            <span class="list-order__number">02</span>
+            <div class="list-order__img-wrap">
+              <img class="list-order__img"
+                   src="https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80"
+                   alt="Din Tai Fung">
             </div>
-            <div class="order-item__mod">
-              <span class="order-item__mod-symbol order-item__mod-symbol--note">~</span>
-              <span class="order-item__mod-text">light on the eel sauce</span>
+            <div class="list-order__info">
+              <span class="list-order__restaurant">Din Tai Fung</span>
+              <span class="list-order__meta">Jun 20 · ★★★★★ · 4 items · $62.00</span>
             </div>
-          </div>
+          </a>
+
+          <!-- Order 3 -->
+          <a class="list-order" href="order.html">
+            <span class="list-order__number">03</span>
+            <div class="list-order__img-wrap">
+              <img class="list-order__img"
+                   src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&q=80"
+                   alt="Eleven Madison Park">
+            </div>
+            <div class="list-order__info">
+              <span class="list-order__restaurant">Eleven Madison Park</span>
+              <span class="list-order__meta">May 20 · ★★★★★ · 8 items · $342.00</span>
+            </div>
+          </a>
+
+          <!-- Order 4 -->
+          <a class="list-order" href="order.html">
+            <span class="list-order__number">04</span>
+            <div class="list-order__img-wrap">
+              <img class="list-order__img"
+                   src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
+                   alt="Le Bernardin">
+            </div>
+            <div class="list-order__info">
+              <span class="list-order__restaurant">Le Bernardin</span>
+              <span class="list-order__meta">Jun 3 · ★★★★★ · 6 items · $278.00</span>
+            </div>
+          </a>
+
+          <!-- Order 5 -->
+          <a class="list-order" href="order.html">
+            <span class="list-order__number">05</span>
+            <div class="list-order__img-wrap">
+              <img class="list-order__img"
+                   src="https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80"
+                   alt="P.F. Chang's">
+            </div>
+            <div class="list-order__info">
+              <span class="list-order__restaurant">P.F. Chang's</span>
+              <span class="list-order__meta">May 24 · ★★★★ · 5 items · $74.50</span>
+            </div>
+          </a>
+
         </div>
 
       </div>
-      <!-- /order-items-section -->
+      <!-- /list-orders -->
 
 
       <!-- ── COMMENTS ────────────────────────────────────── -->
@@ -761,12 +798,11 @@
 
         <div class="comments-header">
           <span class="comments-label">Comments</span>
-          <span class="comments-count" id="comments-count-label">5 comments</span>
+          <span class="comments-count" id="comments-count-label">3 comments</span>
         </div>
 
         <div id="comments-list">
 
-          <!-- Comment 1 — own, deletable -->
           <div class="comment" data-own="true">
             <img class="comment__avatar"
                  src="https://i.pravatar.cc/200?img=47"
@@ -774,28 +810,13 @@
             <div class="comment__body">
               <p class="comment__text">
                 <span class="comment__author">sofia_k</span>
-                This order is iconic. The black cod is everything — so glad you remove the ponzu on the yellowtail too.
+                Added Eleven Madison Park — the tasting menu was unreal. This list keeps growing!
               </p>
-              <span class="comment__time">1h ago</span>
+              <span class="comment__time">2d ago</span>
             </div>
             <button class="comment__delete" aria-label="Delete comment" title="Delete">×</button>
           </div>
 
-          <!-- Comment 2 -->
-          <div class="comment">
-            <img class="comment__avatar"
-                 src="https://i.pravatar.cc/200?img=45"
-                 alt="yumi.cooks">
-            <div class="comment__body">
-              <p class="comment__text">
-                <span class="comment__author">yumi.cooks</span>
-                Do you always skip the ponzu? I feel like it's essential to the dish but maybe I'm wrong.
-              </p>
-              <span class="comment__time">3h ago</span>
-            </div>
-          </div>
-
-          <!-- Comment 3 — creator reply -->
           <div class="comment">
             <img class="comment__avatar"
                  src="https://i.pravatar.cc/200?img=52"
@@ -803,13 +824,12 @@
             <div class="comment__body">
               <p class="comment__text">
                 <span class="comment__author">marcoeats</span>
-                @yumi.cooks I prefer it without — lets the fish speak for itself. Try it once.
+                Great picks. You should try Sushi Nakazawa next — it would fit right in here.
               </p>
-              <span class="comment__time">4h ago</span>
+              <span class="comment__time">1d ago</span>
             </div>
           </div>
 
-          <!-- Comment 4 -->
           <div class="comment">
             <img class="comment__avatar"
                  src="https://i.pravatar.cc/200?img=36"
@@ -817,23 +837,9 @@
             <div class="comment__body">
               <p class="comment__text">
                 <span class="comment__author">priyakitchen</span>
-                Saving this for my birthday dinner next month. Worth every dollar.
+                Saving this entire list. The Nobu order alone is worth bookmarking.
               </p>
-              <span class="comment__time">1d ago</span>
-            </div>
-          </div>
-
-          <!-- Comment 5 -->
-          <div class="comment">
-            <img class="comment__avatar"
-                 src="https://i.pravatar.cc/200?img=31"
-                 alt="lena.eats">
-            <div class="comment__body">
-              <p class="comment__text">
-                <span class="comment__author">lena.eats</span>
-                Extra avocado on the dragon roll is a power move. Stealing this whole order.
-              </p>
-              <span class="comment__time">2d ago</span>
+              <span class="comment__time">6h ago</span>
             </div>
           </div>
 
@@ -910,17 +916,16 @@
   <script>
 
     /* ──────────────────────────────────────────────────────
-       Owner vs. visitor — show/hide context-sensitive UI
-       Toggle data-own on #order-panel to switch states.
+       Owner vs. visitor
     ────────────────────────────────────────────────────── */
 
-    const panel  = document.getElementById('order-panel');
+    const panel  = document.getElementById('list-panel');
     const isOwn  = panel.dataset.own === 'true';
 
-    document.querySelectorAll('.order-menu__item--owner').forEach(el => {
+    document.querySelectorAll('.list-menu__item--owner').forEach(el => {
       el.style.display = isOwn ? '' : 'none';
     });
-    document.querySelectorAll('.order-menu__item--visitor').forEach(el => {
+    document.querySelectorAll('.list-menu__item--visitor').forEach(el => {
       el.style.display = isOwn ? 'none' : '';
     });
 
@@ -931,14 +936,14 @@
        Save toggle
     ────────────────────────────────────────────────────── */
 
-    let saveCount = 74;
+    let saveCount = 42;
     const saveCountEl = document.getElementById('save-count');
     const saveLabel   = document.getElementById('save-label');
     const saveIcon    = document.getElementById('save-icon');
 
     saveBtn.addEventListener('click', () => {
-      const saved = saveBtn.classList.contains('order-save-btn--saved');
-      saveBtn.classList.toggle('order-save-btn--saved');
+      const saved = saveBtn.classList.contains('list-save-btn--saved');
+      saveBtn.classList.toggle('list-save-btn--saved');
       saveBtn.setAttribute('aria-pressed', String(!saved));
 
       if (!saved) {
@@ -955,39 +960,40 @@
     });
 
     /* ──────────────────────────────────────────────────────
-       Share — copy link to clipboard with brief feedback
+       Share
     ────────────────────────────────────────────────────── */
 
-    const shareBtn = document.getElementById('share-btn');
+    const shareBtn   = document.getElementById('share-btn');
+    const shareLabel = document.getElementById('share-label');
 
     shareBtn.addEventListener('click', () => {
       navigator.clipboard?.writeText(window.location.href);
-      const label = document.getElementById('share-label');
-      label.textContent = 'Copied!';
-      setTimeout(() => { label.textContent = 'Share'; }, 1500);
+      const prev = shareLabel.textContent;
+      shareLabel.textContent = 'Copied!';
+      setTimeout(() => { shareLabel.textContent = prev; }, 1500);
     });
 
     /* ──────────────────────────────────────────────────────
        ••• Menu
     ────────────────────────────────────────────────────── */
 
-    const menuBtn      = document.getElementById('order-menu-btn');
-    const menuDropdown = document.getElementById('order-menu-dropdown');
+    const menuBtn      = document.getElementById('list-menu-btn');
+    const menuDropdown = document.getElementById('list-menu-dropdown');
 
     menuBtn.addEventListener('click', e => {
       e.stopPropagation();
-      const open = menuDropdown.classList.toggle('order-menu__dropdown--open');
+      const open = menuDropdown.classList.toggle('list-menu__dropdown--open');
       menuBtn.setAttribute('aria-expanded', String(open));
     });
 
     document.addEventListener('click', () => {
-      menuDropdown.classList.remove('order-menu__dropdown--open');
+      menuDropdown.classList.remove('list-menu__dropdown--open');
       menuBtn.setAttribute('aria-expanded', 'false');
     });
 
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
-        menuDropdown.classList.remove('order-menu__dropdown--open');
+        menuDropdown.classList.remove('list-menu__dropdown--open');
         menuBtn.setAttribute('aria-expanded', 'false');
       }
     });

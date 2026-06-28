@@ -169,13 +169,45 @@
       line-height: var(--line-height-relaxed);
     }
 
+    /* ── Tags — grouped toggleable chips ─────────────────── */
+
+    .form-tag-group {
+      margin-bottom: var(--space-4);
+    }
+
+    .form-tag-group:last-child { margin-bottom: 0; }
+
+    .form-tag-group__label {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-2);
+    }
+
+    .form-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .form-tags .chip {
+      transition: background var(--transition-fast),
+                  color var(--transition-fast),
+                  border-color var(--transition-fast);
+    }
+
+    .form-tags .chip--active {
+      background: var(--color-black);
+      border-color: var(--color-black);
+      color: var(--color-white);
+    }
+
     /* Meta inputs — 2×2 grid */
     .form-meta-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0 var(--space-6);
-      margin-top: auto;
-      padding-top: var(--space-8);
+      padding-top: var(--space-5);
       border-top: 1px solid var(--color-border);
     }
 
@@ -415,6 +447,10 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
             Order
           </a>
+          <a href="list-new.html" class="create-menu__item" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            List
+          </a>
         </div>
       </div>
 
@@ -483,7 +519,7 @@
               <textarea id="recipe-desc" class="form-input form-textarea" placeholder="What makes this recipe worth making?" style="flex:1;"></textarea>
             </div>
 
-            <!-- Meta stats — 2×2, pushed to bottom -->
+            <!-- Meta stats — 2×2 -->
             <div class="form-meta-grid">
               <div class="form-field">
                 <label class="form-label" for="prep-time">Prep Time</label>
@@ -506,6 +542,65 @@
                   <option>Hard</option>
                 </select>
               </div>
+            </div>
+
+            <div class="form-field" style="margin-top: var(--space-5);">
+              <label class="form-label">Tags</label>
+
+              <div class="form-tag-group">
+                <div class="form-tag-group__label">Cuisine</div>
+                <div class="form-tags">
+                  <button type="button" class="chip" data-tag="american">American</button>
+                  <button type="button" class="chip" data-tag="mexican">Mexican</button>
+                  <button type="button" class="chip" data-tag="italian">Italian</button>
+                  <button type="button" class="chip" data-tag="japanese">Japanese</button>
+                  <button type="button" class="chip" data-tag="chinese">Chinese</button>
+                  <button type="button" class="chip" data-tag="thai">Thai</button>
+                  <button type="button" class="chip" data-tag="indian">Indian</button>
+                  <button type="button" class="chip" data-tag="korean">Korean</button>
+                  <button type="button" class="chip" data-tag="mediterranean">Mediterranean</button>
+                  <button type="button" class="chip" data-tag="french">French</button>
+                  <button type="button" class="chip" data-tag="middle-eastern">Middle Eastern</button>
+                  <button type="button" class="chip" data-tag="caribbean">Caribbean</button>
+                </div>
+              </div>
+
+              <div class="form-tag-group">
+                <div class="form-tag-group__label">Category</div>
+                <div class="form-tags">
+                  <button type="button" class="chip" data-tag="pasta">Pasta &amp; Grains</button>
+                  <button type="button" class="chip" data-tag="chicken">Chicken &amp; Meat</button>
+                  <button type="button" class="chip" data-tag="seafood">Seafood</button>
+                  <button type="button" class="chip" data-tag="salads">Salads &amp; Sides</button>
+                  <button type="button" class="chip" data-tag="soups">Soups &amp; Stews</button>
+                  <button type="button" class="chip" data-tag="breakfast">Breakfast</button>
+                  <button type="button" class="chip" data-tag="desserts">Desserts</button>
+                  <button type="button" class="chip" data-tag="snacks">Snacks</button>
+                  <button type="button" class="chip" data-tag="drinks">Drinks</button>
+                </div>
+              </div>
+
+              <div class="form-tag-group">
+                <div class="form-tag-group__label">Dietary</div>
+                <div class="form-tags">
+                  <button type="button" class="chip" data-tag="vegetarian">Vegetarian</button>
+                  <button type="button" class="chip" data-tag="vegan">Vegan</button>
+                  <button type="button" class="chip" data-tag="gluten-free">Gluten-Free</button>
+                  <button type="button" class="chip" data-tag="dairy-free">Dairy-Free</button>
+                  <button type="button" class="chip" data-tag="keto">Keto</button>
+                  <button type="button" class="chip" data-tag="paleo">Paleo</button>
+                </div>
+              </div>
+
+              <div class="form-tag-group">
+                <div class="form-tag-group__label">Time</div>
+                <div class="form-tags">
+                  <button type="button" class="chip" data-tag="under-15">Under 15 Min</button>
+                  <button type="button" class="chip" data-tag="under-30">Under 30 Min</button>
+                  <button type="button" class="chip" data-tag="under-60">Under 1 Hour</button>
+                </div>
+              </div>
+
             </div>
 
           </div>
@@ -620,6 +715,15 @@
       imagePreview.src = URL.createObjectURL(file);
       imagePreview.style.display = 'block';
       placeholder.style.display  = 'none';
+    });
+
+    /* ════════════════════════════════════════════════════════
+       TAGS — toggle chips
+    ════════════════════════════════════════════════════════ */
+    document.querySelectorAll('.form-tags .chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        chip.classList.toggle('chip--active');
+      });
     });
 
     /* ════════════════════════════════════════════════════════
